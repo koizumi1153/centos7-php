@@ -17,26 +17,33 @@ class JsonController extends AppController
   }
 
   public function encode(){
-    $this->render('index');
     $encode = "";
+    $decode = "";
     if(isset($this->request->data['encode'])){
-      $encode = json_encode($this->request->data['encode']);
+      $decode = $this->request->data['encode'];
+      $data = explode(",", $decode );
+      $encode = json_encode($data,JSON_UNESCAPED_UNICODE);
     }
 
     $this->set('encode',$encode);
-    $this->set('decode','');
+    $this->set('decode',$decode);
+
+    $this->render('index');
 
   }
 
   public function decode(){
-    $this->render('index');
+    $encode = "";
     $decode = "";
     if(isset($this->request->data['decode'])){
-      $decode = json_decode($this->request->data['decode']);
+      $encode = $this->request->data['decode'];
+      $data = json_decode($encode,true);
+      $decode = implode(",", $data);
     }
 
-    $this->set('encode','');
+    $this->set('encode',$encode);
     $this->set('decode',$decode);
 
+    $this->render('index');
   }
 }

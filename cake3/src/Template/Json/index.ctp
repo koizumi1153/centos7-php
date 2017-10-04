@@ -1,6 +1,5 @@
 <div class="users index large-9 medium-8 columns content">
-        <?= $this->Form->create() ?>
-        <?= echo $this -> Form -> create (
+        <?= $this -> Form -> create (
                             "null", [ "type" => "post",
                                       "url" => [ "controller" => "json",
                                                  "action" => "encode" ] ] );
@@ -10,15 +9,14 @@
             <?php
                 echo $this -> Form -> textarea ( "encode", [ "cols" => 10,
                                            "rows" => 2,
-                                            "value" => $encode] );
+                                            "value" => $decode] );
             ?>
         </fieldset>
         <?= $this->Form->button(__('Submit')) ?>
         <?= $this->Form->end() ?>
         <hr>
 
-        <?= $this->Form->create() ?>
-        <?= echo $this -> Form -> create (
+        <?= $this->Form->create (
                             "null", [ "type" => "post",
                                       "url" => [ "controller" => "json",
                                                  "action" => "decode" ] ] );
@@ -28,7 +26,7 @@
             <?php
                 echo $this -> Form -> textarea ( "decode", [ "cols" => 10,
                                            "rows" => 2,
-                                           "value" => $decode] );
+                                           "value" => $encode] );
             ?>
         </fieldset>
         <?= $this->Form->button(__('Submit')) ?>
