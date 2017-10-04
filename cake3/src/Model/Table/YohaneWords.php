@@ -49,7 +49,7 @@ class YohaneWords extends Table
 
     $validator
       ->requirePresence('word', 'create')
-      ->notEmpty('word');
+      ->allowEmpty('word');
 
     $validator
       ->dateTime('deleted')

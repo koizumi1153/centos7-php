@@ -38,8 +38,12 @@ class YohaneUsers extends Table
       ->allowEmpty('id', 'create');
 
     $validator
+      ->requirePresence('user_id', 'create')
+      ->notEmpty('user_id');
+
+    $validator
       ->requirePresence('name', 'create')
-      ->notEmpty('name');
+      ->allowEmpty('name');
 
     $validator
       ->dateTime('deleted')

@@ -104,12 +104,12 @@ class YohaneComponent extends Component
       return $maps;
     }
 
-    public function getWeathers($date=null){
-      if(empty($date)){
-        $date = date('Ymd');
+    public function getWeathers($day=null){
+      if(empty($day)){
+        $day = date('Ymd');
       }
       $query=$this->Weathers->find();
-      $query->where(['date' => $date]);
+      $query->where(['day' => $day]);
       $query->isNull('deleted');
       $query->order(['id' => 'DESC']);
 
@@ -172,7 +172,7 @@ class YohaneComponent extends Component
     }
 
     public function getWordsMessage(){
-      
+
     }
 
 }

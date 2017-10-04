@@ -43,19 +43,19 @@ class YohaneMaps extends Table
 
     $validator
       ->requirePresence('description', 'create')
-      ->notEmpty('description');
+      ->allowEmpty('description');
 
     $validator
       ->requirePresence('address', 'create')
-      ->notEmpty('address');
+      ->allowEmpty('address');
 
     $validator
       ->requirePresence('latitude', 'create')
-      ->notEmpty('latitude');
+      ->allowEmpty('latitude');
 
     $validator
       ->requirePresence('longitude', 'create')
-      ->notEmpty('longitude');
+      ->allowEmpty('longitude');
 
     $validator
       ->dateTime('deleted')

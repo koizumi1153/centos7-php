@@ -19,7 +19,7 @@ class YohaneFortunes extends Table
   {
     parent::initialize($config);
 
-    $this->table('yohane_users');
+    $this->table('yohane_fortunes');
     $this->primaryKey('id');
 
     $this->addBehavior('Timestamp');
@@ -47,11 +47,11 @@ class YohaneFortunes extends Table
 
     $validator
       ->requirePresence('img', 'create')
-      ->notEmpty('img');
+      ->allowEmpty('img');
 
     $validator
       ->requirePresence('preview', 'create')
-      ->notEmpty('preview');
+      ->allowEmpty('preview');
 
     $validator
       ->dateTime('deleted')

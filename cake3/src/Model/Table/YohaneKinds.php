@@ -43,7 +43,7 @@ class YohaneKinds extends Table
 
     $validator
       ->requirePresence('search', 'create')
-      ->notEmpty('search');
+      ->allowEmpty('search');
 
     $validator
       ->dateTime('deleted')

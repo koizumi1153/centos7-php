@@ -38,8 +38,8 @@ class YohaneWeathers extends Table
       ->allowEmpty('id', 'create');
 
     $validator
-      ->requirePresence('date', 'create')
-      ->notEmpty('date');
+      ->requirePresence('day', 'create')
+      ->notEmpty('day');
 
     $validator
       ->requirePresence('description', 'create')
