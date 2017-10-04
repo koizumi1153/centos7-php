@@ -223,3 +223,15 @@ if (Configure::read('debug')) {
 }
 
 Plugin::load('Migrations');
+
+// LINE BOT用共通定数
+//kind
+define('FORTUNE',   1); //占い
+define('WEATHERS',  2); //占い
+define('MAPS',      3); //観光 地図案内
+define('WORDS',   999); //その他
+
+//priority
+define('PRIORITY_DEFAULT', 0); // 全て
+define('PRIORITY_BEFORE',  1); // 前
+define('PRIORITY_AFTER',   2); // 後ろ
