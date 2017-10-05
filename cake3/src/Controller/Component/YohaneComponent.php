@@ -77,7 +77,7 @@ class YohaneComponent extends Component
   public function getFortunes(){
     $query=$this->Fortunes->find();
      $query->where(['deleted IS NULL']);
-    $fotunes = $query->all();
+    $fotunes = $query->toArray();
 
     return $fotunes;
   }
@@ -85,7 +85,7 @@ class YohaneComponent extends Component
     public function getKinds(){
       $query=$this->Kinds->find();
        $query->where(['deleted IS NULL']);
-      $kind = $query->all();
+      $kind = $query->toArray();
 
       return $kind;
     }
@@ -94,7 +94,7 @@ class YohaneComponent extends Component
       $query=$this->Words->find();
       $query->where(['kind_id' => $kindId]);
       $query->where(['priority' => $priority]);
-      $words = $query->all();
+      $words = $query->toArray();
 
       return $words;
     }
@@ -102,7 +102,7 @@ class YohaneComponent extends Component
     public function getMaps(){
       $query=$this->Maps->find();
        $query->where(['deleted IS NULL']);
-      $maps = $query->all();
+      $maps = $query->toArray();
 
       return $maps;
     }

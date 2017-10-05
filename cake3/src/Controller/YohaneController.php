@@ -54,7 +54,7 @@ EOT;
 
           // 大分類取得 複数ある場合はランダム
           $kindMaster = $this->Yohane->getKinds();
-          $kind = $this->Lottery->lotteryJson($kindMaster);
+          $kind = $this->Lottery->lotteryJson($kindMaster, $text);
 
           switch($kind){
             case FORTUNE:

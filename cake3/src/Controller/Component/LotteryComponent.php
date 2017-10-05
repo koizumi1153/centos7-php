@@ -31,7 +31,7 @@ class LotteryComponent extends Component
 
       if(!empty($retrieval)){
         foreach($retrieval as $words){
-          if(strpos($keyword, $words)){
+          if(strpos($keyword, $words) !== false){
             $hitKinds[] = $master['id'];
             break;
           }
