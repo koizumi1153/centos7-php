@@ -2,6 +2,7 @@
 namespace App\Controller\Component;
 
 use Cake\Controller\Component;
+use Cake\ORM\TableRegistry;
 
 /**
  * Project Yohane 関連のコンポーネント（主にDB操作）
@@ -56,24 +57,26 @@ class YohaneComponent extends Component
     public function getUsers($userId){
       $query=$this->Users->find();
       $query->where(['user_id' => $userId]);
-      $query->isNull('deleted');
-
+      $query->where(['deleted IS NULL']);
+      
       $user = $query->first();
       return $user;
     }
 
     public function deleteUser($userId){
-      $query=$this->Users->find();
-      $query->where(['user_id' => $userId]);
-      $query->isNull('deleted');
-      $user = $query->first();
+      $now = date('Y-m-d H:i:s');
+      $query=$this->Users->query();
 
-      $this->Users->delete($user);
+      $query->update()
+        ->set(['deleted' => $now])
+        ->where(['user_id' => $userId])
+        ->where(['deleted IS NULL'])
+        ->execute();
     }
 
   public function getFortunes(){
     $query=$this->Fortunes->find();
-    $query->isNull('deleted');
+     $query->where(['deleted IS NULL']);
     $fotunes = $query->all();
 
     return $fotunes;
@@ -81,7 +84,7 @@ class YohaneComponent extends Component
 
     public function getKinds(){
       $query=$this->Kinds->find();
-      $query->isNull('deleted');
+       $query->where(['deleted IS NULL']);
       $kind = $query->all();
 
       return $kind;
@@ -98,7 +101,7 @@ class YohaneComponent extends Component
 
     public function getMaps(){
       $query=$this->Maps->find();
-      $query->isNull('deleted');
+       $query->where(['deleted IS NULL']);
       $maps = $query->all();
 
       return $maps;
@@ -110,7 +113,7 @@ class YohaneComponent extends Component
       }
       $query=$this->Weathers->find();
       $query->where(['day' => $day]);
-      $query->isNull('deleted');
+       $query->where(['deleted IS NULL']);
       $query->order(['id' => 'DESC']);
 
       $weather = $query->first();
