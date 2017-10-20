@@ -120,11 +120,11 @@ class YohaneComponent extends Component
       return $weather;
     }
 
-  /**
-   * 占い実行
-   *
-   * @return array
-   */
+    /**
+     * 占い実行
+     *
+     * @return array
+     */
     public function getFortuneMessage(){
       $messageData = array();
 
@@ -144,7 +144,10 @@ class YohaneComponent extends Component
         $fortune = $this->Lottery->lotteryMaster($fortunes);
         // 占い画像
         if(isset($fortune['img']) && isset($fortune['preview'])){
-          $messageData = $this->Line->setImgMessage($fortune['img'], $fortune['preview'], $messageData);
+          $img = YOHANE_IMG_URL . $fortune['img'];
+          $preview = YOHANE_IMG_URL . $fortune['preview'];
+
+          $messageData = $this->Line->setImgMessage($img, $preview, $messageData);
         }
 
         // 占いタイトル
@@ -166,16 +169,62 @@ class YohaneComponent extends Component
       return $messageData;
     }
 
+  /**
+   * 天気
+   */
     public function getWeathersMessage(){
 
     }
 
+    /**
+     * おすすめスポット
+     */
     public function getMapsMessage(){
+      $messageData = array();
 
+      $maps = self::getMaps();
+      if(!empty($maps)){
+        // 占い前セリフ取得
+        $wordsMaster = self::getWords(MAPS, PRIORITY_DEFAULT);
+        $word = $this->Lottery->lotteryMaster($wordsMaster);
+        if (!empty($word)) {
+          $text = $word['word'];
+          $messageData = $this->Line->setTextMessage($text, $messageData);
+        }
+
+        $map = $this->Lottery->lotteryMaster($maps);
+        // おすすめ紹介
+        if(!empty($map)){
+          //位置情報設定
+          $messageData = $this->Line->setLocationMessage($map, $messageData);
+
+          $text = $map['description'];
+          if (!empty($text)) {
+            $messageData = $this->Line->setTextMessage($text, $messageData);
+          }
+        }
+
+      }
+
+      return $messageData;
     }
 
+    /**
+     * 会話用 適当に返すだけ
+     *
+     * @return array
+     */
     public function getWordsMessage(){
+      $messageData = array();
 
+      $wordsMaster = self::getWords(WORDS, PRIORITY_DEFAULT);
+      $word = $this->Lottery->lotteryMaster($wordsMaster);
+      if (!empty($word)) {
+        $text = $word['word'];
+        $messageData = $this->Line->setTextMessage($text, $messageData);
+      }
+
+      return $messageData;
     }
 
 }

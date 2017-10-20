@@ -235,3 +235,6 @@ define('WORDS',   999); //その他
 define('PRIORITY_DEFAULT', 0); // 全て
 define('PRIORITY_BEFORE',  1); // 前
 define('PRIORITY_AFTER',   2); // 後ろ
+
+// 画像置き場
+define('YOHANE_IMG_URL', 'http://local.gacha/img/');

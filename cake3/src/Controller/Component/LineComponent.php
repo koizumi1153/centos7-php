@@ -43,6 +43,8 @@ class LineComponent extends Component
     }
 
     /**
+     * メッセージ送信
+     *
      * @param $api
      * @param $response
      * @param $ch
@@ -66,6 +68,8 @@ class LineComponent extends Component
 
 
     /**
+     * プッシュ通知
+     *
      * @param $uri
      * @param $accessToken
      * @param $toUser
@@ -91,6 +95,8 @@ class LineComponent extends Component
 
 
     /**
+     * プロフィール取得
+     *
      * @param $accessToken
      * @param $userId
      * @return bool
@@ -114,6 +120,8 @@ class LineComponent extends Component
 
 
   /**
+   * 画像
+   *
    * @param $image
    * @param $preview
    * @param array $messageData
@@ -124,6 +132,25 @@ class LineComponent extends Component
       'type' => 'image',
       'originalContentUrl' => $image,
       'previewImageUrl'    => $preview,
+    ];
+
+    $messageData[] = $message;
+    return $messageData;
+  }
+
+  /**
+   * 位置情報
+   *
+   * @param $location
+   * @return array
+   */
+  public function setLocationMessage($location, $messageData = array()){
+    $message = [
+      'type' => 'location',
+      'title'     => $location['name'],
+      'address'   => $location['address'],
+      'latitude'  => $location['latitude'],
+      'longitude' => $location['longitude'],
     ];
 
     $messageData[] = $message;
