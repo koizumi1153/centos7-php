@@ -1,4 +1,4 @@
-f<?php
+<?php
 return [
     /**
      * Debug Level:
@@ -9,7 +9,7 @@ return [
      * Development Mode:
      * true: Errors and warnings shown.
      */
-    'debug' => filter_var(env('DEBUG', true), FILTER_VALIDATE_BOOLEAN),
+    'debug' => filter_var(env('DEBUG', false), FILTER_VALIDATE_BOOLEAN),
 
     /**
      * Configure basic information about the application.
@@ -64,7 +64,7 @@ return [
      *   You should treat it as extremely sensitive data.
      */
     'Security' => [
-        'salt' => env('SECURITY_SALT', '22026d45316b8d93b93ff1ed9ddb4a83a46919d60562cf98a2d788d5b23369df'),
+        'salt' => env('SECURITY_SALT', 'kxwtpc55CQzhKGAvswiheXDaJ5z2cGxn5TGjWBerhEyTdZevnnDsc8sL4SD6q3jk'),
     ],
 
     /**
@@ -229,8 +229,8 @@ return [
              * the following line and set the port accordingly
              */
             //'port' => 'non_standard_port_number',
-            'username' => 'cakephp3',
-            'password' => 'cakephp3',
+            'username' => 'yohane',
+            'password' => 'aika1023',
             'database' => 'cakephp3',
             'encoding' => 'utf8',
             'timezone' => 'Asia/Tokyo',

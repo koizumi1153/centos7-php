@@ -77,6 +77,14 @@ use Cake\Utility\Security;
 try {
     Configure::config('default', new PhpConfig());
     Configure::load('app', 'default', false);
+    switch ( env('CAKEPHP_ENV') ) {
+      case 'development':
+        Configure::load('environments/development', 'default');
+        break;
+      case 'production':
+        Configure::load('environments/production', 'default');
+        break;
+    }
 } catch (\Exception $e) {
     exit($e->getMessage() . "\n");
 }

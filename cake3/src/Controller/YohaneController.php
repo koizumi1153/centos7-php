@@ -80,9 +80,6 @@ EOT;
         }
       }
 
-      print_r($messageData);
-      echo "end...";
-      exit;
 
       // 返信可能な場合に処理する
       if(!empty($messageData)) {
