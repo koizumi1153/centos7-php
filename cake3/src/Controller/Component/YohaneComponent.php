@@ -48,7 +48,8 @@ class YohaneComponent extends Component
       $user = $this->Users->newEntity();
       $user->set([
         'user_id' => $userId,
-        'name'    => $name
+        'name'    => $name,
+        'created' => date('Y-m-d H:i:s')
       ]);
 
       $this->Users->save($user);
