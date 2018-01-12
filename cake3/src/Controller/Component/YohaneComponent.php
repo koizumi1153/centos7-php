@@ -140,7 +140,7 @@ class YohaneComponent extends Component
         if(!empty($user)) $userDataId = $user['id'];
 
         // ユーザーの占い情報取得
-        $userFortuns = self::getUserFortunes($userDataId);
+        $userFortunes = self::getUserFortunes($userDataId);
 
         // 占い前セリフ取得
         $wordsMaster = self::getWords(FORTUNE, PRIORITY_BEFORE);
@@ -151,13 +151,13 @@ class YohaneComponent extends Component
         }
 
         //null:データなし 0:当日データなし
-        if(empty($userFortuns) || $userFortuns['fortuns_id'] == 0) {
+        if(empty($userFortunes) || $userFortunes['fortunes_id'] == 0) {
           // 占い実行
           $fortune = $this->Lottery->lotteryMaster($fortunes);
-          self::setUserFortunes($userDataId, $userFortuns, $fortune['id']);
+          self::setUserFortunes($userDataId, $userFortunes, $fortune['id']);
         }else{
           foreach($fortunes as $row){
-            if($userFortuns['fortunes_id'] ==$row['id']){
+            if($userFortunes['fortunes_id'] ==$row['id']){
               $fortune = $row;
               break;
             }
@@ -263,7 +263,7 @@ class YohaneComponent extends Component
       if(!empty($userFortunes)){
         $today = date('Y-m-d 00:00:00');
         $updated = $userFortunes['updated']->i18nFormat('YYYY/MM/dd HH:mm:ss');
-        if($updated < $today){
+        if($userFortunes['updated'] < $today){
           $userFortunes['fortunes_id'] = 0;
         }
       }
@@ -271,9 +271,9 @@ class YohaneComponent extends Component
       return $userFortunes;
     }
 
-    public function setUserFortunes($userDataId, $userFortuns, $fortune_id){
+    public function setUserFortunes($userDataId, $userFortunes, $fortune_id){
       $now = date('Y-m-d H:i:s');
-      if(empty($userFortuns)){
+      if(empty($userFortunes)){
         $user = $this->User_Fortunes->newEntity();
         $user->set([
           'user_id' => $userDataId,
