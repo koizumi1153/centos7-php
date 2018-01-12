@@ -215,10 +215,10 @@ class YohaneComponent extends Component
      *
      * @return array
      */
-    public function getWordsMessage(){
+    public function getWordsMessage($kindId=WORDS){
       $messageData = array();
 
-      $wordsMaster = self::getWords(WORDS, PRIORITY_DEFAULT);
+      $wordsMaster = self::getWords($kindId, PRIORITY_DEFAULT);
       $word = $this->Lottery->lotteryMaster($wordsMaster);
       if (!empty($word)) {
         $text = $word['word'];

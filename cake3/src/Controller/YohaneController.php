@@ -71,6 +71,10 @@ EOT;
             case WORDS:
               $messageData = $this->Yohane->getWordsMessage();
               break;
+
+            default:
+              $messageData = $this->Yohane->getWordsMessage($kind);
+              break;
           }
 
 
