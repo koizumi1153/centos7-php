@@ -262,8 +262,8 @@ class YohaneComponent extends Component
       $userFortunes = $query->first();
       if(!empty($userFortunes)){
         $today = date('Y-m-d 00:00:00');
-        $updated = $userFortunes['updated']->i18nFormat('YYYY/MM/dd HH:mm:ss');
-        if($userFortunes['updated'] < $today){
+        $updated = $userFortunes['updated']->i18nFormat('YYYY-MM-dd HH:mm:ss');
+        if($updated < $today){
           $userFortunes['fortunes_id'] = 0;
         }
       }
