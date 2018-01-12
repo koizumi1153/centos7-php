@@ -38,11 +38,10 @@ class YohaneController extends AppController
         $this->Yohane->setUsers($userId,$userName);
 
         $text = <<<EOT
-フフフ。
-これであなたもヨハネのリトルデーモンになったわね。
+フフフ。契約完了よ。
+これであなたもYOHANEのリトルデーモンになったわね。
 一緒に堕天しよっ。
 EOT;
-        if($userName) $text = str_replace('あなた', $userName, $text);
         $messageData = $this->Line->setTextMessage($text, $messageData);
       }elseif($type == 'unfollow'){
         $this->Yohane->deleteUser($userId);

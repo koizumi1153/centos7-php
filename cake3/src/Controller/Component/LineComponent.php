@@ -18,6 +18,7 @@ class LineComponent extends Component
      * @return array
      */
     public function setTextMessage($text, $messageData = array()){
+      $text = str_replace("n", "%0D%0A", $text);
       $message = [
         'type' => 'text',
         'text' => $text,

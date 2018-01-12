@@ -76,7 +76,7 @@ class YohaneComponent extends Component
 
   public function getFortunes(){
     $query=$this->Fortunes->find();
-     $query->where(['deleted IS NULL']);
+    $query->where(['deleted IS NULL']);
     $fotunes = $query->toArray();
 
     return $fotunes;
@@ -84,7 +84,7 @@ class YohaneComponent extends Component
 
     public function getKinds(){
       $query=$this->Kinds->find();
-       $query->where(['deleted IS NULL']);
+      $query->where(['deleted IS NULL']);
       $kind = $query->toArray();
 
       return $kind;
