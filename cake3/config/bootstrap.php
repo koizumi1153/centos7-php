@@ -245,4 +245,4 @@ define('PRIORITY_BEFORE',  1); // 前
 define('PRIORITY_AFTER',   2); // 後ろ
 
 // 画像置き場
-define('YOHANE_IMG_URL', 'http://line.yohane.work/img/');
+define('YOHANE_IMG_URL', 'https://line.yohane.work/img/');
