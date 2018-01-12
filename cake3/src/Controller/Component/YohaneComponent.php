@@ -135,9 +135,12 @@ class YohaneComponent extends Component
       // 占いマスター取得
       $fortunes = self::getFortunes();
       if(!empty($fortunes)) {
+        $userDataId = 0;
+        $user = self::getUsers($userId);
+        if(!empty($user)) $userDataId = $user['id'];
 
         // ユーザーの占い情報取得
-        $userFortuns = self::getUserFortunes($userId);
+        $userFortuns = self::getUserFortunes($userDataId);
 
         // 占い前セリフ取得
         $wordsMaster = self::getWords(FORTUNE, PRIORITY_BEFORE);
@@ -151,7 +154,7 @@ class YohaneComponent extends Component
         if(empty($userFortuns) || $userFortuns['fortuns_id'] == 0) {
           // 占い実行
           $fortune = $this->Lottery->lotteryMaster($fortunes);
-          self::setUserFortunes($userId, $userFortuns, $fortune['id']);
+          self::setUserFortunes($userDataId, $userFortuns, $fortune['id']);
         }else{
           foreach($fortunes as $row){
             if($userFortuns['fortunes_id'] ==$row['id']){
@@ -251,9 +254,9 @@ class YohaneComponent extends Component
      * @param $userId
      * @return mixed
      */
-    public function getUserFortunes($userId){
+    public function getUserFortunes($userDataId){
       $query=$this->User_Fortunes->find();
-      $query->where(['user_id' => $userId]);
+      $query->where(['user_id' => $userDataId]);
       $query->where(['deleted IS NULL']);
 
       $userFortunes = $query->first();
@@ -267,12 +270,12 @@ class YohaneComponent extends Component
       return $userFortunes;
     }
 
-    public function setUserFortunes($userId, $userFortuns, $fortune_id){
+    public function setUserFortunes($userDataId, $userFortuns, $fortune_id){
       $now = date('Y-m-d H:i:s');
       if(empty($userFortuns)){
         $user = $this->User_Fortunes->newEntity();
         $user->set([
-          'user_id' => $userId,
+          'user_id' => $userDataId,
           'fortunes_id'    => $fortune_id,
           'created' => $now,
           'updated' => $now
