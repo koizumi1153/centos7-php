@@ -31,6 +31,8 @@ class YohaneComponent extends Component
     /** @var string  */
     protected $WEATHERS = 'YohaneWeathers';
 
+  protected $USER_FORTUNES = 'YohaneUserFortunes';
+
     public function initialize(array $config) {
       $this->Users    = TableRegistry::get($this->USERS);
       $this->Fortunes = TableRegistry::get($this->FORTUNES);
@@ -38,6 +40,7 @@ class YohaneComponent extends Component
       $this->Words    = TableRegistry::get($this->WORDS);
       $this->Maps     = TableRegistry::get($this->MAPS);
       $this->Weathers = TableRegistry::get($this->WEATHERS);
+      $this->User_Fortunes = TableRegistry::get($this->USER_FORTUNES);
     }
 
   /**
@@ -126,12 +129,15 @@ class YohaneComponent extends Component
      *
      * @return array
      */
-    public function getFortuneMessage(){
+    public function getFortuneMessage($userId){
       $messageData = array();
 
       // 占いマスター取得
       $fortunes = self::getFortunes();
       if(!empty($fortunes)) {
+
+        // ユーザーの占い情報取得
+        $userFortuns = self::getUserFortunes($userId);
 
         // 占い前セリフ取得
         $wordsMaster = self::getWords(FORTUNE, PRIORITY_BEFORE);
@@ -141,8 +147,19 @@ class YohaneComponent extends Component
           $messageData = $this->Line->setTextMessage($text, $messageData);
         }
 
-        // 占い実行
-        $fortune = $this->Lottery->lotteryMaster($fortunes);
+        //null:データなし 0:当日データなし
+        if(empty($userFortuns) || $userFortuns['fortuns_id'] == 0) {
+          // 占い実行
+          $fortune = $this->Lottery->lotteryMaster($fortunes);
+          self::setUserFortunes($userId, $userFortuns, $fortune['id']);
+        }else{
+          foreach($fortunes as $row){
+            if($userFortuns['fortunes_id'] ==$row['id']){
+              $fortune = $row;
+              break;
+            }
+          }
+        }
         // 占い画像
         if(isset($fortune['img']) && isset($fortune['preview'])){
           $img = YOHANE_IMG_URL . $fortune['img'];
@@ -166,6 +183,8 @@ class YohaneComponent extends Component
           $text = $word['word'];
           $messageData = $this->Line->setTextMessage($text, $messageData);
         }
+
+
       }
       return $messageData;
     }
@@ -185,7 +204,7 @@ class YohaneComponent extends Component
 
       $maps = self::getMaps();
       if(!empty($maps)){
-        // 占い前セリフ取得
+        // Map前セリフ取得
         $wordsMaster = self::getWords(MAPS, PRIORITY_DEFAULT);
         $word = $this->Lottery->lotteryMaster($wordsMaster);
         if (!empty($word)) {
@@ -226,6 +245,50 @@ class YohaneComponent extends Component
       }
 
       return $messageData;
+    }
+
+    /**
+     * @param $userId
+     * @return mixed
+     */
+    public function getUserFortunes($userId){
+      $query=$this->User_Fortunes->find();
+      $query->where(['user_id' => $userId]);
+      $query->where(['deleted IS NULL']);
+
+      $userFortunes = $query->first();
+      if(!empty($userFortunes)){
+        $today = date('Y-m-d 00:00:00');
+        if($userFortunes['updated'] < $today){
+          $userFortunes['fortunes_id'] = 0;
+        }
+      }
+
+      return $userFortunes;
+    }
+
+    public function setUserFortunes($userId, $userFortuns, $fortune_id){
+      $now = date('Y-m-d H:i:s');
+      if(empty($userFortuns)){
+        $user = $this->User_Fortunes->newEntity();
+        $user->set([
+          'user_id' => $userId,
+          'fortunes_id'    => $fortune_id,
+          'created' => $now,
+          'updated' => $now
+        ]);
+
+        $this->User_Fortunes->save($user);
+      }else{
+        $query=$this->User_Fortunes->query();
+
+        $query->update()
+          ->set(['fortunes_id' => $fortune_id])
+          ->set(['updated' => $now])
+          ->where(['user_id' => $userId])
+          ->where(['deleted IS NULL'])
+          ->execute();
+      }
     }
 
 }

@@ -57,7 +57,7 @@ EOT;
 
           switch($kind){
             case FORTUNE:
-              $messageData = $this->Yohane->getFortuneMessage();
+              $messageData = $this->Yohane->getFortuneMessage($userId);
               break;
 
             case WEATHERS:
