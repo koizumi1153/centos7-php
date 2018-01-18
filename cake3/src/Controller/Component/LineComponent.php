@@ -103,7 +103,6 @@ class LineComponent extends Component
      * @return bool
      */
     public function getProfileName($accessToken, $userId){
-      return 'koizumi';
 
       $uri = "https://api.line.me/v2/bot/profile/{$userId}";
       $ch = curl_init($uri);
