@@ -248,4 +248,4 @@ define('PRIORITY_AFTER',   2); // 後ろ
 define('YOHANE_IMG_URL', 'https://line.yohane.work/img/');
 
 //Amazonプラグイン
-CakePlugin::load(array('Amazon'));
+Plugin::load('Amazon');
