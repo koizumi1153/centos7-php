@@ -247,5 +247,5 @@ define('PRIORITY_AFTER',   2); // 後ろ
 // 画像置き場
 define('YOHANE_IMG_URL', 'https://line.yohane.work/img/');
 
-//Amazonプラグイン
-Plugin::load('Amazon');
+//Amazon設定読み込み
+Configure::load('aws');
