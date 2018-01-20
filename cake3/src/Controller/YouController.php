@@ -30,12 +30,19 @@ class YouController extends AppController
 
     //RakutenAPI検索用URLを作成
     $url = $this->Rakuten->setRequestUrl($kind, $keyword);
-    $http = new Client();
-    $response = $http->get($url);
-    if ($http->isOk) {
-      #$json = json_decode($response->body());
+    if(!empty($url)){
+      $curl = curl_init();
+
+      curl_setopt($curl, CURLOPT_URL, $url);
+      curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'GET');
+      curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false); // 証明書の検証を行わない
+      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);  // curl_execの結果を文字列>で返す
+      $response = curl_exec($curl);
+      $result = json_decode($response, true);
+
+      curl_close($curl);
     }
 
-    print_r($response);exit;
+    print_r($result['Items']);exit;
   }
 }
