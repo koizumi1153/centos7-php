@@ -85,6 +85,12 @@ try {
         Configure::load('environments/production', 'default');
         break;
     }
+
+    //Amazon設定読み込み
+    Configure::load('aws', 'default');
+
+    //Rakuten設定読み込み
+    Configure::load('rakuten','default');
 } catch (\Exception $e) {
     exit($e->getMessage() . "\n");
 }
@@ -246,6 +252,3 @@ define('PRIORITY_AFTER',   2); // 後ろ
 
 // 画像置き場
 define('YOHANE_IMG_URL', 'https://line.yohane.work/img/');
-
-//Amazon設定読み込み
-Configure::load('aws');

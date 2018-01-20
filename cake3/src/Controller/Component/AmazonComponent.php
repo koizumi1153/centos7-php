@@ -9,10 +9,10 @@ use Cake\Controller\Component;
  * Class AmazonComponent
  * @package App\Controller\Component
  */
-class Amazon extends Component
+class AmazonComponent extends Component
 {
   public function setRequest($searchIndex='', $keywords='', $sort="-orig-rel-date"){
-    $baseurl = "https://aws.amazonaws.jp/onca/xml";
+    $baseurl = "http://ecs.amazonaws.jp/onca/xml";
 
 // リクエストのパラメータ作成
     $params = array();
