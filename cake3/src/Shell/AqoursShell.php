@@ -36,7 +36,7 @@ class AqoursShell extends Shell
     }
 
     // Google処理
-    
+
 
     $this->out('end task');
   }
