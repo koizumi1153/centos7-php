@@ -57,9 +57,9 @@ class AqoursComponent extends Component
    * @param $items
    * @param $kind
    */
-    public function setRakutenEvent($items, $kind){
+    public function setRakutenEvent($items, $kind, $keyword){
       $dbKind = $this->changeRakutenKind($kind);
-      $lists = $this->checkData($dbKind,$items);
+      $lists = $this->checkData($dbKind,$items, $keyword);
       $query = $this->Information->query();
       $query->insert([
         'kind',
@@ -75,6 +75,8 @@ class AqoursComponent extends Component
           $data = $this->generateData($dbKind, $item);
           $query->values($data);
         }
+
+        $query->execute();
       }
     }
 
@@ -106,7 +108,7 @@ class AqoursComponent extends Component
    * @param $items
    * @return mixed
    */
-    public function checkData($dbKind,$items){
+    public function checkData($dbKind,$items, $keyword){
       $data = $this->getDataFromKind($dbKind);
       $jans = array_column($data, 'jan', 'id');
       $titles = array_column($data, 'title', 'id');
@@ -125,6 +127,9 @@ class AqoursComponent extends Component
             if(strpos($list['title'],$word) !== false){
               continue;
             }
+          }
+          if($dbKind == AQOURS_KIND_CD && strpos($list['artistName'],$keyword) === false) {
+            continue;
           }
         }
 

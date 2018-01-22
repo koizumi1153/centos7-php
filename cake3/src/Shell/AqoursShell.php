@@ -2,6 +2,7 @@
 namespace App\Shell;
 
 use Cake\Console\Shell;
+use Cake\Controller\ComponentRegistry;
 use App\Controller\Component\AqoursComponent;
 use App\Controller\Component\RakutenComponent;
 
@@ -37,7 +38,7 @@ class AqoursShell extends Shell
 
           curl_close($curl);
         }
-        if(!empty($result['Items'])) $this->Aqours->setRakutenEvent($result['Items'], $kind);
+        if(!empty($result['Items'])) $this->Aqours->setRakutenEvent($result['Items'], $kind, $keyword);
       }
     }
 

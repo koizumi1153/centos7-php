@@ -44,7 +44,7 @@ return [
 
 
   //検索キーワード
-  define('AQOURS_KEYWORDS',['ラブライブ!サンシャイン!!','AqoursComponent','CYaRon','AZALEA','GuiltyKiss',
+  define('AQOURS_KEYWORDS',['ラブライブ!サンシャイン!!','Aqours','CYaRon','AZALEA','GuiltyKiss',
     '高海 千歌','伊波杏樹',
     '桜内 梨子','逢田梨香子',
     '松浦 果南','諏訪ななか',
