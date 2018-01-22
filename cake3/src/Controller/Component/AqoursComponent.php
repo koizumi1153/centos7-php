@@ -60,6 +60,7 @@ class AqoursComponent extends Component
     public function setRakutenEvent($items, $kind, $keyword){
       $dbKind = $this->changeRakutenKind($kind);
       $lists = $this->checkData($dbKind,$items, $keyword);
+
       $query = $this->Information->query();
       $query->insert([
         'kind',
@@ -122,15 +123,21 @@ class AqoursComponent extends Component
           continue;
         }
 
+        // CD アーティスト名不一致は除去
+        if($dbKind == AQOURS_KIND_CD && strpos($list['artistName'],$keyword) === false) {
+          continue;
+        }
+
+        // 除外文字対応
         if(!empty($exclusion)){
+          $continueFlg = false;
           foreach($exclusion as $word){
             if(strpos($list['title'],$word) !== false){
-              continue;
+              $continueFlg = true;
             }
           }
-          if($dbKind == AQOURS_KIND_CD && strpos($list['artistName'],$keyword) === false) {
-            continue;
-          }
+
+          if($continueFlg) continue;
         }
 
         $title = $list['title'];
