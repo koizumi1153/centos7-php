@@ -39,7 +39,7 @@ return [
   //////////
   /// Aqours関連
   //////////
-  define('AQOURS_IMG_DIR', '/var/www/cake/cake3/webroot/img/aqours'), //画像置き場指定
+  define('AQOURS_IMG_DIR', '/var/www/cake/cake3/webroot/img/aqours/'), //画像置き場指定
   define('AQOURS_IMG_URL', 'https://line.yohane.work/img/aqours/'),// 画像置き場
 
 
@@ -54,6 +54,8 @@ return [
     '国木田 花丸','高槻かなこ',
     '小原 鞠莉','鈴木愛奈',
     '黒澤 ルビィ','降幡愛',]),
+
+  define('AQOURS_EXCLUSION_WORDS', ['先着特典','通常版','通常盤']),
 
   // 検索種別
   define('AQOURS_RAKUTEN_KIND', [CD_BASE,DVD_BASE]),

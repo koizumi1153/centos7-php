@@ -2,6 +2,7 @@
 namespace App\Controller\Component;
 
 use Cake\Controller\Component;
+use Cake\ORM\TableRegistry;
 
 class AqoursComponent extends Component
 {
@@ -70,7 +71,8 @@ class AqoursComponent extends Component
       ]);
       if(!empty($lists)){
         foreach($lists as $item){
-          $data = $this->generateData($kind, $item);
+          if(!isset($item['title'])) continue;
+          $data = $this->generateData($dbKind, $item);
           $query->values($data);
         }
       }
@@ -109,24 +111,54 @@ class AqoursComponent extends Component
       $jans = array_column($data, 'jan', 'id');
       $titles = array_column($data, 'title', 'id');
 
-      foreach($items as $key => $list) {
-        $title = $list['title'];
-        $jan   = $list['jan'];
-        if (!empty($jan)) {
-          if(in_array($jan, $jans)) unset($items[$key]);
-        }elseif(!empty($title)){
-          if(in_array($title, $titles)) unset($items[$key]);
+      $exclusion = AQOURS_EXCLUSION_WORDS;
+
+      $lists = [];
+      foreach($items as $key => $val) {
+        $list = $val['Item'];
+        if(!isset($list['title'])){
+          continue;
         }
+
+        if(!empty($exclusion)){
+          foreach($exclusion as $word){
+            if(strpos($list['title'],$word) !== false){
+              continue;
+            }
+          }
+        }
+
+        $title = $list['title'];
+        $jan = null;
+        if(isset($list['jan'])) $jan = $list['jan'];
+        if (!empty($jan)) {
+          if(in_array($jan, $jans)) continue;
+        }elseif(!empty($title)){
+          if(in_array($title, $titles)) continue;
+        }
+
+        $titles[] = $title;
+        if(!empty($jan)) {
+          $jans[] = $jan;
+        }
+
+        $lists[] = $list;
       }
 
-      return $items;
+      return $lists;
     }
 
-    public function generateData($kind, $item){
+  /**
+   * @param $kind
+   * @param $item
+   * @return array
+   */
+    public function generateData($dbkind, $item){
       $data = [];
-      $data['kind'] = $kind;
+      $data['kind'] = $dbkind;
       $data['title'] = $item['title'];
       $data['discription'] = "";
+      $data['price'] = 0;
       $data['jan'] = "";
       $data['img'] = "";
       $data['date'] = "";
@@ -134,6 +166,11 @@ class AqoursComponent extends Component
       // 説明
       if(isset($item['itemCaption'])){
         $data['discription'] = $item['itemCaption'];
+      }
+
+      // price
+      if(isset($item['itemPrice'])){
+        $data['price'] = $item['itemPrice'];
       }
 
       // jan
@@ -192,6 +229,6 @@ class AqoursComponent extends Component
    */
     public function setImg($img, $name, $imgKind){
       $imgName = $name. $imgKind;
-      exec("wget $img -P AQOURS_IMG_DIR -O $imgName");
+      exec("wget -O ".AQOURS_IMG_DIR.$imgName." $img");
     }
 }

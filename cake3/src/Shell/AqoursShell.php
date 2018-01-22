@@ -2,15 +2,21 @@
 namespace App\Shell;
 
 use Cake\Console\Shell;
-use Cake\Controller\Component;
+use App\Controller\Component\AqoursComponent;
+use App\Controller\Component\RakutenComponent;
 
 class AqoursShell extends Shell
 {
-  public $components = ["Aqours","Rakuten" ];
+
+  public function initialize() {
+    // component
+    $this->Aqours  = new AqoursComponent(new ComponentRegistry());
+    $this->Rakuten = new RakutenComponent(new ComponentRegistry());
+  }
 
   public function main()
   {
-    parent::initialize();
+
     $this->out('start task');
 
     // 楽天処理
