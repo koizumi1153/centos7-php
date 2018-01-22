@@ -39,7 +39,7 @@ class RakutenComponent extends Component
    * @param $request
    * @return string
    */
-  public function setRequestUrl($kind, $keyword){
+  public function setRequestUrl($kind, $keyword, $page=1){
     $request = $this->getRequest($kind, $keyword);
 
     $requesturl = $this->getBaseUrl($kind);
@@ -47,6 +47,10 @@ class RakutenComponent extends Component
       foreach($request as $key => $val){
         $requesturl .= '&'.$key.'='.$val;
       }
+    }
+
+    if($page != 1){
+      $requesturl .= '&page='.$page;
     }
 
     // api_idを付与
