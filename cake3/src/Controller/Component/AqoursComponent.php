@@ -66,6 +66,7 @@ class AqoursComponent extends Component
         'kind',
         'title',
         'discription',
+        'price',
         'jan',
         'img',
         'date',
