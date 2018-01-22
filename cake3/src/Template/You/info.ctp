@@ -24,7 +24,7 @@
                 <td><?= h($info->discription) ?></td>
                 <td><?= $this->Number->format($info->price) ?></td>
                 <td><?= $this->Number->format($info->jan) ?></td>
-                <td><img src="../img/aqours/<?= h($info->img) ?>"></td>
+                <td><img src="/img/aqours/<?= h($info->img) ?>"></td>
                 <td><?= h($info->date) ?></td>
             </tr>
             <?php endforeach; ?>
