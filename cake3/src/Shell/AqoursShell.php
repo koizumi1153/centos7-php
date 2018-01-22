@@ -43,7 +43,7 @@ class AqoursShell extends Shell
           if (!empty($result['Items'])){
             $this->Aqours->setRakutenEvent($result['Items'], $kind, $keyword);
           }else{
-            break 2;
+            break;
           }
         }
       }

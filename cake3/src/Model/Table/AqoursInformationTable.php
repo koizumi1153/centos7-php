@@ -59,16 +59,24 @@ class UsersTable extends Table
             ->allowEmpty('title');
 
         $validator
+            ->requirePresence('price', 'create')
+            ->notEmpty('price');
+
+        $validator
+            ->requirePresence('jan', 'create')
+            ->notEmpty('jan');
+
+        $validator
             ->requirePresence('discription', 'create')
-            ->allowEmpty('discription');
+            ->notEmpty('discription');
 
         $validator
             ->requirePresence('img', 'create')
-            ->allowEmpty('img');
+            ->notEmpty('img');
 
         $validator
             ->requirePresence('date', 'create')
-            ->allowEmpty('date');
+            ->notEmpty('date');
 
       $validator
             ->dateTime('deleted')
