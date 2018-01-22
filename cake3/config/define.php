@@ -65,9 +65,8 @@ return [
   define('AQOURS_KIND_DVD',   3), //DVD&Blu-rayの情報
   define('AQOURS_KIND_EVENT', 4), //イベントの情報
   define('AQOURS_KIND_TV',    5), //TVの情報
-  define('AQOURS_KIND_RADIO', 6), //ラジオの情報
+  define('AQOURS_KIND_RADIO', 6), //ラジオ・ネットラジオ・ニコ生などの情報
   define('AQOURS_KIND_TICKET',7), //チケットの情報
-
 
 
 ];//defien

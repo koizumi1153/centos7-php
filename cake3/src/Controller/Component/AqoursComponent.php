@@ -244,4 +244,29 @@ class AqoursComponent extends Component
       $imgName = $name. $imgKind;
       exec("wget -O ".AQOURS_IMG_DIR.$imgName." $img");
     }
+
+  /**
+   * @param $dbKind
+   * @return string
+   */
+    public function getTitle($dbKind){
+      $title = "情報";
+      switch($dbKind){
+        case AQOURS_KIND_BOOK:
+          $title = "BOOK";
+          break;
+        case AQOURS_KIND_CD:
+          $title = "CD";
+          break;
+        case AQOURS_KIND_DVD:
+          $title = "DVD";
+          break;
+
+        default:
+          break;
+      }
+
+
+      return $title;
+    }
 }

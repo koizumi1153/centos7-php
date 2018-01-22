@@ -46,10 +46,12 @@ class YouController extends AppController
     print_r($result['Items']);exit;
   }
 
-  public function cd(){
-    $info = $this->paginate($this->Aqours->getDataFromKind(AQOURS_KIND_CD));
+  public function info($dbKind=AQOURS_KIND_CD){
+    $information = $this->Aqours->getDataFromKind($dbKind);
+    $this->set(compact('information'));
 
-    $this->set(compact('info'));
-    $this->set('_serialize', ['info']);
+    $this->set('title', $this->Aqours->getTitle($dbKind));
+    $this->render('info');
   }
+
 }
