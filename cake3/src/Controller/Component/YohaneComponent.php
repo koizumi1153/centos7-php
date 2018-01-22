@@ -31,7 +31,7 @@ class YohaneComponent extends Component
     /** @var string  */
     protected $WEATHERS = 'YohaneWeathers';
 
-  protected $USER_FORTUNES = 'YohaneUserFortunes';
+    protected $USER_FORTUNES = 'YohaneUserFortunes';
 
     public function initialize(array $config) {
       $this->Users    = TableRegistry::get($this->USERS);

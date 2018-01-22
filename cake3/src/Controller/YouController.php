@@ -25,7 +25,7 @@ class YouController extends AppController
    * amazonAPI
    * 商品List取得
    */
-  public function line($keyword="ラブライブ!サンシャイン!!", $sort="-orig-rel-date", $kind=DVD_BASE){
+  public function line($keyword="ラブライブ!サンシャイン!!", $kind=DVD_BASE){
     $this->autoRender = false;
 
     //RakutenAPI検索用URLを作成

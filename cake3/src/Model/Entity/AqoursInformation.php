@@ -4,10 +4,9 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * YohaneWeathers Entity
- *
+ * AqoursInformation Entity
  */
-class YohaneWeathers extends Entity
+class User extends Entity
 {
 
     /**

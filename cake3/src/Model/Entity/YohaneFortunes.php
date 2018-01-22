@@ -4,16 +4,8 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * User Entity
+ * YohaneFortunes Entity
  *
- * @property int $id
- * @property string $name
- * @property string $mail
- * @property \Cake\I18n\Time $start
- * @property \Cake\I18n\Time $end
- * @property \Cake\I18n\Time $created
- * @property \Cake\I18n\Time $updated
- * @property \Cake\I18n\Time $deleted
  */
 class YohaneFortunes extends Entity
 {

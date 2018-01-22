@@ -3,22 +3,6 @@ namespace App\Controller\Component;
 
 use Cake\Controller\Component;
 
-//baseurl
-define('BASE_URL', 'https://app.rakuten.co.jp/services/api/_KIND_/Search/20170404?format=json');
-
-//総合
-define('TOTAL_BASE', 'BooksTotal');
-
-//楽天ブックス書籍検索
-define('BOKK_BASE','BooksBook');
-
-//楽天ブックスCD検索
-define('CD_BASE','BooksCD');
-
-//楽天ブックスDVD Blu-Ray検索
-define('DVD_BASE','BooksDVD');
-
-
 /**
  * Rakuten APIに関するコンポーネント
  *
@@ -38,11 +22,11 @@ class RakutenComponent extends Component
       case BOKK_BASE:
       case CD_BASE:
       case DVD_BASE:
-      $baseurl = str_replace('_KIND_', $kind,BASE_URL);
+      $baseurl = str_replace('_KIND_', $kind,RAKUTEN_BASE_URL);
         break;
       default :
         $kind = TOTAL_BASE;
-        $baseurl = str_replace('_KIND_', $kind,BASE_URL);
+        $baseurl = str_replace('_KIND_', $kind,RAKUTEN_BASE_URL);
         break;
     }
 
@@ -88,7 +72,7 @@ class RakutenComponent extends Component
    * @return mixed
    */
   public function setCdInfo($artistName, $sort='-releaseDate'){
-    //format=json&artistName=Aqours&booksGenreId=002&sort=-releaseDate&applicationId=1031933732911875967
+    //format=json&artistName=AqoursComponent&booksGenreId=002&sort=-releaseDate&applicationId=1031933732911875967
     $request['artistName'] = urlencode($artistName);
     $request['booksGenreId'] = '002';
     $request['sort'] = $sort;

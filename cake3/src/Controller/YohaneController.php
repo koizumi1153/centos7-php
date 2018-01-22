@@ -23,7 +23,6 @@ class YohaneController extends AppController
 
       $messageData = array();
       $request = $this->request->data;
-      $uri = 'https://api.line.me/v2/bot/message/reply';
 
       // ユーザーから送られてきたデータ
       $event = $request['events'][0];
@@ -80,6 +79,7 @@ EOT;
 
         }else{
           // text以外
+          $messageData = $this->Yohane->getWordsMessage();
         }
       }
 
@@ -87,7 +87,7 @@ EOT;
       // 返信可能な場合に処理する
       if(!empty($messageData)) {
         $response = $this->Line->setResponse($replyToken, $messageData);
-        $this->Line->sendMessage($uri, $response, $this->ACCESS_TOKEN);
+        $this->Line->sendMessage(LINE_API_URL, $response, $this->ACCESS_TOKEN);
       }
 
       echo 200;
