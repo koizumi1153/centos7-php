@@ -34,7 +34,9 @@ class YouController extends AppController
     if($type == 'follow'){
       $userName = $this->Line->getProfileName($this->ACCESS_TOKEN, $userId);
 
-      $this->You->setUsers($userId,$userName);
+      if($userName) {
+        $this->You->setUsers($userId, $userName);
+      }
 
       $text = <<<EOT
 YOUだよ、よろしくね。
@@ -67,13 +69,15 @@ EOT;
           default:
             $messageData = $this->You->getWordsMessage($kind);
             break;
-        }if($messageType== 'location') {
-          // 位置情報
-          $latitude  = $event['message']['latitude'];
-          $longitude = $event['message']['longitude'];
-          $this->You->setLocation($userId, $latitude, $longitude);
         }
+      }elseif($messageType== 'location') {
+        // 位置情報
+        $latitude  = $event['message']['latitude'];
+        $longitude = $event['message']['longitude'];
+        $this->You->setLocation($userId, $latitude, $longitude);
 
+        $text = "位置情報を登録したよ。";
+        $messageData = $this->Line->setTextMessage($text);
       }else{
         // text以外
         $messageData = $this->You->getWordsMessage();
