@@ -171,18 +171,16 @@ class YouComponent extends Component
     public function setPushMessage($data){
       $messageData = [];
       foreach($data as $key => $row){
-        $text = '';
-        $text .= $row['title'] ."";
         $text = <<<EOT
 {$row['title']}が{$row['date']}に発売だよ。
 定価は{$row['price']}円。
 {$row['discription']}
 EOT;
-        $messageData[] = $this->Line->setTextMessage($text, $messageData);
+        $messageData = $this->Line->setTextMessage($text, $messageData, false);
         if(!empty($row['img'])){
           $image = AQOURS_IMG_URL.$row['img'];
           $preview = AQOURS_IMG_URL.$row['img'];
-          $messageData[] = $this->Line->setImgMessage($image, $preview, $messageData);
+          $messageData = $this->Line->setImgMessage($image, $preview, $messageData);
         }
       }
 

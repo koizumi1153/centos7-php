@@ -10,6 +10,7 @@ return [
   define('LINE_API_MULTI_URL','https://api.line.me/v2/bot/message/multicast'), // 複数ユーザーPUSH
   define('LINE_MULTI_USER', '150'), //複数ユーザーID数
   define('LINE_MESSAGE_COUNT', '5'), //メッセージ送信可能数
+  define('LINE_MESSAGE_LENGTH', 998), //メッセージ長さ
 
   //kind
   define('FORTUNE',   1), //占い
