@@ -39,15 +39,16 @@ class AqoursInfoShell extends Shell
         $allPage = ceil($userCount / LINE_MULTI_USER);
         for ($page = 1; $page <= $allPage; $page++) {
           $user = $this->You->getPushUsers($page);
+          $userIds = array_column($user, 'user_id');
 
           // PUSH
           if (count($messageData) > LINE_MESSAGE_COUNT) {
             $messages = array_chunk($messageData, LINE_MESSAGE_COUNT);
             foreach ($messages as $message) {
-              $this->Line->sendPush(LINE_API_MULTI_URL, $this->ACCESS_TOKEN, $user, $message);
+              $this->Line->sendPush(LINE_API_MULTI_URL, $this->ACCESS_TOKEN, $userIds, $message);
             }
           } else {
-            $this->Line->sendPush(LINE_API_MULTI_URL, $this->ACCESS_TOKEN, $user, $messageData);
+            $this->Line->sendPush(LINE_API_MULTI_URL, $this->ACCESS_TOKEN, $userIds, $messageData);
           }
         }
       }

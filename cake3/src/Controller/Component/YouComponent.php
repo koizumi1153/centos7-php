@@ -67,7 +67,7 @@ class YouComponent extends Component
     public function getKinds(){
       $query=$this->Kinds->find();
       $query->where(['deleted IS NULL']);
-      $kind = $query->toArray();
+      $kind = $query->hydrate(false)->toArray();
 
       return $kind;
     }
@@ -76,7 +76,7 @@ class YouComponent extends Component
       $query=$this->Words->find();
       $query->where(['kind_id' => $kindId]);
       $query->where(['priority' => $priority]);
-      $words = $query->toArray();
+      $words = $query->hydrate(false)->toArray();
 
       return $words;
     }
@@ -145,7 +145,7 @@ class YouComponent extends Component
       $query->order(['id' => 'ASC']);
       $query->limit(LINE_MULTI_USER)->page($page);
 
-      $users = $query->toArray();
+      $users = $query->hydrate(false)->toArray();
       return $users;
     }
 

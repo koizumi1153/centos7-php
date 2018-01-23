@@ -101,7 +101,7 @@ return [
             'path' => CACHE . 'persistent/',
             'serialize' => true,
             'duration' => '+2 minutes',
-            'mask' => 0666,//666にする
+            'mask' => 0777,//666にする
             'url' => env('CACHE_CAKECORE_URL', null),
         ],
 
@@ -117,7 +117,7 @@ return [
             'path' => CACHE . 'models/',
             'serialize' => true,
             'duration' => '+2 minutes',
-            'mask' => 0666,//666にする
+            'mask' => 0777,//666にする
             'url' => env('CACHE_CAKEMODEL_URL', null),
         ],
     ],

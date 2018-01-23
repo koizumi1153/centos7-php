@@ -92,6 +92,8 @@ class LineComponent extends Component
         'Authorization: Bearer ' . $accessToken
       ));
       $result = curl_exec($ch);
+      curl_close($ch);
+      return $result;
     }
 
 
@@ -112,6 +114,7 @@ class LineComponent extends Component
         'Authorization: Bearer ' . $accessToken
       ));
       $result = curl_exec($ch);
+      curl_close($ch);
 
       if(isset($result['displayName'])) return $result['displayName'];
 
