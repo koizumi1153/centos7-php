@@ -11,7 +11,7 @@ use App\Controller\AppController;
  */
 class YouController extends AppController
 {
-  public $components = ["Aqours","Line","Lottery", "Rakuten","You" ];
+  public $components = ["Amazon","Aqours","Line","Lottery", "Rakuten","You" ];
 
   // アクセストークン
   protected $ACCESS_TOKEN = 'Fi3v81mkVQooM1wF9l2P4+aSWaYJFumNi4Vr3DwwMU1wSETxbTPn9HPDc64WCHujPM1XqLsPyN0oZuaIsJ6oqEYWsOl9U3gZXbbgJss8tfqPi0B/afR0kIt1pTmvM+kYCvAZEwqz5Cg7g5ecZ0hCBAdB04t89/1O/w1cDnyilFU=';
@@ -125,6 +125,19 @@ EOT;
 
     $this->set('title', $this->Aqours->getTitle($dbKind));
     $this->render('info');
+  }
+
+  public function amazon(){
+    $this->autoRender = false;
+    $searchIndex="DVD";
+    $keywords = "ラブライブ！サンシャイン！！";
+
+    $url = $this->Amazon->setRequest($searchIndex, $keywords);
+    if(!empty($url)){
+      $result = simplexml_load_string(file_get_contents($url));
+    }
+
+    print_r($result);exit;
   }
 
 }

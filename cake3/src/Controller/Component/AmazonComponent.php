@@ -18,12 +18,12 @@ class AmazonComponent extends Component
     $params = array();
     $params["Service"]          = "AWSECommerceService";
     $params["AWSAccessKeyId"]   = ACCESS_KEY_ID;
-    $params["Version"]          = "2006-09-13";
+    $params["Version"]          = "2010-09-01";
     $params["Operation"]        = "ItemSearch";
     $params["SearchIndex"]      = $searchIndex;
     $params["Keywords"]         = $keywords;
     $params["AssociateTag"]     = ASSOCIATE_ID;
-#    $params["ResponseGroup"]    = "ItemAttributes,Offers, Images";
+    $params["ResponseGroup"]    = "ItemAttributes,Offers, Images";
     $params["MinimumPrice"]     = "100";
     $params["ItemPage"]         = "1";
     $params["Sort"]             = $sort;
