@@ -6,6 +6,11 @@ return [
 
   // api url
   define('LINE_API_URL', 'https://api.line.me/v2/bot/message/reply'),
+  define('LINE_API_PUSH_URL', 'https://api.line.me/v2/bot/message/push'), // 単一ユーザーPUSH
+  define('LINE_API_MULTI_URL','https://api.line.me/v2/bot/message/multicast'), // 複数ユーザーPUSH
+  define('LINE_MULTI_USER', '150'), //複数ユーザーID数
+  define('LINE_MESSAGE_COUNT', '5'), //メッセージ送信可能数
+
   //kind
   define('FORTUNE',   1), //占い
   define('WEATHERS',  2), //占い
@@ -16,6 +21,10 @@ return [
   define('PRIORITY_DEFAULT', 0), // 全て
   define('PRIORITY_BEFORE',  1), // 前
   define('PRIORITY_AFTER',   2), // 後ろ
+
+  // 共通フラグ 0 or 1
+  define('OFF_FLG', 0),
+  define('ON_FLG',  1),
 
   //////////
   /// YOHANE関連

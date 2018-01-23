@@ -70,6 +70,7 @@ class AqoursComponent extends Component
         'jan',
         'img',
         'date',
+        'created'
       ]);
       if(!empty($lists)){
         foreach($lists as $item){
@@ -175,6 +176,7 @@ class AqoursComponent extends Component
       $data['jan'] = "";
       $data['img'] = "";
       $data['date'] = "";
+      $data['created'] = date('Y-m-d H:i:s');
 
       // 説明
       if(isset($item['itemCaption'])){
