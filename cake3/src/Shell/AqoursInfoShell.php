@@ -27,31 +27,31 @@ class AqoursInfoShell extends Shell
 
     // 日付取得
     $day = date('Y年m月d日');
-    $day = '2018年01月26日';
+#    $day = '2018年01月26日'; //test用
     $data = $this->Aqours->getiInformationDate($day);
-    if(empty($data)) $this->out('not data'); exit;
+    if(!empty($data)) {
 
-    $messageData = $this->You->setPushMessage($data);
+      $messageData = $this->You->setPushMessage($data);
 
-    // ユーザー取得
-    $userCount = $this->You->getPushUsersCount();
-    if($userCount > 0) {
-      $allPage = ceil($userCount / LINE_MULTI_USER);
-      for ($page = 1; $page <= $allPage; $page++) {
-        $user = $this->You->getPushUsers($page);
+      // ユーザー取得
+      $userCount = $this->You->getPushUsersCount();
+      if ($userCount > 0) {
+        $allPage = ceil($userCount / LINE_MULTI_USER);
+        for ($page = 1; $page <= $allPage; $page++) {
+          $user = $this->You->getPushUsers($page);
 
-        // PUSH
-        if(count($messageData) > LINE_MESSAGE_COUNT){
-          $messages = array_chunk($messageData, LINE_MESSAGE_COUNT);
-          foreach($messages as $message){
-            $this->Line->sendPush(LINE_API_MULTI_URL, $this->ACCESS_TOKEN, $user, $message);
+          // PUSH
+          if (count($messageData) > LINE_MESSAGE_COUNT) {
+            $messages = array_chunk($messageData, LINE_MESSAGE_COUNT);
+            foreach ($messages as $message) {
+              $this->Line->sendPush(LINE_API_MULTI_URL, $this->ACCESS_TOKEN, $user, $message);
+            }
+          } else {
+            $this->Line->sendPush(LINE_API_MULTI_URL, $this->ACCESS_TOKEN, $user, $messageData);
           }
-        }else {
-          $this->Line->sendPush(LINE_API_MULTI_URL, $this->ACCESS_TOKEN, $user, $messageData);
         }
       }
     }
-
 
     $this->out('end task');
   }
