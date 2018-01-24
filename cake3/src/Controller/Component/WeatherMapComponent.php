@@ -12,7 +12,7 @@ class WeatherMapComponent extends Component
    * @return string
    */
     public function getWeatherUrlFromCity($city){
-      return WEATHER_MAP_WEATHER_URL. "?q=".$city."&appid=".WEATHER_MAP_API;
+      return WEATHER_MAP_WEATHER_URL. "?q=".$city."&units=metric&appid=".WEATHER_MAP_API;
     }
 
   /**
@@ -21,7 +21,7 @@ class WeatherMapComponent extends Component
    * @return string
    */
   public function getForecastUrlFromCity($city){
-      return WEATHER_MAP_FORECAST_URL. "?q=".$city."&appid=".WEATHER_MAP_API;
+      return WEATHER_MAP_FORECAST_URL. "?q=".$city."&units=metric&appid=".WEATHER_MAP_API;
     }
 
   /**
@@ -31,7 +31,7 @@ class WeatherMapComponent extends Component
    * @return string
    */
     public function getWeatherUrlFromLatAndLon($latitude, $longitude){
-      return WEATHER_MAP_WEATHER_URL. "?lat=".$latitude."&lon=".$longitude."&appid=".WEATHER_MAP_API;
+      return WEATHER_MAP_WEATHER_URL. "?lat=".$latitude."&lon=".$longitude."&units=metric&appid=".WEATHER_MAP_API;
     }
 
   /**
@@ -41,7 +41,7 @@ class WeatherMapComponent extends Component
    * @return string
    */
     public function getForecastUrlFromLatAndLon($latitude, $longitude){
-      return WEATHER_MAP_FORECAST_URL. "?lat=".$latitude."&lon=".$longitude."&appid=".WEATHER_MAP_API;
+      return WEATHER_MAP_FORECAST_URL. "?lat=".$latitude."&lon=".$longitude."&units=metric&appid=".WEATHER_MAP_API;
     }
 
     public function getWeatherText($weather){
@@ -51,12 +51,16 @@ class WeatherMapComponent extends Component
 //        $main = $this->getMainText($weather['weather'][0]['main']);
         $description = $this->getWeatherDescription($weather['weather'][0]['id']);
 //        $text .= '今の天気は'.$main.'で、'.$description.'です。';
-        $text .= '今の天気は'.$description.'です。';
+        $text .= "今の天気は".$description."です。\n";
       }
 
       if(isset($weather['wind']['deg']) && isset($weather['wind']['speed'])){
         $digger = $this->getWindDigger($weather['wind']['deg']);
-        $text .= $digger.'向きの風、風速'.$weather['wind']['speed'].'メートル。';
+        $text .= $digger."向きの風、風速".$weather['wind']['speed']."メートル。\n";
+      }
+
+      if(isset($weather['main']['temp'])){
+        $text .= "温度は".$weather['main']['temp']."度です。";
       }
 
       return $text;
