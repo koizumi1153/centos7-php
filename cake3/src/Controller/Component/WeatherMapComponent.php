@@ -66,7 +66,7 @@ class WeatherMapComponent extends Component
     }
 
     public function getMainText($main){
-      $inEnglish = array('clear', 'clouds', 'rain', 'snow');
+      $inEnglish = array('Clear', 'Clouds', 'Rain', 'Snow');
       $inJapanese = array('晴れ', 'くもり', '雨', '雪');
       $key = array_search($main,$inEnglish);
       if($key !== false){
