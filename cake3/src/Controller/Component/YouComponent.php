@@ -112,7 +112,7 @@ class YouComponent extends Component
       if(!empty($userDataId) && !empty($latitude) && !empty($longitude)){
         $weather = $this->getWeathers($latitude, $longitude);
         $text = $this->WeatherMap->getWeatherText($weather);
-        $messageData = $this->Line->setTextMessage($text, $messageData, false);
+        $messageData = $this->Line->setTextMessage($text, $messageData);
       }else{
         $text = "位置情報を教えてね";
         $messageData = $this->Line->setTextMessage($text, $messageData);
@@ -206,7 +206,7 @@ EOT;
 {$row['discription']}
 EOT;
         }
-        $messageData = $this->Line->setTextMessage($text, $messageData, false);
+        $messageData = $this->Line->setTextMessage($text, $messageData);
         if(!empty($row['img'])){
           $image = AQOURS_IMG_URL.$row['img'];
           $preview = AQOURS_IMG_URL.$row['img'];
