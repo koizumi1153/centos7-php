@@ -51,12 +51,12 @@ class WeatherMapComponent extends Component
 //        $main = $this->getMainText($weather['weather'][0]['main']);
         $description = $this->getWeatherDescription($weather['weather'][0]['id']);
 //        $text .= '今の天気は'.$main.'で、'.$description.'です。\\n';
-        $text .= '今の天気は'.$description.'です。\\n';
+        $text .= '今の天気は'.$description.'です。%0D%0A';
       }
 
       if(isset($weather['wind']['deg']) && isset($weather['wind']['speed'])){
         $digger = $this->getWindDigger($weather['wind']['deg']);
-        $text .= $digger.'向きの風、風速'.$weather['wind']['speed'].'メートル。\\n';
+        $text .= $digger.'向きの風、風速'.$weather['wind']['speed'].'メートル。%0D%0A';
       }
 
       return $text;

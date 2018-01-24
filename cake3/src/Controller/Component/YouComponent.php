@@ -112,7 +112,7 @@ class YouComponent extends Component
       if(!empty($userDataId) && !empty($latitude) && !empty($longitude)){
         $weather = $this->getWeathers($latitude, $longitude);
         $text = $this->WeatherMap->getWeatherText($weather);
-        $messageData = $this->Line->setTextMessage($text, $messageData);
+        $messageData = $this->Line->setTextMessage($text, $messageData, false);
       }else{
         $text = "位置情報を教えてね";
         $messageData = $this->Line->setTextMessage($text, $messageData);

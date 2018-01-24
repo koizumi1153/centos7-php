@@ -59,7 +59,7 @@ EOT;
         switch ($kind) {
 
           case WEATHERS:
-            $messageData = $this->You->getWeathersMessage();
+            $messageData = $this->You->getWeathersMessage($userId);
             break;
 
           case WORDS:
