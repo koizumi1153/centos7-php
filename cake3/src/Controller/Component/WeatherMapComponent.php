@@ -48,10 +48,9 @@ class WeatherMapComponent extends Component
       $text = '';
 
       if(isset($weather['weather'][0]['id'])){
-//        $main = $this->getMainText($weather['weather'][0]['main']);
+        $main = $this->getMainText($weather['weather'][0]['main']);
         $description = $this->getWeatherDescription($weather['weather'][0]['id']);
-//        $text .= '今の天気は'.$main.'で、'.$description.'です。';
-        $text .= "今の天気は".$description."です。\n";
+        $text .= "今の天気は".$main."で、".$description."です。\n";
       }
 
       if(isset($weather['wind']['deg']) && isset($weather['wind']['speed'])){
