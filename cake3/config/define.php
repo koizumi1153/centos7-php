@@ -79,4 +79,12 @@ return [
   define('AQOURS_KIND_TICKET',7), //チケットの情報
 
 
+  //////////
+  /// 天気API関連
+  //////////
+  define('WEATHER_MAP_API','59b30fe63228c4f874f3786f71d36c3d'), //APIキー
+  define('WEATHER_MAP_WEATHER_URL', 'http://api.openweathermap.org/data/2.5/weather'),  // 現在の天気
+  define('WEATHER_MAP_FORECAST_URL','http://api.openweathermap.org/data/2.5/forecast'), // 天気予報
+
+
 ];//defien

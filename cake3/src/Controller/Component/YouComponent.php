@@ -12,7 +12,7 @@ use Cake\ORM\TableRegistry;
  */
 class YouComponent extends Component
 {
-  public $components = ["Line", "Lottery"];
+  public $components = ["Line", "Lottery", "WeatherMap"];
 
    /** @var string  */
     protected $USERS    = 'YouUsers';
@@ -81,25 +81,44 @@ class YouComponent extends Component
       return $words;
     }
 
-    public function getWeathers($day=null){
-      if(empty($day)){
-        $day = date('Ymd');
-      }
-      $query=$this->Weathers->find();
-      $query->where(['day' => $day]);
-       $query->where(['deleted IS NULL']);
-      $query->order(['id' => 'DESC']);
+  /**
+   * 天気情報を 緯度・軽度から取得する
+   * @param $latitude
+   * @param $longitude
+   * @return mixed
+   */
+    public function getWeathers($latitude, $longitude){
+      $url = $this->WeatherMap->getWeatherUrlFromLatAndLon($latitude, $longitude);
+      $weather = json_decode(file_get_contents($url), true);
 
-      $weather = $query->first();
       return $weather;
     }
 
 
   /**
-   * 天気
+   * 天気コメントを 緯度・軽度から取得する
    */
-    public function getWeathersMessage(){
+    public function getWeathersMessage($userId){
+      $messageData = array();
 
+      $userDataId = 0;
+      $user = self::getUsers($userId);
+      if(!empty($user)){
+        $userDataId = $user['id'];
+        $latitude   = $user['latitude'];
+        $longitude  = $user['longitude'];
+      }
+
+      if(!empty($userDataId) && !empty($latitude) && !empty($longitude)){
+        $weather = $this->getWeathers($latitude, $longitude);
+        $text = $this->WeatherMap->getWeatherText($weather);
+        $messageData = $this->Line->setTextMessage($text, $messageData);
+      }else{
+        $text = "位置情報を教えてね";
+        $messageData = $this->Line->setTextMessage($text, $messageData);
+      }
+
+      return $messageData;
     }
 
     /**

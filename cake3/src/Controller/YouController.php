@@ -140,4 +140,8 @@ EOT;
     print_r($result);exit;
   }
 
+  public function weather($userId){
+
+  }
+
 }
