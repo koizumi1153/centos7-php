@@ -333,8 +333,13 @@ class AqoursComponent extends Component
         foreach($blogData as $item){
           $data['link']  = $item['link'];
           $data['title'] = $item['title'];
-          $data['description'] = $item['description'];
-          $data['date'] = $item['date'];
+          $data['discription'] = $item['discription'];
+          $data['date'] = '';
+          if(isset($item['date'])) {
+            $data['date'] = $item['date'];
+          }else{
+            $data['date'] = $item['pubDate'];
+          }
           $data['creator'] = $creator;
           $data['created'] = date('Y-m-d H:i:s');
           $query->values($data);
