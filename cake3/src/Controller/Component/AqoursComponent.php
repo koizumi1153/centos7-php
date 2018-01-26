@@ -302,7 +302,7 @@ class AqoursComponent extends Component
         }elseif(strpos($url, '.xml') !== false){
           // xml
           foreach($rss->channel->item as $item){
-            $item = (array)$item
+            $item = (array)$item;
             $link  = $item['link'];
             if(!in_array($link,$linkAll)){
               $blogData[] = $item;
