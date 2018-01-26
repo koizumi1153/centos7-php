@@ -4,7 +4,8 @@ namespace App\Shell;
 use Cake\Console\Shell;
 use Cake\Controller\ComponentRegistry;
 use App\Controller\Component\AqoursComponent;
-use App\Controller\Component\RakutenComponent;
+use App\Controller\Component\LineComponent;
+use App\Controller\Component\YouComponent;
 
 class AqoursBlogShell extends Shell
 {

@@ -241,6 +241,7 @@ EOT;
       }
       $text .= $row['title']."\n";
       $text .= $row['link'];
+      $messageData = $this->Line->setTextMessage($text, $messageData);
     }
     return $messageData;
   }
