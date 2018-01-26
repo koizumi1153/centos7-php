@@ -341,7 +341,7 @@ class AqoursComponent extends Component
     }
 
     public function getBlog(){
-      $query = $this->Blog-->find()
+      $query = $this->Blog->find()
           ->where(['deleted IS NULL']);
       return $query->hydrate(false)->toArray();
     }
