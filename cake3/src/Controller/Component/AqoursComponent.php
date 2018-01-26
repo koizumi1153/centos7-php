@@ -275,6 +275,7 @@ class AqoursComponent extends Component
     }
 
     public function checkBlog(){
+      $return = [];
       $blogs = $this->getBlog();
       if(!empty($blogs)){
         $linkAll = array_column($blogs, 'link');
@@ -292,6 +293,7 @@ class AqoursComponent extends Component
             $link  = $item['link'];
             if(!in_array($link,$linkAll)){
               $blogData[] = $item;
+              if(!isset($return[$key])) $return[$key] = $item;
             }
           }
         }elseif(strpos($url, '.xml') !== false){
@@ -300,6 +302,7 @@ class AqoursComponent extends Component
             $link  = $item['link'];
             if(!in_array($link,$linkAll)){
               $blogData[] = $item;
+              if(!isset($return[$key])) $return[$key] = $item;
             }
           }
         }
@@ -308,6 +311,8 @@ class AqoursComponent extends Component
           $this->setBlog($blogData, $creator);
         }
       }
+
+      return $return;
     }
 
     public function setBlog($blogData, $creator){
