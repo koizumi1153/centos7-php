@@ -324,7 +324,7 @@ class AqoursComponent extends Component
       $query->insert([
         'link',
         'title',
-        'discription',
+        'description',
         'date',
         'creator',
         'created'
@@ -333,12 +333,12 @@ class AqoursComponent extends Component
         foreach($blogData as $item){
           $data['link']  = $item['link'];
           $data['title'] = $item['title'];
-          $data['discription'] = $item['discription'];
+          $data['description'] = $item['description'];
           $data['date'] = '';
           if(isset($item['date'])) {
             $data['date'] = $item['date'];
-          }else{
-            $data['date'] = $item['pubDate'];
+          }elseif(isset($item['pubDate'])){
+            $data['date'] = date("Y-m-d H:i:s", strtotime($item['pubDate']));
           }
           $data['creator'] = $creator;
           $data['created'] = date('Y-m-d H:i:s');
