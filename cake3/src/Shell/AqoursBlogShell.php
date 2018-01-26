@@ -6,7 +6,7 @@ use Cake\Controller\ComponentRegistry;
 use App\Controller\Component\AqoursComponent;
 use App\Controller\Component\RakutenComponent;
 
-class AqoursShell extends Shell
+class AqoursBlogShell extends Shell
 {
 
   public function initialize() {
