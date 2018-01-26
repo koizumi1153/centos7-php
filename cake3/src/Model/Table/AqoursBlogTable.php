@@ -19,7 +19,7 @@ use Cake\Validation\Validator;
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class AqoursInformationTable extends Table
+class AqoursBlogTable extends Table
 {
 
     /**
@@ -32,7 +32,7 @@ class AqoursInformationTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('aqours_information');
+        $this->table('aqours_blog');
         $this->primaryKey('id');
 
         $this->addBehavior('Timestamp');
@@ -51,34 +51,26 @@ class AqoursInformationTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->requirePresence('kind', 'create')
-            ->notEmpty('kind');
+            ->requirePresence('creator', 'create')
+            ->allowEmpty('creator');
 
         $validator
             ->requirePresence('title', 'create')
             ->notEmpty('title');
 
         $validator
-            ->requirePresence('price', 'create')
-            ->allowEmpty('price');
-
-        $validator
-            ->requirePresence('jan', 'create')
-            ->allowEmpty('jan');
-
-        $validator
             ->requirePresence('discription', 'create')
             ->allowEmpty('discription');
 
         $validator
-            ->requirePresence('img', 'create')
-            ->allowEmpty('img');
+            ->requirePresence('link', 'create')
+            ->notEmpty('link');
 
         $validator
             ->requirePresence('date', 'create')
             ->allowEmpty('date');
 
-      $validator
+        $validator
             ->dateTime('deleted')
             ->allowEmpty('deleted');
 
