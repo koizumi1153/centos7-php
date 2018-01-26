@@ -276,20 +276,23 @@ class AqoursComponent extends Component
 
     public function checkBlog(){
       $return = [];
+      $linkAll = [];
       $blogs = $this->getBlog();
       if(!empty($blogs)){
         $linkAll = array_column($blogs, 'link');
       }
 
-      $rss = AQOURS_BLOG_RSS_URLS;
+      $rssUrl = AQOURS_BLOG_RSS_URLS;
       $name = AQOURS_BLOG_NAMES;
-      foreach($rss as $key => $url){
+      foreach($rssUrl as $key => $url){
         $blogData = array();
         $creator = $name[$key];
         $rss = simplexml_load_file($url);
         if(strpos($url, 'lineblog') !== false){
           // line
-          foreach($rss->item as $item){
+          foreach($rss as $item){
+            if(isset($item->items)) continue;
+            $item = (array)$item;
             $link  = $item['link'];
             if(!in_array($link,$linkAll)){
               $blogData[] = $item;
@@ -299,6 +302,7 @@ class AqoursComponent extends Component
         }elseif(strpos($url, '.xml') !== false){
           // xml
           foreach($rss->channel->item as $item){
+            $item = (array)$item
             $link  = $item['link'];
             if(!in_array($link,$linkAll)){
               $blogData[] = $item;
