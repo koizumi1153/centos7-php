@@ -117,11 +117,22 @@ class YohaneComponent extends Component
       }
       $query=$this->Weathers->find();
       $query->where(['day' => $day]);
-       $query->where(['deleted IS NULL']);
+      $query->where(['deleted IS NULL']);
       $query->order(['id' => 'DESC']);
 
       $weather = $query->first();
       return $weather;
+    }
+
+    public function setWeathers($day, $description){
+      $weathers = $this->Weathers->newEntity();
+      $weathers->set([
+        'day' => $day,
+        'description' => $description,
+        'created' => date('Y-m-d H:i:s')
+      ]);
+
+      $this->Weathers->save($weathers);
     }
 
     /**
@@ -192,11 +203,28 @@ class YohaneComponent extends Component
       return $messageData;
     }
 
+
+
   /**
-   * 天気
+   * 沼津の天気を取得する
    */
     public function getWeathersMessage(){
+      $messageData = '';
+      $weatherData = $this->getWeathers();
+      if(empty($weatherData)) {
+        $city = "Numazu, JP";
+        $url = $this->WeatherMap->getWeatherUrlFromCity($city);
+        $weather = json_decode(file_get_contents($url), true);
+        $text = $this->WeatherMap->getWeatherText($weather);
+        $messageData = $this->Line->setTextMessage($text);
+        $day = date('Ymd');
+        $this->setWeathers($day, $text);
+      }else{
+        $text = $weatherData['description'];
+        $messageData = $this->Line->setTextMessage($text);
+      }
 
+      return $messageData;
     }
 
     /**
