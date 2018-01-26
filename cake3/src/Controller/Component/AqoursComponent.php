@@ -7,9 +7,11 @@ use Cake\ORM\TableRegistry;
 class AqoursComponent extends Component
 {
     protected $AQOURS_INFORMATION = 'AqoursInformation';
+    protected $AQOURS_BLOG = 'AqoursBlog';
 
     public function initialize(array $config) {
       $this->Information = TableRegistry::get($this->AQOURS_INFORMATION);
+      $this->Blog = TableRegistry::get($this->AQOURS_BLOG);
     }
 
   /**
@@ -21,7 +23,7 @@ class AqoursComponent extends Component
       $query=$this->Information->find()
         ->where(['date' => $date])
         ->where(['deleted IS NULL']);
-      return $query->toArray();
+      return $query->hydrate(false)->toArray();
     }
 
   /**
@@ -35,7 +37,7 @@ class AqoursComponent extends Component
         ->limit(100)
         ->offset($order);
 
-      return $query->toArray();
+      return $query->hydrate(false)->toArray();
     }
 
   /**
@@ -49,7 +51,7 @@ class AqoursComponent extends Component
       $query->where(['deleted IS NULL']);
       $query->order(['date' => 'ASC']);
 
-      return $query->toArray();
+      return $query->hydrate(false)->toArray();
     }
 
   /**
@@ -270,5 +272,72 @@ class AqoursComponent extends Component
 
 
       return $title;
+    }
+
+    public function checkBlog(){
+      $blogs = $this->getBlog();
+      if(!empty($blogs)){
+        $linkAll = array_column($blogs, 'link');
+      }
+
+      $rss = AQOURS_BLOG_RSS_URLS;
+      $name = AQOURS_BLOG_NAMES;
+      foreach($rss as $key => $url){
+        $blogData = array();
+        $creator = $name[$key];
+        $rss = simplexml_load_file($url);
+        if(strpos($url, 'lineblog') !== false){
+          // line
+          foreach($rss->item as $item){
+            $link  = $item['link'];
+            if(!in_array($link,$linkAll)){
+              $blogData[] = $item;
+            }
+          }
+        }elseif(strpos($url, '.xml') !== false){
+          // xml
+          foreach($rss->channel->item as $item){
+            $link  = $item['link'];
+            if(!in_array($link,$linkAll)){
+              $blogData[] = $item;
+            }
+          }
+        }
+
+        if(!empty($blogData)){
+          $this->setBlog($blogData, $creator);
+        }
+      }
+    }
+
+    public function setBlog($blogData, $creator){
+      $query = $this->Blog->query();
+      $query->insert([
+        'link',
+        'title',
+        'discription',
+        'date',
+        'creator',
+        'created'
+      ]);
+      if(!empty($blogData)){
+        foreach($blogData as $item){
+          $data['link']  = $item['link'];
+          $data['title'] = $item['title'];
+          $data['description'] = $item['description'];
+          $data['date'] = $item['date'];
+          $data['creator'] = $creator;
+          $data['created'] = date('Y-m-d H:i:s');
+          $query->values($data);
+        }
+
+        $query->execute();
+      }
+    }
+
+    public function getBlog(){
+      $query = $this->Blog-->find()
+          ->where(['deleted IS NULL']);
+      return $query->hydrate(false)->toArray();
     }
 }

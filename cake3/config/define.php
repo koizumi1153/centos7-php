@@ -78,6 +78,17 @@ return [
   define('AQOURS_KIND_RADIO', 6), //ラジオ・ネットラジオ・ニコ生などの情報
   define('AQOURS_KIND_TICKET',7), //チケットの情報
 
+  define('AQOURS_BLOG_RSS_URLS', [
+    'https://lineblog.me/anju_inami/index.rdf',
+    'https://lineblog.me/kobayashi_aika/index.rdf',
+    'http://rssblog.ameba.jp/shuka-saito/rss20.xml'
+  ]),
+
+  define('AQOURS_BLOG_NAMES', [
+    '伊波杏樹〜日々精進。〜',
+    '小林愛香オフィシャルブログ',
+    '斉藤朱夏オフィシャルブログ「しゅか通信」'
+  ]),
 
   //////////
   /// 天気API関連
