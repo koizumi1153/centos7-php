@@ -189,7 +189,7 @@ class YouComponent extends Component
 
     public function setPushMessage($data){
       $messageData = [];
-      $sell = array('AQOURS_KIND_BOOK', 'AQOURS_KIND_CD', 'AQOURS_KIND_DVD');
+      $sell = array(AQOURS_KIND_BOOK, AQOURS_KIND_CD, AQOURS_KIND_DVD);
 
       foreach($data as $key => $row){
 
