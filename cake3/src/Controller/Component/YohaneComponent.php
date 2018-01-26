@@ -12,7 +12,7 @@ use Cake\ORM\TableRegistry;
  */
 class YohaneComponent extends Component
 {
-  public $components = ["Line", "Lottery"];
+  public $components = ["Line", "Lottery", "WeatherMap" ];
 
    /** @var string  */
     protected $USERS    = 'YohaneUsers';
