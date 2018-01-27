@@ -75,7 +75,7 @@ return [
   define('AQOURS_EXCLUSION_WORDS', ['先着特典','通常版','通常盤']),
 
   // 検索種別
-  define('AQOURS_RAKUTEN_KIND', [CD_BASE,DVD_BASE]),
+  define('AQOURS_RAKUTEN_KIND', [BOKK_BASE,CD_BASE,DVD_BASE]),
 
   define('AQOURS_KIND_BOOK',  1), //本の情報
   define('AQOURS_KIND_CD',    2), //CDの情報
