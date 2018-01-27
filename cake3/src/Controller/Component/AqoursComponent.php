@@ -127,13 +127,15 @@ class AqoursComponent extends Component
           continue;
         }
 
+        // 本
+
         // CD アーティスト名不一致は除去
         if($dbKind == AQOURS_KIND_CD && strpos($list['artistName'],$keyword) === false) {
           continue;
         }
 
         // 除外文字対応
-        if(!empty($exclusion)){
+        if($dbKind == AQOURS_KIND_DVD && !empty($exclusion)){
           $continueFlg = false;
           foreach($exclusion as $word){
             if(strpos($list['title'],$word) !== false){

@@ -47,6 +47,12 @@ return [
   define('DVD_BASE','BooksDVD'),
 
   //////////
+  /// Google Books API関連
+  //////////
+  //baseurl
+  define('GOOGLE_BASE_URL', 'https://www.googleapis.com/books/v1/volumes?q=_KEYWORD_&country=JP'),
+
+  //////////
   /// Aqours関連
   //////////
   define('AQOURS_IMG_DIR', '/var/www/cake/cake3/webroot/img/aqours/'), //画像置き場指定
@@ -63,7 +69,8 @@ return [
     '津島 善子','小林愛香',
     '国木田 花丸','高槻かなこ',
     '小原 鞠莉','鈴木愛奈',
-    '黒澤 ルビィ','降幡愛',]),
+    '黒澤 ルビィ','降幡愛',
+    '電撃G\'sマガジン']),
 
   define('AQOURS_EXCLUSION_WORDS', ['先着特典','通常版','通常盤']),
 

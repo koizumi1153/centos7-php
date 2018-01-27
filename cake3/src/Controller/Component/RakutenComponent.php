@@ -60,10 +60,12 @@ class RakutenComponent extends Component
   }
 
   /**
-   * 不使用
+   * 本 リクエスト内容設定
    */
-  public function setBookInfo($title){
-    $request = [];
+  public function setBookInfo($keyword, $sort='-releaseDate'){
+    $request['title'] = urlencode($keyword);
+    $request['booksGenreId'] = '001';
+    $request['sort'] = $sort;
     return $request;
   }
 
