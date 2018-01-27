@@ -22,6 +22,7 @@ class RakutenComponent extends Component
       case BOKK_BASE:
       case CD_BASE:
       case DVD_BASE:
+      case MAGAZINE_BASE:
       $baseurl = str_replace('_KIND_', $kind,RAKUTEN_BASE_URL);
         break;
       default :
