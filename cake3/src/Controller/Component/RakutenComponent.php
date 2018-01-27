@@ -65,7 +65,7 @@ class RakutenComponent extends Component
   public function setBookInfo($keyword, $sort='-releaseDate'){
     $request['title'] = urlencode($keyword);
     $request['booksGenreId'] = '001';
-    $request['sort'] = $sort;
+    $request['sort'] = urlencode($sort);
     return $request;
   }
 
@@ -81,7 +81,7 @@ class RakutenComponent extends Component
     //format=json&artistName=AqoursComponent&booksGenreId=002&sort=-releaseDate&applicationId=1031933732911875967
     $request['artistName'] = urlencode($artistName);
     $request['booksGenreId'] = '002';
-    $request['sort'] = $sort;
+    $request['sort'] = urlencode($sort);
 
     return $request;
   }
@@ -97,7 +97,7 @@ class RakutenComponent extends Component
   public function setDvdInfo($title, $sort='-releaseDate'){
     $request['title'] = urlencode($title);
     $request['booksGenreId'] = '003';
-    $request['sort'] = $sort;
+    $request['sort'] = urlencode($sort);
 
     return $request;
   }
@@ -110,7 +110,7 @@ class RakutenComponent extends Component
   public function setTotalInfo($keyword, $sort='-releaseDate'){
     $request['keyword'] = urlencode($keyword);
     $request['booksGenreId'] = '000';
-    $request['sort'] = $sort;
+    $request['sort'] = urlencode($sort);
 
     return $request;
   }
