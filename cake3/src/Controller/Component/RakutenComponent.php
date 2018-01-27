@@ -103,6 +103,16 @@ class RakutenComponent extends Component
   }
 
   /**
+   * 雑誌 リクエスト内容設定
+   */
+  public function setMagazineInfo($keyword, $sort='-releaseDate'){
+    $request['title'] = urlencode($keyword);
+    $request['booksGenreId'] = '007';
+    $request['sort'] = urlencode($sort);
+    return $request;
+  }
+
+  /**
    * @param $keyword
    * @param string $sort
    * @return mixed
@@ -131,6 +141,9 @@ class RakutenComponent extends Component
         break;
       case DVD_BASE:
         $request = $this->setDvdInfo($keyword);
+        break;
+      case MAGAZINE_BASE:
+        $request = $this->setMagazineInfo($keyword);
         break;
       default :
         $kind = TOTAL_BASE;

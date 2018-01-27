@@ -45,6 +45,8 @@ return [
   define('CD_BASE','BooksCD'),
   //楽天ブックスDVD Blu-Ray検索
   define('DVD_BASE','BooksDVD'),
+  //楽天ブックス雑誌検索
+  define('MAGAZINE_BASE','BooksMagazine'),
 
   //////////
   /// Google Books API関連
@@ -70,12 +72,12 @@ return [
     '国木田 花丸','高槻かなこ',
     '小原 鞠莉','鈴木愛奈',
     '黒澤 ルビィ','降幡愛',
-    '電撃G\'sマガジン']),
+    "電撃G'sマガジン"]),
 
   define('AQOURS_EXCLUSION_WORDS', ['先着特典','通常版','通常盤']),
 
   // 検索種別
-  define('AQOURS_RAKUTEN_KIND', [BOKK_BASE,CD_BASE,DVD_BASE]),
+  define('AQOURS_RAKUTEN_KIND', [BOKK_BASE,CD_BASE,DVD_BASE,MAGAZINE_BASE]),
 
   define('AQOURS_KIND_BOOK',  1), //本の情報
   define('AQOURS_KIND_CD',    2), //CDの情報
