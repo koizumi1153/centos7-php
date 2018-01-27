@@ -94,6 +94,7 @@ class AqoursComponent extends Component
       $dbKind = 0;
       switch ($kind){
         case BOKK_BASE:
+        case MAGAZINE_BASE:
           $dbKind = AQOURS_KIND_BOOK;
           break;
         case CD_BASE:
@@ -198,6 +199,13 @@ class AqoursComponent extends Component
       }
 
       // img
+      if(isset($item['largeImageUrl']) && isset($item['isbn'])){
+        $imgKind = $this->checkImg($item['largeImageUrl']);
+        if($imgKind !== false){
+          $this->setImg($item['largeImageUrl'], $item['isbn'], $imgKind);
+          $data['img'] = $item['isbn'].$imgKind;
+        }
+      }
       if(isset($item['largeImageUrl']) && isset($item['jan'])){
         $imgKind = $this->checkImg($item['largeImageUrl']);
         if($imgKind !== false){
