@@ -19,10 +19,12 @@ class AqoursInfoShell extends Shell
     $this->You    = new YouComponent(new ComponentRegistry());
   }
 
+  /**
+   * 当日情報PUSH
+   */
   public function main()
   {
-
-    $this->out('start task');
+#    $this->out('start task');
 
     // 日付取得
     $day = date('Y年m月d日');
@@ -53,6 +55,47 @@ class AqoursInfoShell extends Shell
       }
     }
 
-    $this->out('end task');
+#    $this->out('end task');
+  }
+
+  /**
+   * 週間情報PUSH
+   * 取得日から7日間のデータを取得する
+   * 返すのは1メッセージ(量が多くなっても見ずらくなりそうなので
+   */
+  public function week(){
+    $days = [];
+    // 日付取得
+    $today = date('Y-m-d 00:00:00');
+    for($i=0;$i<7;$i++){
+      $days[] = date('Y年m月d日', strtotime($today,strtotime('+'.$i.' day')));
+    }
+
+    $data = $this->Aqours->getiInformationWeek($days);
+    if(!empty($data)) {
+
+      $messageData = $this->You->setPushMessageWeek($data);
+
+      // ユーザー取得
+      $userCount = $this->You->getPushUsersCount();
+      if ($userCount > 0) {
+        $allPage = ceil($userCount / LINE_MULTI_USER);
+        for ($page = 1; $page <= $allPage; $page++) {
+          $user = $this->You->getPushUsers($page);
+          $userIds = array_column($user, 'user_id');
+
+          // PUSH
+          if (count($messageData) > LINE_MESSAGE_COUNT) {
+            $messages = array_chunk($messageData, LINE_MESSAGE_COUNT);
+            foreach ($messages as $message) {
+              $this->Line->sendPush(LINE_API_MULTI_URL, $this->ACCESS_TOKEN, $userIds, $message);
+            }
+          } else {
+            $this->Line->sendPush(LINE_API_MULTI_URL, $this->ACCESS_TOKEN, $userIds, $messageData);
+          }
+        }
+      }
+    }
+
   }
 }

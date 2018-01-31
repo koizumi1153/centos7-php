@@ -284,6 +284,10 @@ class AqoursComponent extends Component
       return $title;
     }
 
+  /**
+   * ブログチェック
+   * @return array
+   */
     public function checkBlog(){
       $return = [];
       $linkAll = [];
@@ -329,6 +333,12 @@ class AqoursComponent extends Component
       return $return;
     }
 
+  /**
+   * ブログ情報保存
+   *
+   * @param $blogData
+   * @param $creator
+   */
     public function setBlog($blogData, $creator){
       $query = $this->Blog->query();
       $query->insert([
@@ -359,9 +369,25 @@ class AqoursComponent extends Component
       }
     }
 
+  /**
+   * ブログ情報取得
+   * @return mixed
+   */
     public function getBlog(){
       $query = $this->Blog->find()
           ->where(['deleted IS NULL']);
+      return $query->hydrate(false)->toArray();
+    }
+
+  /**
+   * 週間情報取得
+   *
+   * @return mixed
+   */
+    public function getiInformationWeek($days){
+      $query=$this->Information->find()
+        ->where(['date IN' => $days])
+        ->where(['deleted IS NULL']);
       return $query->hydrate(false)->toArray();
     }
 }

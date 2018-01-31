@@ -46,6 +46,10 @@ class YouComponent extends Component
     $this->Users->save($user);
   }
 
+  /**
+   * @param $userId
+   * @return mixed
+   */
   public function getUsers($userId)
   {
     $query = $this->Users->find();
@@ -56,6 +60,9 @@ class YouComponent extends Component
     return $user;
   }
 
+  /**
+   * @param $userId
+   */
   public function deleteUser($userId)
   {
     $now = date('Y-m-d H:i:s');
@@ -68,6 +75,9 @@ class YouComponent extends Component
       ->execute();
   }
 
+  /**
+   * @return mixed
+   */
   public function getKinds()
   {
     $query = $this->Kinds->find();
@@ -77,6 +87,11 @@ class YouComponent extends Component
     return $kind;
   }
 
+  /**
+   * @param $kindId
+   * @param int $priority
+   * @return mixed
+   */
   public function getWords($kindId, $priority = 0)
   {
     $query = $this->Words->find();
@@ -100,7 +115,6 @@ class YouComponent extends Component
 
     return $weather;
   }
-
 
   /**
    * 天気コメントを 緯度・軽度から取得する
@@ -199,6 +213,12 @@ class YouComponent extends Component
       ->execute();
   }
 
+  /**
+   * 情報通知メッセージ
+   *
+   * @param $data
+   * @return array
+   */
   public function setPushMessage($data)
   {
     $messageData = [];
@@ -207,17 +227,9 @@ class YouComponent extends Component
     foreach ($data as $key => $row) {
 
       if (in_array($row['kind'], $sell)) {
-        $text = <<<EOT
-{$row['title']}が{$row['date']}に発売だよ。
-
-{$row['discription']}
-EOT;
+        $text = "{$row['title']}が{$row['date']}に発売だよ。\n\n{$row['discription']}";
       } else {
-        $text = <<<EOT
-{$row['title']}が{$row['date']}にあるよ。
-
-{$row['discription']}
-EOT;
+        $text = "{$row['title']}が{$row['date']}にあるよ。\n\n{$row['discription']}";
       }
       $messageData = $this->Line->setTextMessage($text, $messageData);
       if (!empty($row['img'])) {
@@ -230,6 +242,12 @@ EOT;
     return $messageData;
   }
 
+  /**
+   * blog更新通知メッセージ
+   *
+   * @param $data
+   * @return array
+   */
   public function setPushBlogMessage($data)
   {
     $messageData = [];
@@ -245,4 +263,37 @@ EOT;
     }
     return $messageData;
   }
+
+  /**
+   * 週間情報通知メッセージ
+   *
+   * @param $data
+   * @return array
+   */
+  public function setPushMessageWeek($data)
+  {
+    $messageData = [];
+    $sell = array(AQOURS_KIND_BOOK, AQOURS_KIND_CD, AQOURS_KIND_DVD);
+
+    $count = 0;
+    $text = "";
+    foreach ($data as $key => $row) {
+
+      if($count != 0) $text .= "\n\n";
+      if (in_array($row['kind'], $sell)) {
+        $text .= "{$row['title']}が{$row['date']}に発売だよ。";
+      } else {
+        $text .= "{$row['title']}が{$row['date']}にあるよ。";
+      }
+      $count++;
+    }
+
+    // 週間情報は1回で送信する。
+    if(!empty($text)) {
+      $messageData = $this->Line->setTextMessage($text, $messageData);
+    }
+
+    return $messageData;
+  }
+
 }
