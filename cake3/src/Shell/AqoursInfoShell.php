@@ -68,7 +68,7 @@ class AqoursInfoShell extends Shell
     // 日付取得
     $today = date('Y-m-d 00:00:00');
     for($i=0;$i<7;$i++){
-      $days[] = date('Y年m月d日', strtotime($today,strtotime('+'.$i.' day')));
+      $days[] = date('Y年m月d日', strtotime('+'.$i.' day',strtotime($today)));
     }
 
     $data = $this->Aqours->getiInformationWeek($days);
