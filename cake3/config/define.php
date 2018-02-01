@@ -86,6 +86,7 @@ return [
   define('AQOURS_KIND_TV',    5), //TVの情報
   define('AQOURS_KIND_RADIO', 6), //ラジオ・ネットラジオ・ニコ生などの情報
   define('AQOURS_KIND_TICKET',7), //チケットの情報
+  define('AQOURS_KIND_GOODS', 8), //グッズなどの販売情報
 
   define('AQOURS_BLOG_RSS_URLS', [
     'https://lineblog.me/anju_inami/index.rdf',
