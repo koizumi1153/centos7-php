@@ -176,4 +176,55 @@ class WeatherMapComponent extends Component
       return $dname[$dindex];
     }
 
+  /**
+   * 天気予報取得
+   *
+   * @param $weather
+   * @param $ampm
+   * @return string
+   */
+    public function getForecastText($weather, $ampm){
+      if($ampm = 'AM'){
+        //当日
+        $day = date('Y-m-d 12:00:00');
+        $date = "正午";
+      }else{
+        //翌日
+        $day = date('Y-m-d 12:00:00',strtotime('+1 day'));
+        $date = "明日の正午";
+      }
+      $text = '';
+
+      foreach($weather as $data){
+        if($data['dt_txt'] == $day){
+          if(isset($data['weather']['id'])){
+            $main = $this->getMainText($data['main']);
+            $description = $this->getWeatherDescription($data['weather']['id']);
+            $text .= $date."の天気は".$main."で、".$description."の模様です。\n";
+          }
+
+          if(isset($data['wind']['deg']) && isset($data['wind']['speed'])){
+            $digger = $this->getWindDigger($data['wind']['deg']);
+            $text .= "\n".$digger."向きの風、風速".$data['wind']['speed']."メートルくらい。";
+          }
+
+          if(isset($data['main']['temp'])){
+            $text .= "\n温度は".$data['main']['temp']."度程度でしょう。";
+          }
+
+          if(isset($data['rain']['3h'])){
+            $text .= "\n降水確率は".$data['rain']['3h']."％です。";
+          }
+
+          if(isset($data['snow']['3h'])){
+            $text .= "\n降水確率は".$data['snow']['3h']."％です。";
+          }
+
+          break;
+        }
+      }
+
+      return $text;
+    }
+
 }

@@ -12,7 +12,7 @@ use Cake\ORM\TableRegistry;
  */
 class YohaneComponent extends Component
 {
-  public $components = ["Line", "Lottery", "WeatherMap" ];
+    public $components = ["Line", "Lottery", "WeatherMap" ];
 
    /** @var string  */
     protected $USERS    = 'YohaneUsers';
@@ -31,7 +31,11 @@ class YohaneComponent extends Component
     /** @var string  */
     protected $WEATHERS = 'YohaneWeathers';
 
+    /** @var string  */
     protected $USER_FORTUNES = 'YohaneUserFortunes';
+
+    /** @var string */
+    protected $CITY = "Numazu, JP";
 
     public function initialize(array $config) {
       $this->Users    = TableRegistry::get($this->USERS);
@@ -42,6 +46,7 @@ class YohaneComponent extends Component
       $this->Weathers = TableRegistry::get($this->WEATHERS);
       $this->User_Fortunes = TableRegistry::get($this->USER_FORTUNES);
     }
+
 
   /**
    * @param $userId
@@ -78,13 +83,13 @@ class YohaneComponent extends Component
         ->execute();
     }
 
-  public function getFortunes(){
-    $query=$this->Fortunes->find();
-    $query->where(['deleted IS NULL']);
-    $fotunes = $query->hydrate(false)->toArray();
+    public function getFortunes(){
+      $query=$this->Fortunes->find();
+      $query->where(['deleted IS NULL']);
+      $fotunes = $query->hydrate(false)->toArray();
 
-    return $fotunes;
-  }
+      return $fotunes;
+    }
 
     public function getKinds(){
       $query=$this->Kinds->find();
@@ -133,6 +138,16 @@ class YohaneComponent extends Component
       ]);
 
       $this->Weathers->save($weathers);
+    }
+
+    public function updateWeathers($day, $description){
+      $query=$this->Weathers->query();
+
+      $query->update()
+        ->set(['description' => $description,])
+        ->where(['day' => $day])
+        ->where(['deleted IS NULL'])
+        ->execute();
     }
 
     /**
@@ -203,7 +218,16 @@ class YohaneComponent extends Component
       return $messageData;
     }
 
-
+  /**
+   * 天気APIからデータを取得する
+   * @return mixed
+   */
+    public function getWeatherApi(){
+      $url = $this->WeatherMap->getWeatherUrlFromCity($this->CITY);
+      $weather = json_decode(file_get_contents($url), true);
+      $text = $this->WeatherMap->getWeatherText($weather);
+      return $text;
+    }
 
   /**
    * 沼津の天気を取得する
@@ -212,8 +236,7 @@ class YohaneComponent extends Component
       $messageData = '';
       $weatherData = $this->getWeathers();
       if(empty($weatherData)) {
-        $city = "Numazu, JP";
-        $url = $this->WeatherMap->getWeatherUrlFromCity($city);
+        $url = $this->WeatherMap->getWeatherUrlFromCity($this->CITY);
         $weather = json_decode(file_get_contents($url), true);
         $text = $this->WeatherMap->getWeatherText($weather);
         $messageData = $this->Line->setTextMessage($text);
@@ -299,6 +322,12 @@ class YohaneComponent extends Component
       return $userFortunes;
     }
 
+  /**
+   * ユーザー占い結果保存
+   * @param $userDataId
+   * @param $userFortunes
+   * @param $fortune_id
+   */
     public function setUserFortunes($userDataId, $userFortunes, $fortune_id){
       $now = date('Y-m-d H:i:s');
       if(empty($userFortunes)){
@@ -321,6 +350,34 @@ class YohaneComponent extends Component
           ->where(['deleted IS NULL'])
           ->execute();
       }
+    }
+
+  /**
+   * 天気予報APIから取得
+   * @return mixed
+   */
+    public function getForecastApi(){
+      $ampm = date('A');
+      $url = $this->WeatherMap->getForecastUrlFromCity($this->CITY);
+      $weather = json_decode(file_get_contents($url), true);
+      $text = $this->WeatherMap->getForecastText($weather, $ampm);
+      return $text;
+    }
+
+    public function getForecastMessage(){
+      $messageData = '';
+      $forecastData = $this->getForecasts();
+      if(empty($forecastData)) {
+        $text = $this->getForecastApi();
+        $messageData = $this->Line->setTextMessage($text);
+        $day = date('Ymd');
+        $this->setWeathers($day, $text);
+      }else{
+        $text = $forecastData['description'];
+        $messageData = $this->Line->setTextMessage($text);
+      }
+
+      return $messageData;
     }
 
 }
