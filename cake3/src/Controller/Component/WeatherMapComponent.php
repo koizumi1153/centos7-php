@@ -59,15 +59,15 @@ class WeatherMapComponent extends Component
       }
 
       if(isset($weather['main']['temp'])){
-        $text .= "温度は".$weather['main']['temp']."度です。";
+        $text .= "気温は".$weather['main']['temp']."度です。";
       }
 
       return $text;
     }
 
     public function getMainText($main){
-      $inEnglish = array('Clear', 'Clouds', 'Rain', 'Snow');
-      $inJapanese = array('晴れ', 'くもり', '雨', '雪');
+      $inEnglish = array('Clear', 'Clouds', 'Rain', 'Snow','Mist');
+      $inJapanese = array('晴れ', 'くもり', '雨', '雪','霧');
       $key = array_search($main,$inEnglish);
       if($key !== false){
         return $inJapanese[$key];
@@ -184,7 +184,7 @@ class WeatherMapComponent extends Component
    * @return string
    */
     public function getForecastText($weather, $ampm){
-      if($ampm = 'AM'){
+      if($ampm == 'AM'){
         //当日
         $day = date('Y-m-d 12:00:00');
         $date = "正午";
@@ -195,21 +195,17 @@ class WeatherMapComponent extends Component
       }
       $text = '';
 
-      foreach($weather as $data){
+      foreach($weather['list'] as $data){
         if($data['dt_txt'] == $day){
-          if(isset($data['weather']['id'])){
-            $main = $this->getMainText($data['main']);
-            $description = $this->getWeatherDescription($data['weather']['id']);
-            $text .= $date."の天気は".$main."で、".$description."の模様です。\n";
+          if(isset($data['weather'][0]['id'])){
+            $main = $this->getMainText($data['weather'][0]['main']);
+            $description = $this->getWeatherDescription($data['weather'][0]['id']);
+            $text .= $date."の天気は".$main."で、".$description."の模様です。";
           }
 
           if(isset($data['wind']['deg']) && isset($data['wind']['speed'])){
             $digger = $this->getWindDigger($data['wind']['deg']);
             $text .= "\n".$digger."向きの風、風速".$data['wind']['speed']."メートルくらい。";
-          }
-
-          if(isset($data['main']['temp'])){
-            $text .= "\n温度は".$data['main']['temp']."度程度でしょう。";
           }
 
           if(isset($data['rain']['3h'])){
@@ -218,6 +214,11 @@ class WeatherMapComponent extends Component
 
           if(isset($data['snow']['3h'])){
             $text .= "\n降水確率は".$data['snow']['3h']."％です。";
+          }
+
+          if(isset($weather['main']['temp_min']) && isset($weather['main']['temp_max'])){
+            $text .= "\n最低気温は".$weather['main']['temp_min']."度、最高気温は".
+              $weather['main']['temp_max']."度でしょう。";
           }
 
           break;

@@ -247,6 +247,8 @@ class YohaneComponent extends Component
         $messageData = $this->Line->setTextMessage($text);
       }
 
+      $messageData = $this->getForecastMessage($messageData);
+
       return $messageData;
     }
 
@@ -364,17 +366,17 @@ class YohaneComponent extends Component
       return $text;
     }
 
-    public function getForecastMessage(){
-      $messageData = '';
-      $forecastData = $this->getForecasts();
+    public function getForecastMessage($messageData){
+      #$forecastData = $this->getForecasts();
+      $forecastData = array();
       if(empty($forecastData)) {
         $text = $this->getForecastApi();
-        $messageData = $this->Line->setTextMessage($text);
+        $messageData = $this->Line->setTextMessage($text,$messageData);
         $day = date('Ymd');
         $this->setWeathers($day, $text);
       }else{
         $text = $forecastData['description'];
-        $messageData = $this->Line->setTextMessage($text);
+        $messageData = $this->Line->setTextMessage($text,$messageData);
       }
 
       return $messageData;
