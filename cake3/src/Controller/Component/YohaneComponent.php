@@ -372,8 +372,8 @@ class YohaneComponent extends Component
       if(empty($forecastData)) {
         $text = $this->getForecastApi();
         $messageData = $this->Line->setTextMessage($text,$messageData);
-        $day = date('Ymd');
-        $this->setWeathers($day, $text);
+        #$day = date('Ymd');
+        #$this->setWeathers($day, $text);
       }else{
         $text = $forecastData['description'];
         $messageData = $this->Line->setTextMessage($text,$messageData);
