@@ -216,9 +216,9 @@ class WeatherMapComponent extends Component
             $text .= "\n降水確率は".$data['snow']['3h']."％です。";
           }
 
-          if(isset($weather['main']['temp_min']) && isset($weather['main']['temp_max'])){
-            $text .= "\n最低気温は".$weather['main']['temp_min']."度、最高気温は".
-              $weather['main']['temp_max']."度でしょう。";
+          if(isset($data['main']['temp_min']) && isset($data['main']['temp_max'])){
+            $text .= "\n最低気温は".$data['main']['temp_min']."度、最高気温は".
+              $data['main']['temp_max']."度でしょう。";
           }
 
           break;
