@@ -270,13 +270,14 @@ class YouComponent extends Component
    * @param $data
    * @return array
    */
-  public function setPushMessageWeek($data)
+  public function setPushMessageWeek($data, $adminFlg=false)
   {
     $messageData = [];
     $sell = array(AQOURS_KIND_BOOK, AQOURS_KIND_CD, AQOURS_KIND_DVD);
 
     $count = 0;
     $text = "";
+    if($adminFlg) $text .= "以下の情報が登録されました。\n";
     foreach ($data as $key => $row) {
 
       if($count != 0) $text .= "\n\n";

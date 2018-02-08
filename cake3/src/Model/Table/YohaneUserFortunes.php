@@ -38,7 +38,7 @@ class YohaneUserFortunes extends Table
       ->allowEmpty('id', 'create');
 
     $validator
-      ->requirePresence('user_id', 'create')
+      ->integer('user_id')
       ->notEmpty('user_id');
 
     $validator

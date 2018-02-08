@@ -72,6 +72,7 @@ class AqoursComponent extends Component
         'jan',
         'img',
         'date',
+        'push',
         'created'
       ]);
       if(!empty($lists)){
@@ -181,6 +182,7 @@ class AqoursComponent extends Component
       $data['jan'] = "";
       $data['img'] = "";
       $data['date'] = "";
+      $data['push'] = PUSH_NONE;
       $data['created'] = date('Y-m-d H:i:s');
 
       // 説明
@@ -216,6 +218,11 @@ class AqoursComponent extends Component
       // date
       if(isset($item['salesDate'])){
         $data['date'] = $item['salesDate'];
+      }
+
+      $sell = array(AQOURS_KIND_BOOK, AQOURS_KIND_CD, AQOURS_KIND_DVD);
+      if(in_array($dbkind, $sell)){
+        $data['push'] = PUSH_READY;
       }
 
       return $data;
@@ -384,10 +391,33 @@ class AqoursComponent extends Component
    *
    * @return mixed
    */
-    public function getiInformationWeek($days){
+    public function getInformationWeek($days){
       $query=$this->Information->find()
         ->where(['date IN' => $days])
         ->where(['deleted IS NULL']);
       return $query->hydrate(false)->toArray();
     }
+
+  /**
+   * @param int $push
+   * @return mixed
+   */
+    public function getInformationPush($push=PUSH_READY){
+      $query=$this->Information->find()
+        ->where(['push' => $push])
+        ->where(['deleted IS NULL']);
+      return $query->hydrate(false)->toArray();
+    }
+
+  /**
+   * push を送信済みに更新
+   */
+    public function updatePush(){
+      $query = $this->Information->query();
+      $query->update()
+            ->set(['push' => PUSH_FINISH])
+            ->where(['push' => PUSH_READY])
+            ->execute();
+    }
+
 }

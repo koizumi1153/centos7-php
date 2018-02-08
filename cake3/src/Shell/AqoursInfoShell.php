@@ -11,6 +11,8 @@ class AqoursInfoShell extends Shell
 {
   // アクセストークン
   protected $ACCESS_TOKEN = 'Fi3v81mkVQooM1wF9l2P4+aSWaYJFumNi4Vr3DwwMU1wSETxbTPn9HPDc64WCHujPM1XqLsPyN0oZuaIsJ6oqEYWsOl9U3gZXbbgJss8tfqPi0B/afR0kIt1pTmvM+kYCvAZEwqz5Cg7g5ecZ0hCBAdB04t89/1O/w1cDnyilFU=';
+  // 管理者ID
+  protected $ADMIN_USER = 'Ub0d8aab0fefa54f6dbb51a7a3543899e';
 
   public function initialize() {
     // component
@@ -71,7 +73,7 @@ class AqoursInfoShell extends Shell
       $days[] = date('Y年m月d日', strtotime('+'.$i.' day',strtotime($today)));
     }
 
-    $data = $this->Aqours->getiInformationWeek($days);
+    $data = $this->Aqours->getInformationWeek($days);
     if(!empty($data)) {
 
       $messageData = $this->You->setPushMessageWeek($data);
@@ -95,6 +97,24 @@ class AqoursInfoShell extends Shell
           }
         }
       }
+    }
+  }
+
+  /**
+   * 管理者のみPUSH
+   */
+  public function sell(){
+    $data = $this->Aqours->getInformationPush();
+    if(!empty($data)) {
+
+      // 登録されてPUSHされていないモノ
+      $messageData = $this->You->setPushMessageWeek($data, true);
+      // ユーザーは管理者のみ
+      // PUSH
+      $this->Line->sendPush(LINE_API_PUSH_URL, $this->ACCESS_TOKEN, $this->ADMIN_USER, $messageData);
+
+      // フラグ更新
+      $this->Aqours->updatePush();
     }
 
   }

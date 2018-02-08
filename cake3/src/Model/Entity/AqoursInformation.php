@@ -6,7 +6,7 @@ use Cake\ORM\Entity;
 /**
  * AqoursInformation Entity
  */
-class User extends Entity
+class AqoursInformation extends Entity
 {
 
     /**

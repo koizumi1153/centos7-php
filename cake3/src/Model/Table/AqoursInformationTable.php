@@ -51,7 +51,7 @@ class AqoursInformationTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->requirePresence('kind', 'create')
+            ->integer('kind')
             ->notEmpty('kind');
 
         $validator
@@ -59,7 +59,7 @@ class AqoursInformationTable extends Table
             ->notEmpty('title');
 
         $validator
-            ->requirePresence('price', 'create')
+            ->integer('price')
             ->allowEmpty('price');
 
         $validator
@@ -78,7 +78,11 @@ class AqoursInformationTable extends Table
             ->requirePresence('date', 'create')
             ->allowEmpty('date');
 
-      $validator
+        $validator
+            ->integer('push')
+            ->allowEmpty('push');
+
+        $validator
             ->dateTime('deleted')
             ->allowEmpty('deleted');
 

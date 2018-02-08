@@ -88,6 +88,10 @@ return [
   define('AQOURS_KIND_TICKET',7), //チケットの情報
   define('AQOURS_KIND_GOODS', 8), //グッズなどの販売情報
 
+  define('PUSH_NONE', 0),   // PUSH不要
+  define('PUSH_READY', 1),  // PUSH準備
+  define('PUSH_FINISH', 2), // PUSH完了
+
   define('AQOURS_BLOG_RSS_URLS', [
     'https://lineblog.me/anju_inami/index.rdf',
     'https://lineblog.me/kobayashi_aika/index.rdf',

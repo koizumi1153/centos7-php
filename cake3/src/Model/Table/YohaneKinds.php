@@ -38,7 +38,7 @@ class YohaneKinds extends Table
       ->allowEmpty('id', 'create');
 
     $validator
-      ->requirePresence('kind', 'create')
+      ->integer('kind')
       ->notEmpty('kind');
 
     $validator
