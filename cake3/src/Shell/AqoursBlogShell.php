@@ -22,7 +22,7 @@ class AqoursBlogShell extends Shell
   public function main()
   {
 
-    $this->out('start task');
+    #$this->out('start task');
 
     $blogs = $this->Aqours->checkBlog();
 
@@ -51,6 +51,6 @@ class AqoursBlogShell extends Shell
 
     }
 
-    $this->out('end task');
+    #$this->out('end task');
   }
 }

@@ -18,7 +18,7 @@ class AqoursShell extends Shell
   public function main()
   {
 
-    $this->out('start task');
+    #$this->out('start task');
 
     // 楽天処理
     $keywords=AQOURS_KEYWORDS;
@@ -52,6 +52,6 @@ class AqoursShell extends Shell
     // Google処理
 
 
-    $this->out('end task');
+    #$this->out('end task');
   }
 }
