@@ -45,11 +45,14 @@ class AqoursComponent extends Component
    * @param $dbKind
    * @return mixed
    */
-    public function getDataFromKind($dbKind){
+    public function getDataFromKind($dbKind, $isDeletedFlg=true){
       $query=$this->Information->find();
       $query->where(['kind' => $dbKind]);
-      $query->where(['deleted IS NULL']);
       $query->order(['date' => 'ASC']);
+
+      if($isDeletedFlg){
+        $query->where(['deleted IS NULL']);
+      }
 
       return $query->hydrate(false)->toArray();
     }
@@ -116,7 +119,7 @@ class AqoursComponent extends Component
    * @return mixed
    */
     public function checkData($dbKind,$items, $keyword){
-      $data = $this->getDataFromKind($dbKind);
+      $data = $this->getDataFromKind($dbKind, false);
       $jans = array_column($data, 'jan', 'id');
       $titles = array_column($data, 'title', 'id');
 
@@ -404,8 +407,7 @@ class AqoursComponent extends Component
    */
     public function getInformationPush($push=PUSH_READY){
       $query=$this->Information->find()
-        ->where(['push' => $push])
-        ->where(['deleted IS NULL']);
+        ->where(['push' => $push]);
       return $query->hydrate(false)->toArray();
     }
 
