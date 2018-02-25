@@ -50,6 +50,10 @@ class YouUsers extends Table
       ->notEmpty('push_flg');
 
     $validator
+      ->requirePresence('push_time', 'create')
+      ->allowEmpty('push_time');
+
+    $validator
       ->requirePresence('latitude', 'create')
       ->allowEmpty('latitude');
 

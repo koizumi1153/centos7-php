@@ -159,4 +159,113 @@ class LineComponent extends Component
     $messageData[] = $message;
     return $messageData;
   }
+
+  /**
+   * @param string $label
+   * @param string $data
+   * @param string $mode
+   * @param null $max
+   * @param null $min
+   */
+  public function setDatetimepicker($label, $data = POSTBACK_SELECT_PUSH_TIME, $mode=SELECT_TIME, $max=null, $min=null, $initial=null){
+    if(empty($max)) $max = self::getMaxTimePicker($mode);
+    if(empty($min)) $min = self::getMinTimePicker($mode);
+    if(empty($initial)) $initial = self::getInitial($mode);
+
+    $message = [
+      "type" => "datetimepicker",
+      "label" => $label,
+      "data" => $data,
+      "mode" => $mode,
+      "initial" => $initial,
+      "max" => $max,
+      "min" => $min
+    ];
+
+    return $message;
+  }
+
+  /**
+   * @param $mode
+   * @return string
+   */
+  private function getMaxTimePicker($mode){
+    $max = "";
+    switch ($mode){
+      case SELECT_DATE:
+        $max = "2100-12-31";
+        break;
+      case SELECT_TIME:
+        $max = "23:00";
+        break;
+      case SELECT_DATETIME:
+        $max = "2100-12-31T23:59";
+        break;
+    }
+    return $max;
+  }
+
+  /**
+   * @param $mode
+   * @return string
+   */
+  private function getMinTimePicker($mode){
+    $min = "";
+    switch ($mode){
+      case SELECT_DATE:
+        $min = "1900-01-01";
+        break;
+      case SELECT_TIME:
+        $min = "00:00";
+        break;
+      case SELECT_DATETIME:
+        $min = "1900-01-01T00:00";
+        break;
+    }
+    return $min;
+  }
+
+  /**
+   * @param $mode
+   * @return string
+   */
+  private function getInitial($mode){
+    $initial = self::getMinTimePicker($mode);
+    return $initial;
+  }
+
+  /**
+   * @param $label
+   * @param $text
+   * @return array
+   */
+  public function confirmAction($label, $text){
+    return ["type" => "message",
+            "label" => $label,
+            "text" => $text];
+  }
+
+  /**
+   * @param $text
+   * @param $actions
+   * @return array
+   */
+  public function setConfirm($text, $actions){
+    $confirm = [
+      "type" => "confirm",
+      "text" => $text,
+      "actions" => $actions,
+    ];
+
+    return $confirm;
+  }
+
+  public function setTemplate($template, $text){
+    $confirm = [
+      "type"     => "template",
+      "altText"  => $text,
+      "template" => $template,
+    ];
+  }
+
 }

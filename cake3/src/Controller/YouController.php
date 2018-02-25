@@ -66,6 +66,18 @@ EOT;
             $messageData = $this->You->getWordsMessage();
             break;
 
+          case PUSH:
+            // action を2つ定義
+            $actions[] = $this->Line->confirmAction('通知設定する', '通知設定する');
+            $actions[] = $this->Line->confirmAction('通知設定しない', '通知設定しない');
+
+            $messageData = $this->Line->setConfirm('PUSH設定変更', $actions);
+            break;
+
+          case PUSHTIME:
+            $messageData = $this->Line->setDatetimepicker('PUSH時間変更',POSTBACK_SELECT_PUSH_TIME, SELECT_TIME,'23:00','00:00','09:00');
+            break;
+
           default:
             $messageData = $this->You->getWordsMessage($kind);
             break;
@@ -82,6 +94,9 @@ EOT;
         // text以外
         $messageData = $this->You->getWordsMessage();
       }
+    }elseif($type == "postback"){
+        $postback = $event['postback'];
+        $messageData = $this->You->getPostBackMessage($userId, $postback);
     }
 
 

@@ -166,11 +166,13 @@ class YouComponent extends Component
    * PUSH 可能ユーザー数取得
    * @return mixed
    */
-  public function getPushUsersCount()
+  public function getPushUsersCount($time='')
   {
     $query = $this->Users->find();
     $query->where(['push_flg' => ON_FLG]);
     $query->where(['deleted IS NULL']);
+
+    if(!empty($time)) $query->where(['push_time' => $time]);
 
     $total = $query->count();
     return $total;
@@ -181,13 +183,15 @@ class YouComponent extends Component
    * @param $page
    * @return mixed
    */
-  public function getPushUsers($page)
+  public function getPushUsers($page, $time='')
   {
     $query = $this->Users->find()->select(['user_id']);
     $query->where(['push_flg' => ON_FLG]);
     $query->where(['deleted IS NULL']);
     $query->order(['id' => 'ASC']);
     $query->limit(LINE_MULTI_USER)->page($page);
+
+    if(!empty($time)) $query->where(['push_time' => $time]);
 
     $users = $query->hydrate(false)->toArray();
     return $users;
@@ -294,6 +298,74 @@ class YouComponent extends Component
       $messageData = $this->Line->setTextMessage($text, $messageData);
     }
 
+    return $messageData;
+  }
+
+
+  /**
+   * postback返答処理
+   *
+   * @param $postback
+   * @return array
+   */
+  public function getPostBackMessage($userId, $postback){
+    $messageData = [];
+
+    $data = $postback['data'];
+    if($data == POSTBACK_SELECT_PUSH_TIME){
+      // push 時間変更
+      if(isset($data['time'])) {
+        $messageData = self::setPushTime($userId, $data['time']);
+      }
+    }
+
+    return $messageData;
+  }
+
+  /**
+   * @param $userId
+   * @param $time
+   * @return mixed
+   */
+  public function setPushTime($userId, $time){
+    $now = date('Y-m-d H:i:s');
+    $query = $this->Users->query();
+
+    $query->update()
+      ->set(['push_time' => $time])
+      ->set(['updated' => $now])
+      ->where(['user_id' => $userId])
+      ->where(['deleted IS NULL'])
+      ->execute();
+
+    $text = "通知時間を{$time}に設定したよ。";
+    $messageData = $this->Line->setTextMessage($text);
+    return $messageData;
+  }
+
+  /**
+   * push_flg変更
+   * @param $userId
+   * @param string $flg
+   * @return mixed
+   */
+  public function setPushFlg($userId, $flg='0'){
+    $now = date('Y-m-d H:i:s');
+    $query = $this->Users->query();
+
+    $query->update()
+      ->set(['push_flg' => $flg])
+      ->set(['updated' => $now])
+      ->where(['user_id' => $userId])
+      ->where(['deleted IS NULL'])
+      ->execute();
+
+    if($flg) {
+      $text = "通知を設定したよ。";
+    }else {
+      $text = "通知を解除したよ。";
+    }
+    $messageData = $this->Line->setTextMessage($text);
     return $messageData;
   }
 

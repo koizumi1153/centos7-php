@@ -27,6 +27,7 @@ class AqoursInfoShell extends Shell
   public function main()
   {
 #    $this->out('start task');
+    $time = date('H:i'); //時間取得
 
     // 日付取得
     $day = date('Y年m月d日');
@@ -37,11 +38,11 @@ class AqoursInfoShell extends Shell
       $messageData = $this->You->setPushMessage($data);
 
       // ユーザー取得
-      $userCount = $this->You->getPushUsersCount();
+      $userCount = $this->You->getPushUsersCount($time);
       if ($userCount > 0) {
         $allPage = ceil($userCount / LINE_MULTI_USER);
         for ($page = 1; $page <= $allPage; $page++) {
-          $user = $this->You->getPushUsers($page);
+          $user = $this->You->getPushUsers($page ,$time);
           $userIds = array_column($user, 'user_id');
 
           // PUSH

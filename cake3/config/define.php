@@ -12,11 +12,24 @@ return [
   define('LINE_MESSAGE_COUNT', '5'), //メッセージ送信可能数
   define('LINE_MESSAGE_LENGTH', 998), //メッセージ長さ
 
+  //postback time
+  define('SELECT_DATE','date'),         // 例：2017-06-18
+  define('SELECT_TIME','time'),         // 例：00:00
+  define('SELECT_DATETIME','datetime'), // 例：2017-06-18T06:15
+
+  //postback.data
+  define('POSTBACK_SELECT_PUSH_TIME','select_time'),  //push時間
+
   //kind
-  define('FORTUNE',   1), //占い
-  define('WEATHERS',  2), //占い
-  define('MAPS',      3), //観光 地図案内
-  define('WORDS',   999), //その他
+  define('FORTUNE',      1), //占い
+  define('WEATHERS',     2), //占い
+  define('MAPS',         3), //観光 地図案内
+  define('WORDS',      999), //その他
+
+  define('PUSH',      1000), //push通知可否変更
+  define('PUSHON',    1001), //push通知ON
+  define('PUSHOFF',   1002), //push通知OFF
+  define('PUSHTIME',  1003), //push通知時間変更
 
   //priority
   define('PRIORITY_DEFAULT', 0), // 全て
