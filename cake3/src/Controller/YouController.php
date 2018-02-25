@@ -74,6 +74,14 @@ EOT;
             $messageData = $this->Line->setConfirm('PUSH設定変更', $actions);
             break;
 
+          case PUSHON:
+            $messageData = $this->You->setPushFlg($userId, 1);
+            break;
+            
+          case PUSHOFF:
+            $messageData = $this->You->setPushFlg($userId, 0);
+            break;
+
           case PUSHTIME:
             $messageData = $this->Line->setDatetimepicker('PUSH時間変更',POSTBACK_SELECT_PUSH_TIME, SELECT_TIME,'23:00','00:00','09:00');
             break;
