@@ -263,13 +263,16 @@ class LineComponent extends Component
   /**
    * @param $template
    * @param $text
+   * @return array
    */
   public function setTemplate($template, $text){
-    $confirm = [
+    $message = [
       "type"     => "template",
       "altText"  => $text,
       "template" => $template,
     ];
+
+    return $message;
   }
 
 }
