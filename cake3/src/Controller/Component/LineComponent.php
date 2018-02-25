@@ -260,6 +260,10 @@ class LineComponent extends Component
     return $confirm;
   }
 
+  /**
+   * @param $template
+   * @param $text
+   */
   public function setTemplate($template, $text){
     $confirm = [
       "type"     => "template",

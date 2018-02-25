@@ -71,7 +71,8 @@ EOT;
             $actions[] = $this->Line->confirmAction('通知設定する', '通知設定する');
             $actions[] = $this->Line->confirmAction('通知設定しない', '通知設定しない');
 
-            $messageData = $this->Line->setConfirm('PUSH設定変更', $actions);
+            $template = $this->Line->setConfirm('PUSH設定変更', $actions);
+            $messageData = $this->Line->setTemplate($template, "通知設定変更できません");
             break;
 
           case PUSHON:

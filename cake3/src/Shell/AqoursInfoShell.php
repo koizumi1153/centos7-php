@@ -27,7 +27,7 @@ class AqoursInfoShell extends Shell
   public function main()
   {
 #    $this->out('start task');
-    $time = date('H:i'); //時間取得
+    $time = date('H'); //時間取得
 
     // 日付取得
     $day = date('Y年m月d日');
