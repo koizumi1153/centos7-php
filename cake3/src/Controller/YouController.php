@@ -71,7 +71,7 @@ EOT;
             $actions[] = $this->Line->confirmAction('設定する', '通知設定する');
             $actions[] = $this->Line->confirmAction('設定しない', '通知設定しない');
 
-            $template = $this->Line->setConfirm('PUSH設定変更', $actions);
+            $template = $this->Line->setConfirm('通知設定変更', $actions);
             $messageData = $this->Line->setTemplate($template, "通知設定変更できません");
             break;
 
@@ -85,7 +85,7 @@ EOT;
 
           case PUSHTIME:
 
-            $template = $this->Line->setButton('PUSH時間変更','PUSH通知時間を変更します',[ACTION_DATE_TIME]);
+            $template = $this->Line->setButton('通知時間変更','通知時間を変更します',[ACTION_DATE_TIME]);
             $messageData = $this->Line->setTemplate($template, "通知時間変更できません");
             break;
 
