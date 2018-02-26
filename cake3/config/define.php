@@ -12,6 +12,12 @@ return [
   define('LINE_MESSAGE_COUNT', '5'), //メッセージ送信可能数
   define('LINE_MESSAGE_LENGTH', 998), //メッセージ長さ
 
+  // action
+  define('ACTION_POST_BACK',  'postback'),        // ポストバックアクション
+  define('ACTION_MESSAGE',    'message'),         // メッセージアクション
+  define('ACTION_URI',        'uri'),             // URIアクション
+  define('ACTION_DATE_TIME',  'datetimepicker'),  // 日時選択アクション
+
   //postback time
   define('SELECT_DATE','date'),         // 例：2017-06-18
   define('SELECT_TIME','time'),         // 例：00:00

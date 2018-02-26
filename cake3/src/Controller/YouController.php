@@ -84,7 +84,12 @@ EOT;
             break;
 
           case PUSHTIME:
-            $messageData = $this->Line->setDatetimepicker('PUSH時間変更',POSTBACK_SELECT_PUSH_TIME, SELECT_TIME,'23:00','00:00','09:00');
+
+            $template = $this->Line->setButton('PUSH時間変更','PUSH通知時間を変更します',[ACTION_DATE_TIME]);
+            $messageData = $this->Line->setTemplate($template, "通知時間変更できません");
+            break;
+
+            #            $messageData = $this->Line->setDatetimepicker('PUSH時間変更',POSTBACK_SELECT_PUSH_TIME, SELECT_TIME,'23:00','00:00','09:00');
             break;
 
           default:

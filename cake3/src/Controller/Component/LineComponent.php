@@ -275,4 +275,44 @@ class LineComponent extends Component
     return $message;
   }
 
+  /**
+   * @param null $title
+   * @param $text
+   * @param array $actions
+   * @param string $defaultAction
+   * @param string $thumbnailImageUrl
+   * @param string $imageAspectRatio
+   * @param string $imageSize
+   * @param string $imageBackgroundColor
+   * @return array
+   */
+  public function setButton($title=null, $text, $actions=[ACTION_POST_BACK],
+                            $defaultAction='',
+                            $thumbnailImageUrl='',
+                            $imageAspectRatio='',
+                            $imageSize='',
+                            $imageBackgroundColor=''){
+    $button = [
+      "type" => "buttons",
+      "text" => $text,
+      "actions" => $actions,
+    ];
+
+    // タイトル
+    if(!empty($title)) $button['title'] = $title;
+
+    // 画像URL
+    if(!empty($thumbnailImageUrl)) $button['thumbnailImageUrl'] = $thumbnailImageUrl;
+    // 画像のアスペクト比
+    if(!empty($imageAspectRatio)) $button['imageAspectRatio'] = $imageAspectRatio;
+    // 画像の表示形式
+    if(!empty($imageSize)) $button['imageSize'] = $imageSize;
+    // 画像の背景色
+    if(!empty($imageBackgroundColor)) $button['imageBackgroundColor'] = $imageBackgroundColor;
+
+    //画像、タイトル、テキストの領域全体に対して設定できる、タップされたときのアクション
+    if(!empty($defaultAction)) $button['defaultAction'] = $defaultAction;
+
+    return $button;
+  }
 }
