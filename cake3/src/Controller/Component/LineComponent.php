@@ -172,7 +172,7 @@ class LineComponent extends Component
     if(empty($min)) $min = self::getMinTimePicker($mode);
     if(empty($initial)) $initial = self::getInitial($mode);
 
-    $message = [
+    $message[] = [
       "type" => "datetimepicker",
       "label" => $label,
       "data" => $data,
@@ -266,7 +266,7 @@ class LineComponent extends Component
    * @return array
    */
   public function setTemplate($template, $text){
-    $message = [
+    $message[] = [
       "type"     => "template",
       "altText"  => $text,
       "template" => $template,

@@ -68,8 +68,8 @@ EOT;
 
           case PUSH:
             // action を2つ定義
-            $actions[] = $this->Line->confirmAction('通知設定する', '通知設定する');
-            $actions[] = $this->Line->confirmAction('通知設定しない', '通知設定しない');
+            $actions[] = $this->Line->confirmAction('設定する', '通知設定する');
+            $actions[] = $this->Line->confirmAction('設定しない', '通知設定しない');
 
             $template = $this->Line->setConfirm('PUSH設定変更', $actions);
             $messageData = $this->Line->setTemplate($template, "通知設定変更できません");
