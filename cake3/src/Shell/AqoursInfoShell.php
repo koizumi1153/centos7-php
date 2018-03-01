@@ -32,7 +32,7 @@ class AqoursInfoShell extends Shell
     // 日付取得
     $day = date('Y年m月d日');
 #    $day = '2018年01月26日'; //test用
-    $data = $this->Aqours->getiInformationDate($day);
+    $data = $this->Aqours->getInformationDate($day);
     if(!empty($data)) {
 
       $messageData = $this->You->setPushMessage($data);

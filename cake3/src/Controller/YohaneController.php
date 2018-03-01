@@ -18,7 +18,7 @@ class YohaneController extends AppController
     protected $DEVELOP_USER_ID = 'U25b5b3882f340670c21f6e3e74551b61';
 
    public function index()
-    {
+   {
       $this->autoRender = false;
 
       $messageData = array();

@@ -8,18 +8,21 @@ class AqoursComponent extends Component
 {
     protected $AQOURS_INFORMATION = 'AqoursInformation';
     protected $AQOURS_BLOG = 'AqoursBlog';
+    protected $AQOURS_BIRTHDAY = 'AqoursBirthday';
 
-    public function initialize(array $config) {
+
+  public function initialize(array $config) {
       $this->Information = TableRegistry::get($this->AQOURS_INFORMATION);
       $this->Blog = TableRegistry::get($this->AQOURS_BLOG);
-    }
+      $this->Birthday = TableRegistry::get($this->AQOURS_BIRTHDAY);
+  }
 
   /**
    * 特定日時のデータを取得
    * @param $date
    * @return mixed
    */
-    public function getiInformationDate($date){
+    public function getInformationDate($date){
       $query=$this->Information->find()
         ->where(['date' => $date])
         ->where(['deleted IS NULL']);
@@ -422,4 +425,15 @@ class AqoursComponent extends Component
             ->execute();
     }
 
+  /**
+   * 特定日時のデータを取得
+   * @param $date
+   * @return mixed
+   */
+  public function getBirthday($date){
+    $query=$this->Birthday->find()
+      ->where(['birthday' => $date])
+      ->where(['deleted IS NULL']);
+    return $query->hydrate(false)->toArray();
+  }
 }
