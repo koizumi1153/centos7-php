@@ -5,7 +5,7 @@ use Cake\Console\Shell;
 use Cake\Controller\ComponentRegistry;
 use Abraham\TwitterOAuth\TwitterOAuth; //twitter
 
-class AqoursBlogShell extends Shell
+class AqoursBirthdayTwitterShell extends Shell
 {
   // API
   // コンシューマキー
