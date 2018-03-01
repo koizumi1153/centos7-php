@@ -8,7 +8,7 @@ use App\Controller\Component\LineComponent;
 use App\Controller\Component\YouComponent;
 use Abraham\TwitterOAuth\TwitterOAuth; //twitter
 
-class AqoursBirthdayTwitterShell extends Shell
+class AqoursBirthdayShell extends Shell
 {
   // API
   // コンシューマキー
