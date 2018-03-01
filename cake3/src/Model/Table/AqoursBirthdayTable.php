@@ -64,7 +64,7 @@ class AqoursBirthdayTable extends Table
 
         $validator
             ->requirePresence('day', 'create')
-            ->notEmpty('dat');
+            ->notEmpty('day');
 
         $validator
             ->dateTime('deleted')

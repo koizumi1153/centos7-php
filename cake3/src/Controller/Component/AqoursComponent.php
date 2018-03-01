@@ -432,7 +432,7 @@ class AqoursComponent extends Component
    */
   public function getBirthday($date){
     $query=$this->Birthday->find()
-      ->where(['birthday' => $date])
+      ->where(['day' => $date])
       ->where(['deleted IS NULL']);
     return $query->hydrate(false)->toArray();
   }
