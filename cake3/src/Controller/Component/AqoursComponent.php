@@ -9,12 +9,14 @@ class AqoursComponent extends Component
     protected $AQOURS_INFORMATION = 'AqoursInformation';
     protected $AQOURS_BLOG = 'AqoursBlog';
     protected $AQOURS_BIRTHDAY = 'AqoursBirthday';
+    protected $AQOURS_NEWS = 'AqoursNews';
 
 
   public function initialize(array $config) {
       $this->Information = TableRegistry::get($this->AQOURS_INFORMATION);
       $this->Blog = TableRegistry::get($this->AQOURS_BLOG);
       $this->Birthday = TableRegistry::get($this->AQOURS_BIRTHDAY);
+      $this->News = TableRegistry::get($this->AQOURS_NEWS);
   }
 
   /**
@@ -435,5 +437,74 @@ class AqoursComponent extends Component
       ->where(['day' => $date])
       ->where(['deleted IS NULL']);
     return $query->hydrate(false)->toArray();
+  }
+
+  /**
+   * データの存在チェック
+   * @return bool
+   */
+  public function checkNewsInit(){
+    $flg = true;
+    $query=$this->News->find();
+    $news = $query->hydrate(false)->toArray();
+
+    if(empty($news)) $flg = false;
+    return $flg;
+  }
+
+  /**
+   * 特定のデータを取得
+   * @param $ids
+   * @return mixed
+   */
+  public function getNewsFromIds($ids){
+    $query=$this->News->find()
+      ->where(['id IN' => $ids])
+      ->where(['deleted IS NULL']);
+    return $query->hydrate(false)->toArray();
+  }
+
+  /**
+   * 特定のカテゴリデータを取得
+   * limit制限
+   *
+   * @param $category
+   * @param $offset
+   * @param $limit
+   * @return mixed
+   */
+  public function getNewsFromCategory($category, $offset=0, $limit=10){
+    $query=$this->News->find()
+      ->where(['category' => $category])
+      ->where(['deleted IS NULL'])
+      ->limit($limit)
+      ->offset($offset)
+      ->order(['id' => 'DESC']);
+    return $query->hydrate(false)->toArray();
+  }
+
+  /**
+   * bulkinsert
+   *
+   * @param $contents
+   */
+  public function setNews($contents){
+    $query = $this->News->query();
+    $query->insert([
+      'id',
+      'category',
+      'title',
+      'html_body',
+      'body',
+      'publish_date',
+      'created'
+    ]);
+    if(!empty($contents)){
+      foreach($contents as $news){
+        $news['created'] = date('Y-m-d H:i:s');
+        $query->values($news);
+      }
+      $query->execute();
+    }
   }
 }
