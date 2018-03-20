@@ -38,7 +38,7 @@ class AqoursNewsShell extends Shell
       }
 
       $html = file_get_contents(SCRAPING_URL_SUNSHINE_BASE . $url);
-      $dom = phpQuery::newDocument($html);
+      $dom = \phpQuery::newDocument($html);
 
       if(!empty($dom["#contents .infobox"])) {
         // 1ページ5データ
@@ -88,7 +88,7 @@ class AqoursNewsShell extends Shell
           $offsetUrl = "?offset=".$offset;
 
           $html = file_get_contents(SCRAPING_URL_SUNSHINE_BASE . $url . $offsetUrl);
-          $dom = phpQuery::newDocument($html);
+          $dom = \phpQuery::newDocument($html);
 
           if (!empty($dom["#contents .infobox"])) {
             // 1ページ5データ
