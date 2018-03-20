@@ -28,6 +28,7 @@ class AqoursNewsShell extends Shell
 
     // 通常処理
     $contents = array();
+    $cnt=0;
     foreach($list as $category => $url) {
 
       $categoryNewsIds = array();
@@ -44,15 +45,18 @@ class AqoursNewsShell extends Shell
         // 1ページ5データ
         for ($i = 0; $i < 5; $i++) {
           $id = ($dom["#contents"]->find(".infobox:eq($i)")->attr("id"));
+          // 不要なデータは入れない
+          if(empty($id)) break;
 
           // 含まれていないidだけ配列に入れる
           if(!in_array($id, $categoryNewsIds)) {
-            $contents[$i]['category'] = $category;
-            $contents[$i]['id'] = $id;
-            $contents[$i]['title'] = ($dom["#contents"]->find(".infobox")->find(".titlebase")->find(".title:eq($i)")->text());
-            $contents[$i]['publish_date'] = ($dom["#contents"]->find(".infobox")->find(".date:eq($i)")->text());
-            $contents[$i]['html_body'] = htmlspecialchars($dom["#contents"]->find(".infobox:eq($i)")->find("p")->html());
-            $contents[$i]['body'] = htmlspecialchars($dom["#contents"]->find(".infobox:eq($i)")->find("p")->text());
+            $contents[$cnt]['category'] = $category;
+            $contents[$cnt]['id'] = $id;
+            $contents[$cnt]['title'] = ($dom["#contents"]->find(".infobox")->find(".titlebase")->find(".title:eq($i)")->text());
+            $contents[$cnt]['publish_date'] = ($dom["#contents"]->find(".infobox")->find(".date:eq($i)")->text());
+            $contents[$cnt]['html_body'] = htmlspecialchars(trim($dom["#contents"]->find(".infobox:eq($i)")->find("p")->html()));
+            $contents[$cnt]['body'] = htmlspecialchars(trim($dom["#contents"]->find(".infobox:eq($i)")->find("p")->text()));
+            $cnt++;
           }
         }
       }
@@ -79,6 +83,7 @@ class AqoursNewsShell extends Shell
         // データがあればinsertして初期化
         if(!empty($contents)) $this->Aqours->setNews($contents);
         $contents = array();
+        $cnt = 0;
         // サイトへの負荷軽減の為 1秒待つ
         sleep(1);
 
@@ -93,12 +98,19 @@ class AqoursNewsShell extends Shell
           if (!empty($dom["#contents .infobox"])) {
             // 1ページ5データ
             for ($i = 0; $i < 5; $i++) {
-              $contents[$i]['category'] = $category;
-              $contents[$i]['id'] = ($dom["#contents"]->find(".infobox:eq($i)")->attr("id"));
-              $contents[$i]['title'] = ($dom["#contents"]->find(".infobox")->find(".titlebase")->find(".title:eq($i)")->text());
-              $contents[$i]['publish_date'] = ($dom["#contents"]->find(".infobox")->find(".date:eq($i)")->text());
-              $contents[$i]['html_body'] = htmlspecialchars($dom["#contents"]->find(".infobox:eq($i)")->find("p")->html());
-              $contents[$i]['body'] = htmlspecialchars($dom["#contents"]->find(".infobox:eq($i)")->find("p")->text());
+              // 不要なデータは入れない
+              $id = ($dom["#contents"]->find(".infobox:eq($i)")->attr("id"));
+              $title = ($dom["#contents"]->find(".infobox")->find(".titlebase")->find(".title:eq($i)")->text());
+
+              if(!empty($id) && !empty($title)) {
+                $contents[$cnt]['category'] = $category;
+                $contents[$cnt]['id'] = ($dom["#contents"]->find(".infobox:eq($i)")->attr("id"));
+                $contents[$cnt]['title'] = ($dom["#contents"]->find(".infobox")->find(".titlebase")->find(".title:eq($i)")->text());
+                $contents[$cnt]['publish_date'] = ($dom["#contents"]->find(".infobox")->find(".date:eq($i)")->text());
+                $contents[$cnt]['html_body'] = htmlspecialchars(trim($dom["#contents"]->find(".infobox:eq($i)")->find("p")->html()));
+                $contents[$cnt]['body'] = htmlspecialchars(trim($dom["#contents"]->find(".infobox:eq($i)")->find("p")->text()));
+                $cnt++;
+              }
             }
             // 0.5秒待つ
             usleep(500000);
