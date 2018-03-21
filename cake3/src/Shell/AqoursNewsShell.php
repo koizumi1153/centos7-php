@@ -11,6 +11,8 @@ require_once('/var/www/cake/cake3/vendor/phpQuery-onefile.php');
 
 class AqoursNewsShell extends Shell
 {
+  // アクセストークン
+  protected $ACCESS_TOKEN = 'Fi3v81mkVQooM1wF9l2P4+aSWaYJFumNi4Vr3DwwMU1wSETxbTPn9HPDc64WCHujPM1XqLsPyN0oZuaIsJ6oqEYWsOl9U3gZXbbgJss8tfqPi0B/afR0kIt1pTmvM+kYCvAZEwqz5Cg7g5ecZ0hCBAdB04t89/1O/w1cDnyilFU=';
 
   public function initialize() {
     // component
@@ -63,7 +65,48 @@ class AqoursNewsShell extends Shell
     }
 
     // blukinsert処理
-    if(!empty($contents)) $this->Aqours->setNews($contents);
+    if(!empty($contents)){
+      $categoryName = SCRAPING_CATEGORY_NAME;
+      $this->Aqours->setNews($contents);
+
+      $categorys = array();
+      // PUSH
+      foreach($contents as $data){
+        $categorys[$data['category']][] = $data['title'];
+      }
+
+      $messageData = array();
+      foreach($categorys as $category => $news){
+        $text = "[".$categoryName[$category]."]のニュースが追加されました。";
+        foreach($news as $title){
+          $text .= "\n".$title;
+        }
+
+        $messageData[] = $this->Line->setTextMessage($text, $messageData);
+      }
+
+      if(!empty($messageData)) {
+        // ユーザー取得
+        $userCount = $this->You->getPushUsersCount();
+        if ($userCount > 0) {
+          $allPage = ceil($userCount / LINE_MULTI_USER);
+          for ($page = 1; $page <= $allPage; $page++) {
+            $user = $this->You->getPushUsers($page);
+            $userIds = array_column($user, 'user_id');
+
+            // PUSH
+            if (count($messageData) > LINE_MESSAGE_COUNT) {
+              $messages = array_chunk($messageData, LINE_MESSAGE_COUNT);
+              foreach ($messages as $message) {
+                $this->Line->sendPush(LINE_API_MULTI_URL, $this->ACCESS_TOKEN, $userIds, $message);
+              }
+            } else {
+              $this->Line->sendPush(LINE_API_MULTI_URL, $this->ACCESS_TOKEN, $userIds, $messageData);
+            }
+          }
+        }
+      }
+    }
   }
 
   /**
