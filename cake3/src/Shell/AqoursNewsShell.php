@@ -77,11 +77,13 @@ class AqoursNewsShell extends Shell
 
       $messageData = array();
       foreach($categorys as $category => $news){
+        $url = SCRAPING_URL_SUNSHINE_BASE .$list[$category];
         $text = "[".$categoryName[$category]."]のニュースが追加されました。";
         foreach($news as $title){
-          $text .= "\n".$title;
+          $text .= "\n\n".$title;
         }
 
+        $text .= "\n\n".$url;
         $messageData = $this->Line->setTextMessage($text, $messageData);
       }
 
