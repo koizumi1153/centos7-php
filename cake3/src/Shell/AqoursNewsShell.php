@@ -82,7 +82,7 @@ class AqoursNewsShell extends Shell
           $text .= "\n".$title;
         }
 
-        $messageData[] = $this->Line->setTextMessage($text, $messageData);
+        $messageData = $this->Line->setTextMessage($text, $messageData);
       }
 
       if(!empty($messageData)) {
