@@ -567,4 +567,22 @@ class AqoursComponent extends Component
 
     return false;
   }
+
+  /**
+   * @param $date
+   * @param $title
+   * @param array $clubNews
+   * @return bool
+   */
+  public function checkNews($date, $title, $clubNews= array()){
+    $flg=false;
+    foreach($clubNews as $data){
+     if($data['publish_date'] == $date && $data['title'] == $title){
+       $flg=true;
+       break;
+     }
+    }
+
+    return $flg;
+  }
 }

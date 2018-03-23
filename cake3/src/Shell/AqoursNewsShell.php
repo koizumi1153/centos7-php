@@ -156,15 +156,7 @@ class AqoursNewsShell extends Shell
 
     $clubNews = array();
     // 最新10件に含まれていなければOKとする
-    $clubNewsData = $this->Aqours->getClubNews2017(0, 10);
-    if(!empty($clubNewsData)) {
-      foreach($clubNewsData as $news){
-        $date = $news['publish_date'];
-        $title = $news[' title'];
-
-        $clubNews[$date] = $title;
-      }
-    }
+    $clubNews = $this->Aqours->getClubNews2017(0, 10);
 
     $url = "https://lovelive-aqoursclub.jp/mob/index.php";
     $html = file_get_contents($url);
@@ -174,7 +166,8 @@ class AqoursNewsShell extends Shell
     for ($i = 0; $i < 5; $i++) {
       $date  = ($dom["#infoSelectorCnt"]->find(".infoSelectorItemLi1:eq($i)")->text());
       $title = ($dom["#infoSelectorCnt"]->find(".infoSelectorItemLi2:eq($i)")->text());
-      if(isset($clubNews[$date]) && $title == $clubNews[$date]){
+      if($this->Aqours->checkNews($date, $title, $clubNews)){
+        //存在していたらtrue
         continue;
       }else{
         $contents[$cnt]['publish_date']  = $date;
