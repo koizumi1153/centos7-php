@@ -160,7 +160,17 @@ class AqoursComponent extends Component
         $jan = null;
         if(isset($list['jan'])) $jan = $list['jan'];
         if (!empty($jan)) {
-          if(in_array($jan, $jans)) continue;
+          if(in_array($jan, $jans)){
+
+            // 画像更新があればかける 先の日付だけ
+            if(isset($list['largeImageUrl']) && $this->dateCheck($list['salesDate'])){
+              $imgKind = $this->checkImg($list['largeImageUrl']);
+              if($imgKind !== false){
+                $this->setImg($list['largeImageUrl'], $jan, $imgKind);
+              }
+            }
+            continue;
+          }
         }elseif(!empty($title)){
           if(in_array($title, $titles)) continue;
         }
@@ -506,5 +516,18 @@ class AqoursComponent extends Component
       }
       $query->execute();
     }
+  }
+
+  /**
+   * @param $saleDate
+   */
+  public function dateCheck($saleDate){
+    $format = 'Y年m月d日';
+    $date = DateTime::createFromFormat($format, $saleDate);
+    $now = date('Y-m-d');
+    $saleDateFormat = $date->format('Y-m-d');
+    if($date < $saleDate) return true;
+
+    return false;
   }
 }
