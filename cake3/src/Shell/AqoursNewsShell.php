@@ -153,7 +153,7 @@ class AqoursNewsShell extends Shell
   }
 
   public function club(){
-
+    $contents = array();
     $clubNews = array();
     // 最新10件に含まれていなければOKとする
     $clubNews = $this->Aqours->getClubNews2017(0, 10);
