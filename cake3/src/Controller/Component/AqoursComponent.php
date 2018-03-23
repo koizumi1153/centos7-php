@@ -522,11 +522,11 @@ class AqoursComponent extends Component
    * @param $saleDate
    */
   public function dateCheck($saleDate){
-    $format = 'Y年m月d日';
-    $date = DateTime::createFromFormat($format, $saleDate);
     $now = date('Y-m-d');
+    $format = 'Y年m月d日';
+    $date = \DateTime::createFromFormat($format, $saleDate);
     $saleDateFormat = $date->format('Y-m-d');
-    if($date < $saleDate) return true;
+    if($now < $saleDateFormat) return true;
 
     return false;
   }
