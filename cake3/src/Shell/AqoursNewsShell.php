@@ -159,7 +159,7 @@ class AqoursNewsShell extends Shell
     $clubNewsData = $this->Aqours->getClubNews2017(0, 10);
     if(!empty($clubNewsData)) {
       foreach($clubNewsData as $news){
-        $date = $news['date'];
+        $date = $news['publish_date'];
         $title = $news[' title'];
 
         $clubNews[$date] = $title;
@@ -177,7 +177,7 @@ class AqoursNewsShell extends Shell
       if(isset($clubNews[$date]) && $title == $clubNews[$date]){
         continue;
       }else{
-        $contents[$cnt]['date']  = $date;
+        $contents[$cnt]['publish_date']  = $date;
         $contents[$cnt]['title'] = $title;
         $cnt++;
       }

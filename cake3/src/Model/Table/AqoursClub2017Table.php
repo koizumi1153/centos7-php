@@ -51,8 +51,8 @@ class AqoursClub2017Table extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->requirePresence('date', 'create')
-            ->allowEmpty('date');
+            ->requirePresence('publish_date', 'create')
+            ->allowEmpty('publish_date');
 
         $validator
             ->requirePresence('title', 'create')

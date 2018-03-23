@@ -531,7 +531,7 @@ class AqoursComponent extends Component
     $query = $this->News->query();
     $query->insert([
       'id',
-      'date',
+      'publish_date',
       'title',
       'created'
     ]);
