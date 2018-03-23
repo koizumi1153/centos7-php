@@ -173,4 +173,9 @@ EOT;
 
   }
 
+  public function test($saleDate='2018-03-20'){
+    echo $this->Aqours->dateCheck($saleDate);
+    exit;
+  }
+
 }
