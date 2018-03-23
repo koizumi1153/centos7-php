@@ -19,7 +19,7 @@ use Cake\Validation\Validator;
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class AqoursNewsTable extends Table
+class AqoursClub2017Table extends Table
 {
 
     /**
