@@ -162,7 +162,17 @@ class AqoursComponent extends Component
         $jan = null;
         if(isset($list['jan'])) $jan = $list['jan'];
         if (!empty($jan)) {
-          if(in_array($jan, $jans)) continue;
+          if(in_array($jan, $jans)){
+
+            // 画像更新があればかける 先の日付だけ
+            if(isset($list['largeImageUrl']) && $this->dateCheck($list['salesDate'])){
+              $imgKind = $this->checkImg($list['largeImageUrl']);
+              if($imgKind !== false){
+                $this->setImg($list['largeImageUrl'], $jan, $imgKind);
+              }
+            }
+            continue;
+          }
         }elseif(!empty($title)){
           if(in_array($title, $titles)) continue;
         }
@@ -527,7 +537,8 @@ class AqoursComponent extends Component
   /**
    * @param $contents
    */
-  public function setClubNews2017($contents){
+  public function setClubNews2017($contents)
+  {
     $query = $this->Club2017->query();
     $query->insert([
       'id',
@@ -535,12 +546,25 @@ class AqoursComponent extends Component
       'title',
       'created'
     ]);
-    if(!empty($contents)){
-      foreach($contents as $news){
+    if (!empty($contents)) {
+      foreach ($contents as $news) {
         $news['created'] = date('Y-m-d H:i:s');
         $query->values($news);
       }
       $query->execute();
     }
+  }
+
+  /*
+   * @param $saleDate
+   */
+  public function dateCheck($saleDate){
+    $now = date('Y-m-d');
+    $format = 'Y年m月d日';
+    $date = \DateTime::createFromFormat($format, $saleDate);
+    $saleDateFormat = $date->format('Y-m-d');
+    if($now < $saleDateFormat) return true;
+
+    return false;
   }
 }
