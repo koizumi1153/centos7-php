@@ -87,27 +87,7 @@ class AqoursNewsShell extends Shell
         $messageData = $this->Line->setTextMessage($text, $messageData);
       }
 
-      if(!empty($messageData)) {
-        // ユーザー取得
-        $userCount = $this->You->getPushUsersCount();
-        if ($userCount > 0) {
-          $allPage = ceil($userCount / LINE_MULTI_USER);
-          for ($page = 1; $page <= $allPage; $page++) {
-            $user = $this->You->getPushUsers($page);
-            $userIds = array_column($user, 'user_id');
-
-            // PUSH
-            if (count($messageData) > LINE_MESSAGE_COUNT) {
-              $messages = array_chunk($messageData, LINE_MESSAGE_COUNT);
-              foreach ($messages as $message) {
-                $this->Line->sendPush(LINE_API_MULTI_URL, $this->ACCESS_TOKEN, $userIds, $message);
-              }
-            } else {
-              $this->Line->sendPush(LINE_API_MULTI_URL, $this->ACCESS_TOKEN, $userIds, $messageData);
-            }
-          }
-        }
-      }
+      $this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
     }
   }
 
@@ -169,6 +149,55 @@ class AqoursNewsShell extends Shell
 
       // 最終カテゴリ用
       if(!empty($contents)) $this->Aqours->setNews($contents);
+    }
+  }
+
+  public function club(){
+
+    $clubNews = array();
+    // 最新10件に含まれていなければOKとする
+    $clubNewsData = $this->Aqours->getClubNews(0, 100);
+    if(!empty($clubNewsData)) {
+      foreach($clubNewsData as $news){
+        $date = $news['date'];
+        $title = $news[' title'];
+
+        $clubNews[$date] = $title;
+      }
+    }
+
+    $url = "https://lovelive-aqoursclub.jp/mob/index.php";
+    $html = file_get_contents($url);
+    $dom = \phpQuery::newDocument($html);
+    $cnt = 0;
+    // 1ページ5データ
+    for ($i = 0; $i < 5; $i++) {
+      $date  = ($dom["#infoSelectorCnt"]->find(".infoSelectorItemLi1:eq($i)")->text());
+      $title = ($dom["#infoSelectorCnt"]->find(".infoSelectorItemLi1:eq($i)")->text());
+      if(isset($clubNews[$date]) && $title == $clubNews[$date]){
+        continue;
+      }else{
+        $contents[$cnt]['date']  = $date;
+        $contents[$cnt]['title'] = $title;
+        $cnt++;
+      }
+    }
+
+    if(!empty($contents)) {
+      //bulkinsert
+      $this->Aqours->setClubNews2017($contents);
+
+      //push
+      $text = '';
+      foreach($contents as $cnt => $data) {
+        if($cnt != 0) $text .= "\n\n";
+        $text .= "{$data['title']}";
+      }
+
+      $messageData = $this->Line->setTextMessage($text);
+
+      $this->Line->sendPush(LINE_API_PUSH_URL, $this->ACCESS_TOKEN, $this->ADMIN_USER, $messageData);
+      #$this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
     }
   }
 

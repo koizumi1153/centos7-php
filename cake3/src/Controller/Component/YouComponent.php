@@ -369,4 +369,31 @@ class YouComponent extends Component
     return $messageData;
   }
 
+  /**
+   * @param $messageData
+   * @param $access_token
+   */
+  public function sendMessage($messageData, $access_token){
+    if(!empty($messageData)) {
+      // ユーザー取得
+      $userCount = $this->getPushUsersCount();
+      if ($userCount > 0) {
+        $allPage = ceil($userCount / LINE_MULTI_USER);
+        for ($page = 1; $page <= $allPage; $page++) {
+          $user = $this->getPushUsers($page);
+          $userIds = array_column($user, 'user_id');
+
+          // PUSH
+          if (count($messageData) > LINE_MESSAGE_COUNT) {
+            $messages = array_chunk($messageData, LINE_MESSAGE_COUNT);
+            foreach ($messages as $message) {
+              $this->Line->sendPush(LINE_API_MULTI_URL, $access_token, $userIds, $message);
+            }
+          } else {
+            $this->Line->sendPush(LINE_API_MULTI_URL, $access_token, $userIds, $messageData);
+          }
+        }
+      }
+    }
+  }
 }
