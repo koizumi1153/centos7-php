@@ -156,7 +156,7 @@ class AqoursNewsShell extends Shell
 
     $clubNews = array();
     // 最新10件に含まれていなければOKとする
-    $clubNewsData = $this->Aqours->getClubNews(0, 100);
+    $clubNewsData = $this->Aqours->getClubNews2017(0, 10);
     if(!empty($clubNewsData)) {
       foreach($clubNewsData as $news){
         $date = $news['date'];

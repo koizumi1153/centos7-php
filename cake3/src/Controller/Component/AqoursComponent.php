@@ -10,6 +10,7 @@ class AqoursComponent extends Component
     protected $AQOURS_BLOG = 'AqoursBlog';
     protected $AQOURS_BIRTHDAY = 'AqoursBirthday';
     protected $AQOURS_NEWS = 'AqoursNews';
+    protected $AQOURS_CLUB2017 = 'AqoursClub2017';
 
 
   public function initialize(array $config) {
@@ -17,6 +18,7 @@ class AqoursComponent extends Component
       $this->Blog = TableRegistry::get($this->AQOURS_BLOG);
       $this->Birthday = TableRegistry::get($this->AQOURS_BIRTHDAY);
       $this->News = TableRegistry::get($this->AQOURS_NEWS);
+      $this->Club2017 = TableRegistry::get($this->AQOURS_CLUB2017);
   }
 
   /**
@@ -497,6 +499,40 @@ class AqoursComponent extends Component
       'html_body',
       'body',
       'publish_date',
+      'created'
+    ]);
+    if(!empty($contents)){
+      foreach($contents as $news){
+        $news['created'] = date('Y-m-d H:i:s');
+        $query->values($news);
+      }
+      $query->execute();
+    }
+  }
+
+  /**
+   * @param int $offset
+   * @param int $limit
+   * @return mixed
+   */
+  public function getClubNews2017($offset=0, $limit=10){
+    $query=$this->Club2017->find()
+      ->where(['deleted IS NULL'])
+      ->limit($limit)
+      ->offset($offset)
+      ->order(['id' => 'DESC']);
+    return $query->hydrate(false)->toArray();
+  }
+
+  /**
+   * @param $contents
+   */
+  public function setClubNews2017($contents){
+    $query = $this->News->query();
+    $query->insert([
+      'id',
+      'date',
+      'title',
       'created'
     ]);
     if(!empty($contents)){
