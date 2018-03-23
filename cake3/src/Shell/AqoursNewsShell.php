@@ -196,8 +196,8 @@ class AqoursNewsShell extends Shell
 
       $messageData = $this->Line->setTextMessage($text);
 
-      $this->Line->sendPush(LINE_API_PUSH_URL, $this->ACCESS_TOKEN, $this->ADMIN_USER, $messageData);
-      #$this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
+      #$this->Line->sendPush(LINE_API_PUSH_URL, $this->ACCESS_TOKEN, $this->ADMIN_USER, $messageData);
+      $this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
     }
   }
 

@@ -528,7 +528,7 @@ class AqoursComponent extends Component
    * @param $contents
    */
   public function setClubNews2017($contents){
-    $query = $this->News->query();
+    $query = $this->Club2017->query();
     $query->insert([
       'id',
       'publish_date',
