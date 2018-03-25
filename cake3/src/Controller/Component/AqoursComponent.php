@@ -414,7 +414,8 @@ class AqoursComponent extends Component
     public function getInformationWeek($days){
       $query=$this->Information->find()
         ->where(['date IN' => $days])
-        ->where(['deleted IS NULL']);
+        ->where(['deleted IS NULL'])
+        ->order(['date' => 'ASC']);
       return $query->hydrate(false)->toArray();
     }
 
