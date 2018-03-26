@@ -495,6 +495,25 @@ class AqoursComponent extends Component
   }
 
   /**
+   * 特定のカテゴリデータを取得
+   * limit制限
+   *
+   * @param $category
+   * @param int $offset
+   * @param int $limit
+   * @return mixed
+   */
+  public function getNewsFromCategory($category, $offset=0, $limit=10){
+        $query=$this->News->find()
+          ->where(['category' => $category])
+          ->where(['deleted IS NULL'])
+          ->limit($limit)
+          ->offset($offset)
+          ->order(['id' => 'DESC']);
+    return $query->hydrate(false)->toArray();
+  }
+
+  /**
    * bulkinsert
    *
    * @param $contents
