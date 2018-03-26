@@ -34,9 +34,10 @@ class YouController extends AppController
     if($type == 'follow'){
       $userName = $this->Line->getProfileName($this->ACCESS_TOKEN, $userId);
 
-      if($userName) {
-        $this->You->setUsers($userId, $userName);
+      if($userName === false) {
+        $userName = '';
       }
+      $this->You->setUsers($userId, $userName);
 
       $text = <<<EOT
 YOUだよ、よろしくね。
