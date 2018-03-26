@@ -495,6 +495,19 @@ class AqoursComponent extends Component
   }
 
   /**
+   * ニュースデータを取得
+   * limit制限
+   *
+   * @return mixed
+   */
+  public function getNewsAll(){
+    $query=$this->News->find()
+      ->where(['deleted IS NULL'])
+      ->order(['id' => 'ASC']);
+    return $query->hydrate(false)->toArray();
+  }
+
+  /**
    * 特定のカテゴリデータを取得
    * limit制限
    *
@@ -602,5 +615,23 @@ class AqoursComponent extends Component
     }
 
     return $flg;
+  }
+
+  /**
+   * @param $data
+   */
+  public function updateNews($data){
+    $now = date('Y-m-d H:i:s');
+    $query=$this->News->query();
+
+    $query->update()
+      ->set(['updated' => $now])
+      ->set(['title' => $data['title']])
+      ->set(['html_body' => $data['html_body']])
+      ->set(['body' => $data['body']])
+      ->set(['publish_date' => $data['publish_date']])
+      ->where(['id' => $data['id']])
+      ->where(['deleted IS NULL'])
+      ->execute();
   }
 }

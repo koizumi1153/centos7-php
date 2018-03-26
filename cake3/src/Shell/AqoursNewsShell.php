@@ -29,23 +29,21 @@ class AqoursNewsShell extends Shell
     $list = SCRAPING_URL_SUNSHINE_LIST;
 
     $newsIds = array();
-    // 最新300件に含まれていなければOKとする
-    $newsData = $this->Aqours->getNewsLimit( 0, 300);
+    $newsBefor = array();
+    // 全件取得
+    $newsData = $this->Aqours->getNewsAll();
     if(!empty($newsData)) {
       $newsIds = array_column($newsData, 'id');
+      foreach($newsData as $data){
+        $newsBefor[$data['id']] = $data['publish_date'];
+      }
     }
 
     // 通常処理
     $contents = array();
+    $update = array();
     $cnt=0;
     foreach($list as $category => $url) {
-
-      $categoryNewsIds = array();
-      // 最新100件に含まれていなければOKとする
-      $categoryData = $this->Aqours->getNewsFromCategory($category, 0, 20);
-      if(!empty($categoryData)) {
-        $categoryNewsIds = array_column($categoryData, 'id');
-      }
 
       $html = file_get_contents(SCRAPING_URL_SUNSHINE_BASE . $url);
       $dom = \phpQuery::newDocument($html);
@@ -58,7 +56,7 @@ class AqoursNewsShell extends Shell
           if(empty($id)) break;
 
           // 含まれていないidだけ配列に入れる
-          if(!in_array($id, $newsIds) && !in_array($id, $categoryNewsIds)) {
+          if(!in_array($id, $newsIds)) {
             $contents[$cnt]['category'] = $category;
             $contents[$cnt]['id'] = $id;
             $contents[$cnt]['title'] = ($dom["#contents"]->find(".infobox")->find(".titlebase")->find(".title:eq($i)")->text());
@@ -66,6 +64,19 @@ class AqoursNewsShell extends Shell
             $contents[$cnt]['html_body'] = htmlspecialchars(trim($dom["#contents"]->find(".infobox:eq($i)")->find("p")->html()));
             $contents[$cnt]['body'] = htmlspecialchars(trim($dom["#contents"]->find(".infobox:eq($i)")->find("p")->text()));
             $cnt++;
+          }else{
+            $data = array();
+            $publish_date = ($dom["#contents"]->find(".infobox")->find(".date:eq($i)")->text());
+            if(date('Y-m-d', strtotime($newsBefor[$id])) < $publish_date){
+              //update
+              $data['category'] = $category;
+              $data['id'] = $id;
+              $data['title'] = ($dom["#contents"]->find(".infobox")->find(".titlebase")->find(".title:eq($i)")->text());
+              $data['publish_date'] = ($dom["#contents"]->find(".infobox")->find(".date:eq($i)")->text());
+              $data['html_body'] = htmlspecialchars(trim($dom["#contents"]->find(".infobox:eq($i)")->find("p")->html()));
+              $data['body'] = htmlspecialchars(trim($dom["#contents"]->find(".infobox:eq($i)")->find("p")->text()));
+              $update[] = $data;
+            }
           }
         }
       }
@@ -82,10 +93,38 @@ class AqoursNewsShell extends Shell
         $categorys[$data['category']][] = $data['title'];
       }
 
+      $text="";
       $messageData = array();
       foreach($categorys as $category => $news){
         $url = SCRAPING_URL_SUNSHINE_BASE .$list[$category];
         $text = "[".$categoryName[$category]."]のニュースが追加されました。";
+        foreach($news as $title){
+          $text .= "\n\n".$title;
+        }
+
+        $text .= "\n\n".$url;
+        $messageData = $this->Line->setTextMessage($text, $messageData);
+      }
+
+      $this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
+    }
+
+     sleep(1);
+    //update
+    if(!empty($update)){
+      $categoryName = SCRAPING_CATEGORY_NAME;
+
+      $categorys = array();
+      foreach($update as $data){
+        $this->Aqours->updateNews($data);
+        $categorys[$data['category']][] = $data['title'];
+      }
+
+      $text="";
+      $messageData = array();
+      foreach($categorys as $category => $news){
+        $url = SCRAPING_URL_SUNSHINE_BASE .$list[$category];
+        $text = "[".$categoryName[$category]."]のニュースが更新されました。";
         foreach($news as $title){
           $text .= "\n\n".$title;
         }
