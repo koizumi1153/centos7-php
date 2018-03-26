@@ -28,17 +28,17 @@ class AqoursNewsShell extends Shell
   {
     $list = SCRAPING_URL_SUNSHINE_LIST;
 
+    $newsIds = array();
+    // 最新300件に含まれていなければOKとする
+    $newsData = $this->Aqours->getNewsLimit( 0, 300);
+    if(!empty($newsData)) {
+      $newsIds = array_column($newsData, 'id');
+    }
+
     // 通常処理
     $contents = array();
     $cnt=0;
     foreach($list as $category => $url) {
-
-      $categoryNewsIds = array();
-      // 最新100件に含まれていなければOKとする
-      $categoryData = $this->Aqours->getNewsFromCategory($category, 0, 100);
-      if(!empty($categoryData)) {
-        $categoryNewsIds = array_column($categoryData, 'id');
-      }
 
       $html = file_get_contents(SCRAPING_URL_SUNSHINE_BASE . $url);
       $dom = \phpQuery::newDocument($html);
@@ -51,7 +51,7 @@ class AqoursNewsShell extends Shell
           if(empty($id)) break;
 
           // 含まれていないidだけ配列に入れる
-          if(!in_array($id, $categoryNewsIds)) {
+          if(!in_array($id, $newsIds)) {
             $contents[$cnt]['category'] = $category;
             $contents[$cnt]['id'] = $id;
             $contents[$cnt]['title'] = ($dom["#contents"]->find(".infobox")->find(".titlebase")->find(".title:eq($i)")->text());
