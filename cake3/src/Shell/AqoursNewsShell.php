@@ -67,7 +67,7 @@ class AqoursNewsShell extends Shell
           }else{
             $data = array();
             $publish_date = ($dom["#contents"]->find(".infobox")->find(".date:eq($i)")->text());
-            if(date('Y-m-d', strtotime($newsBefor[$id])) < $publish_date){
+            if(date('Y/m/d', strtotime($newsBefor[$id])) < $publish_date){
               //update
               $data['category'] = $category;
               $data['id'] = $id;
