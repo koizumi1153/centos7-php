@@ -185,7 +185,7 @@ class AqoursShell extends Shell
       $data['price'] = '';
       $data['jan'] = '';
       $data['img'] = '';
-      $data['date'] = date('Y年m月d日', strtotime('next wednesday'));
+      $data['date'] = $date;
       $data['push'] = PUSH_READY;
       $data['created'] = $now;
 
