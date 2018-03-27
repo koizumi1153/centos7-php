@@ -12,6 +12,7 @@ class AqoursComponent extends Component
     protected $AQOURS_NEWS = 'AqoursNews';
     protected $AQOURS_CLUB2017 = 'AqoursClub2017';
 
+    protected $AQOURS_MEDIA = 'AqoursMedia';
 
   public function initialize(array $config) {
       $this->Information = TableRegistry::get($this->AQOURS_INFORMATION);
@@ -19,6 +20,8 @@ class AqoursComponent extends Component
       $this->Birthday = TableRegistry::get($this->AQOURS_BIRTHDAY);
       $this->News = TableRegistry::get($this->AQOURS_NEWS);
       $this->Club2017 = TableRegistry::get($this->AQOURS_CLUB2017);
+
+      $this->Media = TableRegistry::get($this->AQOURS_MEDIA);
   }
 
   /**
@@ -89,6 +92,33 @@ class AqoursComponent extends Component
         foreach($lists as $item){
           if(!isset($item['title'])) continue;
           $data = $this->generateData($dbKind, $item);
+          $query->values($data);
+        }
+
+        $query->execute();
+      }
+    }
+
+  /**
+   * bulkinsert
+   * @param $lists
+   */
+    public function setInfo($lists){
+      $query = $this->Information->query();
+      $query->insert([
+        'kind',
+        'title',
+        'discription',
+        'price',
+        'jan',
+        'img',
+        'date',
+        'push',
+        'created'
+      ]);
+      if(!empty($lists)){
+        foreach($lists as $data){
+          if(!isset($item['title'])) continue;
           $query->values($data);
         }
 
@@ -633,5 +663,55 @@ class AqoursComponent extends Component
       ->where(['id' => $data['id']])
       ->where(['deleted IS NULL'])
       ->execute();
+  }
+
+  /**
+   * タイトルで取得
+   *
+   * @return mixed
+   */
+  public function getMediaFromTitle($title){
+    $query=$this->Media->find()
+      ->where(['title' => $title])
+      ->where(['deleted IS NULL']);
+    return $query->first()->hydrate(false)->toArray();
+  }
+
+  /**
+   * 番号更新
+   *
+   * @param $id
+   * @param $number
+   */
+  public function updateMedia($id, $number){
+    $now = date('Y-m-d H:i:s');
+    $query=$this->Media->query();
+
+    $query->update()
+      ->set(['updated' => $now])
+      ->set(['number' => $number])
+      ->where(['id' => $id])
+      ->where(['deleted IS NULL'])
+      ->execute();
+  }
+
+  /**
+   * 月の何周目かを取得する関数
+   *
+   * @param $date
+   * @return float
+   */
+  public function getWeek($date){
+    $time = strtotime($date);
+    $saturday = 6;
+    $week_day = 7;
+    $w = intval(date('w',$time));
+    $d = intval(date('d',$time));
+    if ($w!=$saturday) {
+      $w = ($saturday - $w) + $d;
+    } else { // 土曜日の場合を修正
+      $w = $d;
+    }
+    return ceil($w/$week_day);
   }
 }

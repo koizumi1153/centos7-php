@@ -186,4 +186,22 @@ return [
     SCRAPING_CATEGORY_SUNSHINE_TOURISM=> '■ 沼津情報',
     SCRAPING_CATEGORY_SUNSHINE_OTHER  => '■ その他',
   ]),
+
+  // radio url
+  define('AQOURS_URA_RADIO_URL', 'http://www.onsen.ag/program/llss/'),
+  define('AQOURS_URA_RADIO_TITLE', 'ラブライブ！サンシャイン!! Aqours浦の星女学院RADIO!!!'),
+
+  define('AIDA_MARUGOTO_RIKAKO', 'https://www.animatetimes.com/radio/details.php?id=marugotorikako'),
+
+  // radio追記用
+  define('AQOURS_URA_RADIO_URLS', [
+    "響 -HiBiKi Radio Station- http://hibiki-radio.jp/description/llss/detail",
+    "インターネットラジオステーション音泉 http://www.onsen.ag/program/llss/",
+     ]),
+
+  // radio情報 url => 番組タイトル
+  define('SCRAPING_RADIO_URL', [
+    AQOURS_URA_RADIO_URL => AQOURS_URA_RADIO_TITLE,
+    AIDA_MARUGOTO_RIKAKO => '逢田梨香子のまるごとりかこ',
+  ]),
 ];//defien
