@@ -118,10 +118,8 @@ class AqoursComponent extends Component
       ]);
       if(!empty($lists)){
         foreach($lists as $data){
-          if(!isset($item['title'])) continue;
           $query->values($data);
         }
-
         $query->execute();
       }
     }
