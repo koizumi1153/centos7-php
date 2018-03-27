@@ -137,9 +137,9 @@ class AqoursShell extends Shell
           $this->Aqours->updateMedia($media['id'], $number);
         }
       }
-
-      $this->Aqours->setInfo($info);
     }
 
+    // 追加する情報があれば追加
+    if(!empty($info)) $this->Aqours->setInfo($info);
   }
 }
