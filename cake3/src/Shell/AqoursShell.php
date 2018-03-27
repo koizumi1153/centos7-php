@@ -142,4 +142,57 @@ class AqoursShell extends Shell
     // 追加する情報があれば追加
     if(!empty($info)) $this->Aqours->setInfo($info);
   }
+
+  /**
+   * ニコ生取得 月1回取得
+   */
+  public function niconico(){
+    $now = date('Y-m-d H:i:s');
+    $data = array();
+    $category = AQOURS_KIND_RADIO;
+
+    $url = AQOURS_NICONICO_URL;
+    $html = file_get_contents($url);
+    $dom = \phpQuery::newDocument($html);
+
+    if(!empty(trim($dom["#channel-main"]->find(".g-live-airtime:eq(0)")->text()))) {
+      $dayText = trim($dom["#channel-main"]->find(".g-live-airtime:eq(0)")->text());
+      $text = str_replace(array("\n", "\r", "\t", "  ", "放送予定"), '', $dayText);
+      $date = substr($text, 0, 5);
+      $hour = substr($text, 5, 2);
+      $text = "放送予定 " . $date . " " . $hour;
+      $year = date('Y');
+      $month = date('m');
+      if ($month == 12) {
+        $year += 1;
+      }
+      $date = $year . "/" . $date;
+      $date = date('Y年m月d日', strtotime($date));
+
+      // title
+      $title = trim($dom["#channel-main"]->find("a:eq(1)")->text());
+
+      $text .= "\n\n";
+      // 説明
+      $text .= trim($dom["#channel-main"]->find(".g-contents:eq(0)")->text());
+      $text .= "\n\n";
+      // url
+      $text .= trim($dom["#channel-main"]->find("a:eq(0)")->attr('href'));
+
+      $data['kind'] = $category;
+      $data['title'] = $title;
+      $data['discription'] = $text;
+      $data['price'] = '';
+      $data['jan'] = '';
+      $data['img'] = '';
+      $data['date'] = date('Y年m月d日', strtotime('next wednesday'));
+      $data['push'] = PUSH_READY;
+      $data['created'] = $now;
+
+      $info[] = $data;
+
+      // 追加する情報があれば追加
+      if (!empty($title)) $this->Aqours->setInfo($info);
+    }
+  }
 }

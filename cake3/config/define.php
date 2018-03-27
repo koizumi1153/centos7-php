@@ -192,6 +192,10 @@ return [
   define('AQOURS_URA_RADIO_TITLE', 'ラブライブ！サンシャイン!! Aqours浦の星女学院RADIO!!!'),
 
   define('AIDA_MARUGOTO_RIKAKO', 'https://www.animatetimes.com/radio/details.php?id=marugotorikako'),
+  define('AIDA_MARUGOTO_TITlE', '逢田梨香子のまるごとりかこ'),
+
+  define('AQOURS_NICONICO_URL', 'http://ch.nicovideo.jp/lovelive-anime-uranohoshi'),
+  define('AQOURS_NICONICO_TITLE', 'ラブライブ!サンシャイン!! Aqours浦の星女学院生放送!!!'),
 
   // radio追記用
   define('AQOURS_URA_RADIO_URLS', [
@@ -202,6 +206,6 @@ return [
   // radio情報 url => 番組タイトル
   define('SCRAPING_RADIO_URL', [
     AQOURS_URA_RADIO_URL => AQOURS_URA_RADIO_TITLE,
-    AIDA_MARUGOTO_RIKAKO => '逢田梨香子のまるごとりかこ',
+    AIDA_MARUGOTO_RIKAKO => AIDA_MARUGOTO_TITlE,
   ]),
 ];//defien
