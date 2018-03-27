@@ -107,7 +107,7 @@ class AqoursShell extends Shell
         $data['created'] = $now;
 
         $info[] = $data;
-#        $this->Aqours->updateMedia($media['id'], $number);
+        $this->Aqours->updateMedia($media['id'], $number);
       }elseif($url == AIDA_MARUGOTO_RIKAKO){
         $nextday = date('Y-m-d', strtotime('next thursday'));
         $week = $this->Aqours->getWeek($nextday);
@@ -134,12 +134,11 @@ class AqoursShell extends Shell
           $data['created'] = $now;
 
           $info[] = $data;
-#          $this->Aqours->updateMedia($media['id'], $number);
+          $this->Aqours->updateMedia($media['id'], $number);
         }
       }
 
-      print_r($info);
-#      $this->Aqours->setInfo($info);
+      $this->Aqours->setInfo($info);
     }
 
   }

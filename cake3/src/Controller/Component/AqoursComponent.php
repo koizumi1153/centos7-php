@@ -674,7 +674,7 @@ class AqoursComponent extends Component
     $query=$this->Media->find()
       ->where(['title' => $title])
       ->where(['deleted IS NULL']);
-    return $query->first()->hydrate(false)->toArray();
+    return $query->first()->toArray();
   }
 
   /**
