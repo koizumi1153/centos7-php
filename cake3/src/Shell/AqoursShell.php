@@ -207,11 +207,12 @@ class AqoursShell extends Shell
     $title = "Aqours LOCKS!";
     $text = "毎月1週目はラブライブ!サンシャイン!!より、我が校のスクールアイドルの講師Aqours先生が登場！\nAqours LOCKS!では\"何かのアイドルになるために頑張っている生徒\”からのメッセージを、いつでも待っているぞ！\n\n22時15分ごろから\n\n逢田梨香子\n高槻かなこ\nhttp://www.tfm.co.jp/lock/aqours/";
 
+    $day = date('Y-m-d',strtotime($day));
     $info = array();
     $category = AQOURS_KIND_RADIO;
-    for($i=0;$i<5;$i++) {
+    for($i=0;$i<4;$i++) {
       $data = array();
-      $date = date('Y年m月d日', strtotime($day . '+{$i} day'));
+      $date = date('Y年m月d日', strtotime($day . "+{$i} day"));
       $data['kind'] = $category;
       $data['title'] = $title;
       $data['discription'] = $text;
