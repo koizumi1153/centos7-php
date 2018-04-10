@@ -138,6 +138,7 @@ class AqoursShell extends Shell
         }
       }elseif($url == MOGU_COMI_URL){
         $nextday = date('Y-m-d', strtotime('next friday'));
+        $number++;
         $text = "パーソナリティ ：花守ゆみり（モグリ） / 鈴木愛奈（モグナ）\n配信回数： {$number}回配信日：毎週金曜配信\n\n";
         $text .= $url;
 
@@ -154,8 +155,9 @@ class AqoursShell extends Shell
         $info[] = $data;
         $this->Aqours->updateMedia($media['id'], $number);
       }elseif($url == FUWA_SATA_URL){
+        $number++;
         $title .= " 第".$number."回目～♪♪";
-        $nextday = date('Y-m-d', strtotime('next saturday'));
+        $nextday = date('Y-m-d', strtotime('+2 saturday'));
         $text = "新人声優、井澤美香子・諏訪ななかによるフレッシュかつふんわりやわらかい（？）番組。\n土曜日夕方は、好きなこと、楽しいこと、気になることをテーマにリスナーも出演者もスタッフも！みんなが元気になれるように、お送りします！\n番組では、皆様からの質問やパーソナリティへの応援メッセージなどを募集中。\n\nfuwa@joqr.netまで！\n\n";
         $text .= $url;
 
