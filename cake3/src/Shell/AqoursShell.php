@@ -70,6 +70,11 @@ class AqoursShell extends Shell
     foreach($list as $key=> $row){
       $url = $row['url'];
       $title = $row['title'];
+      $discription = $row['discription'];
+      $weekday = $row['weekday'];
+      if(!empty($weekday)) {
+        $nextday = date('Y-m-d', strtotime($weekday));
+      }
 
       $number = 0;
       $media = $this->Aqours->getMediaFromTitle($title);
@@ -106,64 +111,32 @@ class AqoursShell extends Shell
         $data['price'] = '';
         $data['jan']='';
         $data['img']='';
-        $data['date'] = date('Y年m月d日', strtotime('next wednesday'));
-        $data['push'] = PUSH_READY;
-        $data['created'] = $now;
-
-        $info[] = $data;
-        $this->Aqours->updateMedia($media['id'], $number);
-      }elseif($url == AIDA_MARUGOTO_RIKAKO){
-        $nextday = date('Y-m-d', strtotime('next thursday'));
-        $week = $this->Aqours->getWeek($nextday);
-
-        // 5週目の更新はないので…
-        if($week < 5){
-          // タイトルに 回数追加
-          if($number != 0){
-            $number++;
-            $title .= " 第".$number."回";
-          }
-
-          $text = "逢田梨香子の良いトコロも悪いトコロもまるごとお届け！\nリスナーの皆様からのレシピにより、逢田梨香子がおいしく料理されちゃうラジオ番組！\n\n";
-          $text .= $url;
-
-          $data['kind']  = $category;
-          $data['title'] = $title;
-          $data['discription'] = $text;
-          $data['price'] = '';
-          $data['jan']='';
-          $data['img']='';
-          $data['date'] = date('Y年m月d日', strtotime($nextday));
-          $data['push'] = PUSH_READY;
-          $data['created'] = $now;
-
-          $info[] = $data;
-          $this->Aqours->updateMedia($media['id'], $number);
-        }
-      }elseif($url == MOGU_COMI_URL){
-        $nextday = date('Y-m-d', strtotime('next friday'));
-        $number++;
-        $text = "パーソナリティ ：花守ゆみり（モグリ） / 鈴木愛奈（モグナ）\n配信回数： {$number}回配信日：毎週金曜配信\n\n";
-        $text .= $url;
-
-        $data['kind']  = $category;
-        $data['title'] = $title;
-        $data['discription'] = $text;
-        $data['price'] = '';
-        $data['jan']='';
-        $data['img']='';
         $data['date'] = date('Y年m月d日', strtotime($nextday));
         $data['push'] = PUSH_READY;
         $data['created'] = $now;
 
         $info[] = $data;
         $this->Aqours->updateMedia($media['id'], $number);
-      }elseif($url == FUWA_SATA_URL){
-        $number++;
-        $title .= " 第".$number."回目～♪♪";
-        $nextday = date('Y-m-d', strtotime('+2 saturday'));
-        $text = "新人声優、井澤美香子・諏訪ななかによるフレッシュかつふんわりやわらかい（？）番組。\n土曜日夕方は、好きなこと、楽しいこと、気になることをテーマにリスナーも出演者もスタッフも！みんなが元気になれるように、お送りします！\n番組では、皆様からの質問やパーソナリティへの応援メッセージなどを募集中。\n\nfuwa@joqr.netまで！\n\n";
-        $text .= $url;
+      }else{
+        if($number != 0) $number++;
+
+        // まるごとりかこ処理
+        if($url == AIDA_MARUGOTO_RIKAKO){
+          $week = $this->Aqours->getWeek($nextday);
+          if($week >= 5){
+            continue;
+          }else{
+            $title .= " 第".$number."回";
+          }
+        }
+
+        // ふわさた処理
+        if($url == FUWA_SATA_URL) {
+          $title .= " 第" . $number . "回目～♪♪";
+        }
+
+        $text = str_replace('%_NUMBER_%',$number,$row['discription']);
+        $text .= "\n\n".$url;
 
         $data['kind']  = $category;
         $data['title'] = $title;

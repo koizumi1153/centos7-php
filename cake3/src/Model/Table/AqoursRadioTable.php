@@ -43,11 +43,19 @@ class AqoursRadioTable extends Table
 
         $validator
             ->requirePresence('url', 'create')
-            ->allowEmpty('url');
+            ->notEmpty('url');
 
         $validator
             ->requirePresence('title', 'create')
             ->notEmpty('title');
+
+        $validator
+          ->requirePresence('discription', 'create')
+          ->notEmpty('discription');
+
+        $validator
+          ->requirePresence('weekday', 'create')
+          ->notEmpty('weekday');
 
         $validator
             ->dateTime('deleted')
