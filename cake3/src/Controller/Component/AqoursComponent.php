@@ -12,6 +12,7 @@ class AqoursComponent extends Component
     protected $AQOURS_NEWS = 'AqoursNews';
     protected $AQOURS_CLUB2017 = 'AqoursClub2017';
 
+    protected $AQOURS_RADIO = 'AqoursRadio';
     protected $AQOURS_MEDIA = 'AqoursMedia';
 
   public function initialize(array $config) {
@@ -22,6 +23,7 @@ class AqoursComponent extends Component
       $this->Club2017 = TableRegistry::get($this->AQOURS_CLUB2017);
 
       $this->Media = TableRegistry::get($this->AQOURS_MEDIA);
+      $this->Radio = TableRegistry::get($this->AQOURS_RADIO);
   }
 
   /**
@@ -725,5 +727,15 @@ class AqoursComponent extends Component
       $date = date('Ymd', strtotime($date . ' 1 week'));
     }
     return $date;
+  }
+
+  /**
+   * 全取得
+   * @return mixed
+   */
+  public function getRadio(){
+    $query=$this->Radio->find()
+      ->where(['deleted IS NULL']);
+    return $query->hydrate(false)->toArray();
   }
 }

@@ -62,7 +62,9 @@ class AqoursShell extends Shell
     $now = date('Y-m-d H:i:s');
     $data = array();
     $category = AQOURS_KIND_RADIO;
-    $list = SCRAPING_RADIO_URL;
+#    $list = SCRAPING_RADIO_URL;
+    // 取得情報はdb管理
+    $list = $this->Aqours->getRadio();
 
     $info = array();
     foreach($list as $url => $title){
