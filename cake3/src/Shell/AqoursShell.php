@@ -205,7 +205,7 @@ class AqoursShell extends Shell
     $day = $this->Aqours->getFirstMonday($yearMonth);
 
     $title = "Aqours LOCKS!";
-    $text = "毎月1週目はラブライブ!サンシャイン!!より、我が校のスクールアイドルの講師Aqours先生が登場！\nAqours LOCKS!では\"何かのアイドルになるために頑張っている生徒\”からのメッセージを、いつでも待っているぞ！\n\n22時15分ごろから\n\n逢田梨香子\n高槻かなこ\nhttp://www.tfm.co.jp/lock/aqours/";
+    $text = "毎月1週目はラブライブ!サンシャイン!!より、我が校のスクールアイドルの講師Aqours先生が登場！\nAqours LOCKS!では\"何かのアイドルになるために頑張っている生徒\"からのメッセージを、いつでも待っているぞ！\n\n22時15分ごろから\n\n逢田梨香子\n高槻かなこ\nhttp://www.tfm.co.jp/lock/aqours/";
 
     $day = date('Y-m-d',strtotime($day));
     $info = array();
@@ -218,7 +218,7 @@ class AqoursShell extends Shell
       $data['discription'] = $text;
       $data['price'] = '';
       $data['jan'] = '';
-      $data['img'] = '';
+      $data['img'] = 'al/profile.jpg';
       $data['date'] = $date;
       $data['push'] = PUSH_READY;
       $data['created'] = $now;
