@@ -712,4 +712,18 @@ class AqoursComponent extends Component
     }
     return ceil($w/$week_day);
   }
+
+  /**
+   * その月の第一月曜日を取得する
+   *
+   * @param $yyyymm
+   * @return false|string
+   */
+  public function getFirstMonday($yyyymm){
+    $date = date('Ymd', strtotime($yyyymm . '01 this week'));
+    if(substr($date, 0, 6) !== $yyyymm){
+      $date = date('Ymd', strtotime($date . ' 1 week'));
+    }
+    return $date;
+  }
 }

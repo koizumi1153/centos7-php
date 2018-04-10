@@ -195,4 +195,16 @@ class AqoursShell extends Shell
       if (!empty($title)) $this->Aqours->setInfo($info);
     }
   }
+
+  /**
+   * 毎月　１週目の月〜木曜日に放送
+   */
+  public function sol(){
+    $now = date('Y-m-d H:i:s');
+    $yearMonth = date('Ym', strtotime($now . ' 1 month'));
+    $day = $this->Aqours->getFirstMonday($yearMonth);
+echo $day;
+
+    $text = "22時15分ごろから\n\n毎月第一週目\n\n逢田梨香子\n高槻かなこ\nhttp://www.tfm.co.jp/lock/aqours/";
+  }
 }
