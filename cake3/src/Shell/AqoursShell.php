@@ -201,10 +201,31 @@ class AqoursShell extends Shell
    */
   public function sol(){
     $now = date('Y-m-d H:i:s');
-    $yearMonth = date('Ym', strtotime($now . ' 1 month'));
+    $yearMonth = date('Ym', strtotime($now . '1 month'));
     $day = $this->Aqours->getFirstMonday($yearMonth);
-echo $day;
 
-    $text = "22時15分ごろから\n\n毎月第一週目\n\n逢田梨香子\n高槻かなこ\nhttp://www.tfm.co.jp/lock/aqours/";
+    $title = "Aqours LOCKS!";
+    $text = "毎月1週目はラブライブ!サンシャイン!!より、我が校のスクールアイドルの講師Aqours先生が登場！\nAqours LOCKS!では\"何かのアイドルになるために頑張っている生徒\”からのメッセージを、いつでも待っているぞ！\n\n22時15分ごろから\n\n逢田梨香子\n高槻かなこ\nhttp://www.tfm.co.jp/lock/aqours/";
+
+    $info = array();
+    $category = AQOURS_KIND_RADIO;
+    for($i=0;$i<5;$i++) {
+      $data = array();
+      $date = date('Y年m月d日', strtotime($day . '+{$i} day'));
+      $data['kind'] = $category;
+      $data['title'] = $title;
+      $data['discription'] = $text;
+      $data['price'] = '';
+      $data['jan'] = '';
+      $data['img'] = '';
+      $data['date'] = $date;
+      $data['push'] = PUSH_READY;
+      $data['created'] = $now;
+
+      $info[] = $data;
+    }
+
+    // 追加する情報があれば追加
+    if (!empty($title)) $this->Aqours->setInfo($info);
   }
 }
