@@ -136,6 +136,41 @@ class AqoursShell extends Shell
           $info[] = $data;
           $this->Aqours->updateMedia($media['id'], $number);
         }
+      }elseif($url == MOGU_COMI_URL){
+        $nextday = date('Y-m-d', strtotime('next friday'));
+        $text = "パーソナリティ ：花守ゆみり（モグリ） / 鈴木愛奈（モグナ）\n配信回数： {$number}回配信日：毎週金曜配信\n\n";
+        $text .= $url;
+
+        $data['kind']  = $category;
+        $data['title'] = $title;
+        $data['discription'] = $text;
+        $data['price'] = '';
+        $data['jan']='';
+        $data['img']='';
+        $data['date'] = date('Y年m月d日', strtotime($nextday));
+        $data['push'] = PUSH_READY;
+        $data['created'] = $now;
+
+        $info[] = $data;
+        $this->Aqours->updateMedia($media['id'], $number);
+      }elseif($url == FUWA_SATA_URL){
+        $title .= " 第".$number."回目～♪♪";
+        $nextday = date('Y-m-d', strtotime('next saturday'));
+        $text = "新人声優、井澤美香子・諏訪ななかによるフレッシュかつふんわりやわらかい（？）番組。\n土曜日夕方は、好きなこと、楽しいこと、気になることをテーマにリスナーも出演者もスタッフも！みんなが元気になれるように、お送りします！\n番組では、皆様からの質問やパーソナリティへの応援メッセージなどを募集中。\n\nfuwa@joqr.netまで！\n\n";
+        $text .= $url;
+
+        $data['kind']  = $category;
+        $data['title'] = $title;
+        $data['discription'] = $text;
+        $data['price'] = '';
+        $data['jan']='';
+        $data['img']='';
+        $data['date'] = date('Y年m月d日', strtotime($nextday));
+        $data['push'] = PUSH_READY;
+        $data['created'] = $now;
+
+        $info[] = $data;
+        $this->Aqours->updateMedia($media['id'], $number);
       }
     }
 

@@ -197,6 +197,13 @@ return [
   define('AQOURS_NICONICO_URL', 'http://ch.nicovideo.jp/lovelive-anime-uranohoshi'),
   define('AQOURS_NICONICO_TITLE', 'ラブライブ!サンシャイン!! Aqours浦の星女学院生放送!!!'),
 
+
+  define('MOGU_COMI_URL','http://www.onsen.ag/program/mogucomi/'),
+  define('MOGU_COMI_TITLE','ゆみりと愛奈のモグモグ・コミュニケーションズ'),
+
+  define('FUWA_SATA_URL','http://www.joqr.co.jp/fuwa/'),
+  define('FUWA_SATA_TITLE','「井澤美香子・諏訪ななかのふわさた」'),
+
   // radio追記用
   define('AQOURS_URA_RADIO_URLS', [
     "響 -HiBiKi Radio Station- http://hibiki-radio.jp/description/llss/detail",
@@ -207,5 +214,7 @@ return [
   define('SCRAPING_RADIO_URL', [
     AQOURS_URA_RADIO_URL => AQOURS_URA_RADIO_TITLE,
     AIDA_MARUGOTO_RIKAKO => AIDA_MARUGOTO_TITlE,
+    MOGU_COMI_URL => MOGU_COMI_TITLE,
+    FUWA_SATA_URL => FUWA_SATA_TITLE,
   ]),
 ];//defien
