@@ -67,15 +67,17 @@ class AqoursShell extends Shell
     $list = $this->Aqours->getRadio();
 
     $info = array();
-    foreach($list as $url => $title){
-      $html = file_get_contents($url);
-      $dom = \phpQuery::newDocument($html);
+    foreach($list as $key=> $row){
+      $url = $row['url'];
+      $title = $row['title'];
 
       $number = 0;
       $media = $this->Aqours->getMediaFromTitle($title);
       if(!empty($media)) $number = $media['number'];
 
       if($url == AQOURS_URA_RADIO_URL){
+        $html = file_get_contents($url);
+        $dom = \phpQuery::newDocument($html);
         // 不要文字削除
         $text1 = trim($dom["#introductionWrap.programCont"]->find("p")->text());
         $serch = array('「ラブライブ！」公式Twitter：@LoveLive_staff',
