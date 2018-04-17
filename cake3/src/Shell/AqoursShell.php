@@ -174,7 +174,7 @@ class AqoursShell extends Shell
       $text = str_replace(array("\n", "\r", "\t", "  ", "放送予定"), '', $dayText);
       $date = substr($text, 0, 5);
       $hour = substr($text, 5, 2);
-      $text = "放送予定 " . $date . " " . $hour;
+      $text = "放送予定 " . $date . " " . $hour."時から";
       $year = date('Y');
       $month = date('m');
       if ($month == 12) {
