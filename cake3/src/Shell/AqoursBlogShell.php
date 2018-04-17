@@ -21,36 +21,11 @@ class AqoursBlogShell extends Shell
 
   public function main()
   {
-
-    #$this->out('start task');
-
     $blogs = $this->Aqours->checkBlog();
 
     if(!empty($blogs)){
-      // ユーザー取得
-      $userCount = $this->You->getPushUsersCount();
-      if ($userCount > 0) {
-        $allPage = ceil($userCount / LINE_MULTI_USER);
-        for ($page = 1; $page <= $allPage; $page++) {
-          $user = $this->You->getPushUsers($page);
-          $userIds = array_column($user, 'user_id');
-
-          $messageData = $this->You->setPushBlogMessage($blogs);
-          // PUSH
-          if (count($messageData) > LINE_MESSAGE_COUNT) {
-            $messages = array_chunk($messageData, LINE_MESSAGE_COUNT);
-            foreach ($messages as $message) {
-              $this->Line->sendPush(LINE_API_MULTI_URL, $this->ACCESS_TOKEN, $userIds, $message);
-            }
-          } else {
-            $this->Line->sendPush(LINE_API_MULTI_URL, $this->ACCESS_TOKEN, $userIds, $messageData);
-          }
-
-        }
-      }
-
+      $messageData = $this->You->setPushBlogMessage($blogs);
+      $this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
     }
-
-    #$this->out('end task');
   }
 }

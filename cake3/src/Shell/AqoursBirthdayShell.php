@@ -86,26 +86,7 @@ class AqoursBirthdayShell extends Shell
         }
         $messageData = $this->Line->setTextMessage($str);
 
-        // ユーザー取得
-        $userCount = $this->You->getPushUsersCount($time);
-        if ($userCount > 0) {
-          $allPage = ceil($userCount / LINE_MULTI_USER);
-          for ($page = 1; $page <= $allPage; $page++) {
-            $user = $this->You->getPushUsers($page, $time);
-            $userIds = array_column($user, 'user_id');
-
-            // PUSH
-            if (count($messageData) > LINE_MESSAGE_COUNT) {
-              $messages = array_chunk($messageData, LINE_MESSAGE_COUNT);
-              foreach ($messages as $message) {
-                $this->Line->sendPush(LINE_API_MULTI_URL, $this->ACCESS_TOKEN, $userIds, $message);
-              }
-            } else {
-              $this->Line->sendPush(LINE_API_MULTI_URL, $this->ACCESS_TOKEN, $userIds, $messageData);
-            }
-          }
-        }
-
+        $this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
       }
     }
   }
