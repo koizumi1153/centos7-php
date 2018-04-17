@@ -185,14 +185,14 @@ class AqoursShell extends Shell
 
       // title
       $title = trim($dom["#channel-main"]->find("a:eq(1)")->text());
-
+/*
       $text .= "\n\n";
       // 説明
       $text .= trim($dom["#channel-main"]->find(".g-contents:eq(0)")->text());
       $text .= "\n\n";
       // url
       $text .= trim($dom["#channel-main"]->find("a:eq(0)")->attr('href'));
-
+*/
       $data['kind'] = $category;
       $data['title'] = $title;
       $data['discription'] = $text;
