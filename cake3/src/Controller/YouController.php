@@ -179,4 +179,14 @@ EOT;
     exit;
   }
 
+  /**
+   * add メソッド
+   */
+  public function add(){
+    $post_data = $this->request->getData();
+    if(!empty($post_data)){
+      //処理記述
+    }
+  }
+
 }
