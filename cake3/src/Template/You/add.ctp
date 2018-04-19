@@ -46,6 +46,10 @@
 <?= $this -> Form -> end (); ?>
 <script>
   $(function () {
-    $('#datepicker').datepicker();
+    $('#datepicker').datepicker({
+
+        dateFormat: 'yy年mm月dd日',
+
+    });
   });
 </script>
