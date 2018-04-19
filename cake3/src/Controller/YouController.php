@@ -183,9 +183,26 @@ EOT;
    * add メソッド
    */
   public function add(){
-    $post_data = $this->request->getData();
-    if(!empty($post_data)){
+    $post = $this->request->getData();
+    if(!empty($post)){
       //処理記述
+      if(!empty($post['title'])) {
+        $data = array();
+
+        $data['kind'] = $post['kind'];
+        $data['title'] = $post['title'];
+        $data['discription'] = $post['discription'];
+        $data['date'] = $post['date'];
+
+        $data['price'] = "";
+        $data['jan'] = "";
+        $data['img'] = "";
+        $data['push'] = PUSH_NONE;
+        $data['created'] = date('Y-m-d H:i:s');
+
+        $lists[] = $data;
+        $this->Aqours->setInfo($lists);
+      }
     }
   }
 
