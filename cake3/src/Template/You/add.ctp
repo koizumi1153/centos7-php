@@ -43,12 +43,16 @@
 <label for="textbox">日付</label>
 <input type="text" name="date" id="datepicker">
 
+<input type="submit" value="送信">
+
 <?= $this -> Form -> end (); ?>
 <script>
   $(function () {
     $('#datepicker').datepicker({
-
+        monthNames: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
         dateFormat: 'yy年mm月dd日',
+        firstDay: 1,
+        showOtherMonths:true,
 
     });
   });
