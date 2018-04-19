@@ -9,7 +9,7 @@
                                               "name" => "title",
                                               "size" => 250,
                                               "label" => "タイトル",
-                                              "default" => "タイトル" ] ] ); ?>
+                                              "default" => "タイトル" ] ); ?>
 
 <?= $this -> Form -> input ( "area", [ "type" => "textarea",
                                             "cols" => 20,
@@ -37,13 +37,15 @@
                                                         "text" => "チケットの情報", ],
                                                       [ "value" => AQOURS_KIND_GOODS,
                                                         "text" => "グッズの情報", ],
+                                                        ]]
                                         ); ?>
 
+<label for="textbox">日付</label>
 <input type="text" name="date" id="datepicker">
 
 <?= $this -> Form -> end (); ?>
 <script>
   $(function () {
     $('#datepicker').datepicker();
-  }
+  });
 </script>
