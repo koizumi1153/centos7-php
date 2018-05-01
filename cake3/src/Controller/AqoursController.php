@@ -1,0 +1,78 @@
+<?php
+namespace App\Controller;
+
+use App\Controller\AppController;
+
+/**
+ * Project Aqours Controller
+ *
+ * Class AqoursController
+ * @package App\Controller
+ */
+class AqoursController extends AppController
+{
+  public $components = ["Aqours","You" ];
+
+  /**
+   * @param string $userHash
+   */
+  public function index($userHash='')
+  {
+    //userHashがない
+    if(empty($userHash)) {
+      throw new NotFoundException(__('Hash not found'));
+    }else{
+      $user = $this->You->getUserHash($userHash);
+      if(empty($user)){
+        // 存在しない場合は404エラー
+        throw new NotFoundException(__('User not found'));
+      }else{
+        // 当日のマスターを取得する
+        $master = $this->Aqours->getLiveShop();
+        if(empty($master)){
+          // 存在しない場合は404エラー
+          throw new NotFoundException(__('Master not found'));
+        }
+      }
+    }
+
+    // 設定済の情報取得
+    $lists = $this->Aqours->getUserLiveNumber($user['user_id']);
+    $this->set('lists', $lists);
+  }
+
+  /**
+   * @param string $userHash
+   */
+  public function add($userHash=''){
+    //userHashがない
+    if(empty($userHash)) {
+      throw new NotFoundException(__('Hash not found'));
+    }else{
+      $user = $this->You->getUserHash($userHash);
+      if(empty($user)){
+        // 存在しない場合は404エラー
+        throw new NotFoundException(__('User not found'));
+      }else{
+        // 当日のマスターを取得する
+        $master = $this->Aqours->getLiveShop();
+        if(empty($master)){
+          // 存在しない場合は404エラー
+          throw new NotFoundException(__('Master not found'));
+        }
+      }
+    }
+
+    $post = $this->request->getData();
+    if(!empty($post)){
+      $numbers = $post['numbers'];
+      // 番号保存
+      $contents = $this->Aqours->settingUserLiveNumber($user['user_id'], $numbers);
+      // 保存
+      if(!empty($contents)) $this->Aqours->setUserLiveNumber($contents);
+    }
+
+    // indexへ戻す
+    return $this->redirect(['action' => 'index']);
+  }
+}

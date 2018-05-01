@@ -63,6 +63,35 @@ class YouComponent extends Component
   /**
    * @param $userId
    */
+  public function setUserHash($userId){
+    $now = date('Y-m-d H:i:s');
+    $query = $this->Users->query();
+    $hash = md5($userId);
+
+    $query->update()
+      ->set(['hash' => $hash])
+      ->where(['user_id' => $userId])
+      ->where(['deleted IS NULL'])
+      ->execute();
+  }
+
+  /**
+   * @param $hash
+   * @return mixed
+   */
+  public function getUserHash($hash){
+    $query = $this->Users->find();
+    $query->where(['hash' => $hash]);
+    $query->where(['deleted IS NULL']);
+
+    $user = $query->first();
+    return $user;
+
+  }
+
+  /**
+   * @param $userId
+   */
   public function deleteUser($userId)
   {
     $now = date('Y-m-d H:i:s');
@@ -396,4 +425,27 @@ class YouComponent extends Component
       }
     }
   }
+
+  /**
+   * ライブ物販整理券入力画面
+   * @param $userId
+   * @return array
+   */
+  public function getAqoursLiveUrl($userId){
+    $messageData = array();
+
+    //hash確認
+    $user = self::getUsers($userId);
+    if(empty($user['hash'])){
+      self::setUserHash($userId);
+    }
+
+    // url生成
+    $text  = "こちらにて整理券番号を登録してください。\n\n";
+    $text .= "https://line.yohane.work/aqours/".md5($userId);
+    $messageData = $this->Line->setTextMessage($text, $messageData);
+
+    return $messageData;
+  }
+
 }

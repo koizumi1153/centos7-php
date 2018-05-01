@@ -36,6 +36,7 @@ return [
   define('PUSHON',    1001), //push通知ON
   define('PUSHOFF',   1002), //push通知OFF
   define('PUSHTIME',  1003), //push通知時間変更
+  define('AQOURS_LIVE_URL', 1004), //aqours ライブ物販用URL呼出
 
   //priority
   define('PRIORITY_DEFAULT', 0), // 全て
@@ -217,4 +218,8 @@ return [
     MOGU_COMI_URL => MOGU_COMI_TITLE,
     FUWA_SATA_URL => FUWA_SATA_TITLE,
   ]),
+
+  define('LIVE_SHOP_TICKET', '整理券'), //文言指定
+
+  define('LIVE_SHOP_NUMBER_MAX', '5'), //入力制限
 ];//defien

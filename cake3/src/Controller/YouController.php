@@ -93,6 +93,9 @@ EOT;
             #            $messageData = $this->Line->setDatetimepicker('PUSH時間変更',POSTBACK_SELECT_PUSH_TIME, SELECT_TIME,'23:00','00:00','09:00');
             break;
 
+          case AQOURS_LIVE_URL:
+            $messageData = $this->You->getAqoursLiveUrl($userId);
+              break;
           default:
             $messageData = $this->You->getWordsMessage($kind);
             break;

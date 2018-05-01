@@ -15,7 +15,10 @@ class AqoursComponent extends Component
     protected $AQOURS_RADIO = 'AqoursRadio';
     protected $AQOURS_MEDIA = 'AqoursMedia';
 
-  public function initialize(array $config) {
+    /**
+     * @param array $config
+     */
+    public function initialize(array $config) {
       $this->Information = TableRegistry::get($this->AQOURS_INFORMATION);
       $this->Blog = TableRegistry::get($this->AQOURS_BLOG);
       $this->Birthday = TableRegistry::get($this->AQOURS_BIRTHDAY);
@@ -24,7 +27,10 @@ class AqoursComponent extends Component
 
       $this->Media = TableRegistry::get($this->AQOURS_MEDIA);
       $this->Radio = TableRegistry::get($this->AQOURS_RADIO);
-  }
+
+      $this->LiveShop = TableRegistry::get("AqoursLiveShop");
+      $this->UserLiveNumber = TableRegistry::get("AqoursUserLiveNumber");
+    }
 
   /**
    * 特定日時のデータを取得
@@ -737,5 +743,131 @@ class AqoursComponent extends Component
     $query=$this->Radio->find()
       ->where(['deleted IS NULL']);
     return $query->hydrate(false)->toArray();
+  }
+
+  /**
+   * 保存
+   * @param $contents
+   */
+  public function setLiveShop($contents){
+    $entity = $this->LiveShop->newEntity($contents);
+    $entity->save($entity);
+  }
+
+  /**
+   * @param $id
+   * @param $screenName
+   */
+  public function updateLiveShop($id, $screenName){
+    $now = date('Y-m-d H:i:s');
+    $query = $this->LiveShop->query();
+
+    $query->update()
+      ->set(['screen_name' => $screenName])
+      ->set(['updated' => $now])
+      ->where(['id' => $id])
+      ->where(['deleted IS NULL'])
+      ->execute();
+  }
+
+  /**
+   * 削除
+   * @param $id
+   */
+  public function deleteLiveShop($id){
+    $now = date('Y-m-d H:i:s');
+    $query = $this->LiveShop->query();
+
+    $query->update()
+      ->set(['deleted' => $now])
+      ->where(['id' => $id])
+      ->where(['deleted IS NULL'])
+      ->execute();
+  }
+
+  /**
+   * 取得当日のマスターを取得する
+   * @return mixed
+   */
+  public function getLiveShop(){
+    $date = date('Y-m-d');
+    $query=$this->LiveShop->find()
+      ->where(['date' => $date])
+      ->where(['deleted IS NULL'])
+      ->order(['date' => 'ASC']);
+    return $query->hydrate(false)->toArray();
+  }
+
+  /**
+   * 全てのマスターを取得する
+   * @return mixed
+   */
+  public function getLiveShopAll(){
+    $date = date('Y-m-d');
+    $query=$this->LiveShop->find()
+      ->where(['deleted IS NULL'])
+      ->order(['date' => 'ASC']);
+    return $query->hydrate(false)->toArray();
+  }
+
+  /**
+   * ユーザーの当日の情報を取得する
+   *
+   * @param $userId
+   * @return mixed
+   */
+  public function getUserLiveNumber($userId){
+    $date = date('Y-m-d');
+    $query=$this->LiveShop->find()
+      ->where(['user_id' => $userId])
+      ->where(['date' => $date])
+      ->where(['deleted IS NULL'])
+      ->order(['date' => 'ASC']);
+    return $query->hydrate(false)->toArray();
+  }
+
+  /**
+   * フォームデータを元に整形する
+   * @param $userId
+   * @param $numbers
+   * @return array
+   */
+  public function settingUserLiveNumber($userId, $numbers){
+    $result = array();
+
+    $body['date'] = date('Y-m-d');
+    $body['user_id'] = $userId;
+    $body['push_flg'] = 0;
+    $body['created'] = date('Y-m-d H:i:s');
+
+    foreach($numbers as $number){
+      if(!empty($number)) {
+        $body['number'] = $number;
+        $result[] = $body;
+      }
+    }
+
+    return $result;
+  }
+
+  /**
+   * bulk insert
+   * @param $contents
+   */
+  public function setUserLiveNumber($contents){
+    $query = $this->News->query();
+    $query->insert([
+      'id',
+      'user_id',
+      'date',
+      'number',
+      'created'
+    ]);
+    if(!empty($contents)){
+      foreach($contents as $data){
+        $query->values($data);
+      }
+      $query->execute();
+    }
   }
 }
