@@ -84,7 +84,7 @@ class YouComponent extends Component
     $query->where(['hash' => $hash]);
     $query->where(['deleted IS NULL']);
 
-    $user = $query->first();
+    $user = $query->first()->toArray();
     return $user;
 
   }
@@ -441,8 +441,8 @@ class YouComponent extends Component
     }
 
     // url生成
-    $text  = "こちらにて整理券番号を登録してください。\n\n";
-    $text .= "https://line.yohane.work/aqours/".md5($userId);
+    $text  = "こちらにて整理券番号を確認・登録してください。\n\n";
+    $text .= "https://line.yohane.work/aqours/set/".md5($userId);
     $messageData = $this->Line->setTextMessage($text, $messageData);
 
     return $messageData;

@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Network\Exception\NotFoundException;
 
 /**
  * Project Aqours Controller
@@ -16,7 +17,7 @@ class AqoursController extends AppController
   /**
    * @param string $userHash
    */
-  public function index($userHash='')
+  public function set($userHash='')
   {
     //userHashがない
     if(empty($userHash)) {
@@ -73,6 +74,6 @@ class AqoursController extends AppController
     }
 
     // indexへ戻す
-    return $this->redirect(['action' => 'index']);
+    return $this->redirect(['action' => 'set']);
   }
 }

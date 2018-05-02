@@ -818,7 +818,7 @@ class AqoursComponent extends Component
    */
   public function getUserLiveNumber($userId){
     $date = date('Y-m-d');
-    $query=$this->LiveShop->find()
+    $query=$this->UserLiveNumber->find()
       ->where(['user_id' => $userId])
       ->where(['date' => $date])
       ->where(['deleted IS NULL'])
@@ -855,7 +855,7 @@ class AqoursComponent extends Component
    * @param $contents
    */
   public function setUserLiveNumber($contents){
-    $query = $this->News->query();
+    $query = $this->UserLiveNumber->query();
     $query->insert([
       'id',
       'user_id',
