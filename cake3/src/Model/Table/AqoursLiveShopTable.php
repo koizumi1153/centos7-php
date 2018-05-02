@@ -38,6 +38,16 @@ class AqoursLiveShopTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
+            ->requirePresence('title', 'create')
+            ->allowEmpty('title')
+            ->add('title', [
+              'maxLength' => [
+                'rule' => ['maxLength', 200],
+                'message' => '200文字以内で設定してください'
+              ]
+            ]);
+
+        $validator
             ->requirePresence('date', 'create')
             ->notEmpty('date');
 
@@ -47,11 +57,17 @@ class AqoursLiveShopTable extends Table
 
         $validator
             ->requirePresence('end_date', 'create')
-              ->notEmpty('end_date');
+            ->notEmpty('end_date');
 
         $validator
             ->requirePresence('screen_name', 'create')
-            ->allowEmpty('screen_name');
+            ->allowEmpty('screen_name')
+            ->add('screen_name', [
+              'maxLength' => [
+                'rule' => ['maxLength', 100],
+                'message' => '100文字以内で設定してください'
+              ]
+            ]);
 
         $validator
             ->dateTime('deleted')

@@ -41,6 +41,7 @@ class AqoursController extends AppController
     $lists = $this->Aqours->getUserLiveNumber($user['user_id']);
     $this->set('lists', $lists);
     $this->set('userHash', $userHash);
+    $this->set('title', '整理番号 確認・変更');
   }
 
   /**
@@ -111,5 +112,63 @@ class AqoursController extends AppController
     // indexへ戻す
     return $this->redirect(['action' => 'setting/'.$userHash]);
 
+  }
+
+
+  /**
+   * master管理用
+   */
+  public function master(){
+    $masters = $this->Aqours->getLiveShopAll();
+    $this->set('masters', $masters);
+    $this->set('title', '設定 管理画面');
+  }
+
+  /**
+   * 追加
+   * @return \Cake\Http\Response|null
+   */
+  public function master_add(){
+    $post = $this->request->getData();
+    if(!empty($post)){
+
+      // 保存
+      if(!empty($post)) $this->Aqours->setLiveShop($post);
+    }
+
+    // masterへ戻す
+    return $this->redirect(['action' => 'master']);
+  }
+
+  /**
+   * 変更
+   *
+   * @return \Cake\Http\Response|null
+   */
+  public function master_update($id=0){
+    $post = $this->request->getData();
+    if(!empty($post)){
+
+      $screenName = $post['screen_name'];
+      // 保存
+      if(!empty($post)) $this->Aqours->updateLiveShop($id,$screenName);
+    }
+    // masterへ戻す
+    return $this->redirect(['action' => 'master']);
+  }
+
+  /**
+   * 削除
+   *
+   * @return \Cake\Http\Response|null
+   */
+  public function master_delete($id=0){
+    $post = $this->request->getData();
+    if(!empty($id)){
+      // 保存
+      if(!empty($post)) $this->Aqours->deleteLiveShop($id);
+    }
+    // masterへ戻す
+    return $this->redirect(['action' => 'master']);
   }
 }
