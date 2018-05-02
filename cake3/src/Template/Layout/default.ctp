@@ -32,6 +32,9 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->Html->script('jquery-3.3.1.min.js') ?>
     <?= $this->Html->script('jquery-ui.min.js') ?>
 
+    <?= $this->Html->css('jquery.datetimepicker.js') ?>
+    <?= $this->Html->script('jquery.datetimepicker.js') ?>
+
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
