@@ -442,7 +442,7 @@ class YouComponent extends Component
 
     // url生成
     $text  = "こちらにて整理券番号を確認・登録してください。\n\n";
-    $text .= "https://line.yohane.work/aqours/set/".md5($userId);
+    $text .= "https://line.yohane.work/aqours/setting/".md5($userId);
     $messageData = $this->Line->setTextMessage($text, $messageData);
 
     return $messageData;

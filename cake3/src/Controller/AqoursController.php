@@ -17,7 +17,7 @@ class AqoursController extends AppController
   /**
    * @param string $userHash
    */
-  public function set($userHash='')
+  public function setting($userHash='')
   {
     //userHashがない
     if(empty($userHash)) {
@@ -40,6 +40,7 @@ class AqoursController extends AppController
     // 設定済の情報取得
     $lists = $this->Aqours->getUserLiveNumber($user['user_id']);
     $this->set('lists', $lists);
+    $this->set('userHash', $userHash);
   }
 
   /**
@@ -74,6 +75,6 @@ class AqoursController extends AppController
     }
 
     // indexへ戻す
-    return $this->redirect(['action' => 'set']);
+    return $this->redirect(['action' => 'setting']);
   }
 }

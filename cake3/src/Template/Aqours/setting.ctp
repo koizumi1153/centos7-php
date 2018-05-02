@@ -1,9 +1,6 @@
 <h2><?= __('整理券番号登録') ?></h2>
-<?= $this -> Form -> create (
-                "null", [ "type" => "post",
-                          "url" => [ "controller" => "aqours",
-                                     "action" => "add" ] ] ); ?>
 
+<form method="post" accept-charset="utf-8" action="/aqours/add/<?= $userHash ?>">
 
 <?php for ($num=1;$num<=LIVE_SHOP_NUMBER_MAX;$num++){ ?>
 
@@ -14,8 +11,7 @@
 
 <input type="submit" value="送信">
 
-<?= $this -> Form -> end (); ?>
-
+</form>
 
 <div class="aqours index large-9 medium-8 columns content">
     <h3><?= __('登録済番号') ?></h3>
@@ -24,7 +20,7 @@
             <tr>
                 <th scope="col">番号</th>
                 <th scope="col">通知状況</th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
+                <th scope="col" class="actions">削除</th>
             </tr>
         </thead>
         <tbody>
