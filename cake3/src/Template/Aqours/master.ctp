@@ -1,3 +1,7 @@
+    <?= $this->Html->css('jquery.datetimepicker.css') ?>
+    <?= $this->Html->script('jquery.js') ?>
+    <?= $this->Html->script('jquery.datetimepicker.js') ?>
+
 <h2><?= __('整理券番号登録') ?></h2>
 
 <?= $this -> Form -> create (
@@ -82,12 +86,8 @@
 
 <script>
   $(function () {
-    $('#datepicker').datepicker({
-        monthNames: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
-        dateFormat: 'yy-mm-dd',
-        firstDay: 1,
-        showOtherMonths:true,
-
+    $('#datepicker').datetimepicker({
+        format:'Y-m-d',
     });
 
       $('#datetimepicker1').datetimepicker({
