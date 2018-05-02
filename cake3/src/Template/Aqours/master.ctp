@@ -89,19 +89,11 @@
         showOtherMonths:true,
     });
 
-      $('#datetimepicker1').datetimepicker({
-        format:'Y-m-d H:i',
-        allowTimes:[
-          '09:00', '10:00','11:00','12:00',
-          '13:00', '14:00','15:00','16:00'
-        ]
-      });
-      $('#datetimepicker2').datetimepicker({
-        format:'Y-m-d H:i',
-        allowTimes:[
-          '09:00', '10:00','11:00','12:00',
-          '13:00', '14:00','15:00','16:00'
-        ]
-      });
+    $('#datepicker1' '#datepicker2').datetimepicker({
+        monthNames: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+        dateFormat: 'yy-mm-dd HH:mm',
+        hourGrid: 6,
+        showOtherMonths:true,
+    });
   });
 </script>
