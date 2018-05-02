@@ -5,8 +5,6 @@
                           "url" => [ "controller" => "aqours",
                                      "action" => "add/{$userHash}" ] ] ); ?>
 
-<form method="post" accept-charset="utf-8" action="/aqours/add/<?= ?>">
-
 <?php for ($num=1;$num<=LIVE_SHOP_NUMBER_MAX;$num++){ ?>
 
 <label for="text<?= $num; ?>">整理券番号<?= $num; ?>:</label>
@@ -35,7 +33,7 @@
                 <td><?= $this->Number->format($list['number']) ?></td>
                 <td><?php if($list['push_flg'] == 0){ ?>未通知<?php }else{ ?><span style="color: #ff0000; background-color: transparent">通知済</span><?php } ?></td>
                 <td class="actions">
-                  <?= $this->Form->postLink(__('Delete'), ['action' => 'delete/{$userHash', $list['id']], ['confirm' => __('削除してもよろしいでしょうか？', $list['id'])]) ?>
+                  <?= $this->Form->postLink(__('Delete'), ['action' => 'delete/'.$userHash, $list['id']], ['confirm' => __('削除してもよろしいでしょうか？', $list['id'])]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>
