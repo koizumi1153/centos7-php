@@ -6,10 +6,28 @@
                                      "action" => "master_add" ] ] ); ?>
 
 
-<?= $this->Form->text('title', ['labal' => 'タイトル']);
-<?= $this->Form->text('date', ['labal' => '日付', 'id'='datepicker']);
-<?= $this->Form->text('start_date', ['labal' => 'チェック開始日時', 'id'='datetimepicker']);
-<?= $this->Form->text('end_date', ['labal' => 'チェック終了日時', 'id'='datetimepicker']);
+<?= $this -> Form -> input ( "input", [ "type" => "text",
+                                              "name" => "title",
+                                              "size" => 200,
+                                              "label" => "タイトル"] ); ?>
+
+<?= $this -> Form -> input ( "input", [ "type" => "text",
+                                              "name" => "date",
+                                              "size" => 20,
+                                              "label" => "日付",
+                                              "id" => "datepicker"] ); ?>
+
+<?= $this -> Form -> input ( "input", [ "type" => "text",
+                                              "name" => "start_date",
+                                              "size" => 20,
+                                              "label" => "チェック開始日時",
+                                              "id" => "datetimepicker1"] ); ?>
+
+<?= $this -> Form -> input ( "input", [ "type" => "text",
+                                              "name" => "end_date",
+                                              "size" => 20,
+                                              "label" => "チェック終了日時",
+                                              "id" => "datetimepicker2"] ); ?>
 
 
 <input type="submit" value="送信">
@@ -71,7 +89,20 @@
         showOtherMonths:true,
 
     });
-  });
 
-  $('#datetimepicker').datetimepicker();
+      $('#datetimepicker1').datetimepicker({
+        format:'Y-m-d H:i',
+        allowTimes:[
+          '09:00', '10:00','11:00','12:00',
+          '13:00', '14:00','15:00','16:00'
+        ]
+      });
+      $('#datetimepicker2').datetimepicker({
+        format:'Y-m-d H:i',
+        allowTimes:[
+          '09:00', '10:00','11:00','12:00',
+          '13:00', '14:00','15:00','16:00'
+        ]
+      });
+  });
 </script>

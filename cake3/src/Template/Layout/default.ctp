@@ -33,6 +33,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->Html->script('jquery-ui.min.js') ?>
 
     <?= $this->Html->css('jquery.datetimepicker.css') ?>
+    <?= $this->Html->script('jquery.js') ?>
     <?= $this->Html->script('jquery.datetimepicker.js') ?>
 
     <?= $this->fetch('meta') ?>
@@ -40,7 +41,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->fetch('script') ?>
 </head>
 <body>
-<?php //削除
+<?php /* //削除
     <nav class="top-bar expanded" data-topbar role="navigation">
         <ul class="title-area large-3 medium-4 columns">
             <li class="name">
