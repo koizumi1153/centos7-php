@@ -75,6 +75,41 @@ class AqoursController extends AppController
     }
 
     // indexへ戻す
-    return $this->redirect(['action' => 'setting']);
+    return $this->redirect(['action' => 'setting/'.$userHash]);
+  }
+
+  /**
+   * 削除
+   *
+   * @param string $userHash
+   * @param int $id
+   * @return \Cake\Http\Response|null
+   */
+  public function delete($userHash='', $id=0){
+    //userHashがない
+    if(empty($userHash)) {
+      throw new NotFoundException(__('Hash not found'));
+    }else{
+      $user = $this->You->getUserHash($userHash);
+      if(empty($user)){
+        // 存在しない場合は404エラー
+        throw new NotFoundException(__('User not found'));
+      }elseif(env('CAKEPHP_ENV') == "production"){
+        // 本番は当日のマスターを取得する
+        $master = $this->Aqours->getLiveShop();
+        if(empty($master)){
+          // 存在しない場合は404エラー
+          throw new NotFoundException(__('Master not found'));
+        }
+      }
+    }
+
+    if(!empty($id)){
+      $this->Aqours->deleteUserLiveNumber($id);
+    }
+
+    // indexへ戻す
+    return $this->redirect(['action' => 'setting/'.$userHash]);
+
   }
 }

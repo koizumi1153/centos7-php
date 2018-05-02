@@ -870,4 +870,19 @@ class AqoursComponent extends Component
       $query->execute();
     }
   }
+
+  /**
+   * 削除
+   * @param $id
+   */
+  public function deleteUserLiveNumber($id){
+    $now = date('Y-m-d H:i:s');
+    $query = $this->UserLiveNumber->query();
+
+    $query->update()
+      ->set(['deleted' => $now])
+      ->where(['id' => $id])
+      ->where(['deleted IS NULL'])
+      ->execute();
+  }
 }
