@@ -128,7 +128,7 @@ class AqoursController extends AppController
    * 追加
    * @return \Cake\Http\Response|null
    */
-  public function master_add(){
+  public function masterAdd(){
     $post = $this->request->getData();
     if(!empty($post)){
 
@@ -145,7 +145,7 @@ class AqoursController extends AppController
    *
    * @return \Cake\Http\Response|null
    */
-  public function master_update($id=0){
+  public function masterUpdate($id=0){
     $post = $this->request->getData();
     if(!empty($post)){
 
@@ -162,7 +162,7 @@ class AqoursController extends AppController
    *
    * @return \Cake\Http\Response|null
    */
-  public function master_delete($id=0){
+  public function masterDelete($id=0){
     $post = $this->request->getData();
     if(!empty($id)){
       // 保存
