@@ -9,7 +9,7 @@
 
 <label for="text<?= $num; ?>">整理券番号<?= $num; ?>:</label>
 <input type="input" name="numbers[]" "pattern"="^[0-9]+$" <?php if($num==1):?> required <?php endif;?> id="text<?= $num; ?>">
-
+<?= $this->Form->hidden( 'shopId' ,['value'=> $shopId ]) ; ?>
 <?php }//endfor ?>
 
 <input type="submit" value="送信">

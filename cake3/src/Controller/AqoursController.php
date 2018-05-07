@@ -19,6 +19,7 @@ class AqoursController extends AppController
    */
   public function setting($userHash='')
   {
+    $shopId = 0;
     //userHashがない
     if(empty($userHash)) {
       throw new NotFoundException(__('Hash not found'));
@@ -34,6 +35,7 @@ class AqoursController extends AppController
           // 存在しない場合は404エラー
           throw new NotFoundException(__('Master not found'));
         }
+        $shopId = $master['id'];
       }
     }
 
@@ -41,6 +43,7 @@ class AqoursController extends AppController
     $lists = $this->Aqours->getUserLiveNumber($user['user_id']);
     $this->set('lists', $lists);
     $this->set('userHash', $userHash);
+    $this->set('shopId', $shopId);
     $this->set('title', '整理番号 確認・変更');
   }
 
@@ -69,8 +72,9 @@ class AqoursController extends AppController
     $post = $this->request->getData();
     if(!empty($post)){
       $numbers = $post['numbers'];
+      $shopId  = $post['shopId'];
       // 番号保存
-      $contents = $this->Aqours->settingUserLiveNumber($user['user_id'], $numbers);
+      $contents = $this->Aqours->settingUserLiveNumber($user['user_id'], $numbers, $shopId);
       // 保存
       if(!empty($contents)) $this->Aqours->setUserLiveNumber($contents);
     }

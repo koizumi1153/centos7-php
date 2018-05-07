@@ -30,6 +30,7 @@ class AqoursComponent extends Component
 
       $this->LiveShop = TableRegistry::get("AqoursLiveShop");
       $this->UserLiveNumber = TableRegistry::get("AqoursUserLiveNumber");
+      $this->LiveShopNumber = TableRegistry::get("AqoursLiveShopNumber");
     }
 
   /**
@@ -750,8 +751,20 @@ class AqoursComponent extends Component
    * @param $contents
    */
   public function setLiveShop($contents){
-    $entity = $this->LiveShop->newEntity($contents);
-    $entity->save($entity);
+    $query = $this->LiveShop->query();
+    $query->insert([
+      'id',
+      'title',
+      'date',
+      'start_date',
+      'end_date',
+      'screen_name',
+      'created'
+    ]);
+    //設定
+    $contents['created'] = date('Y-m-d H:i:s');
+    $query->values($contents);
+    $query->execute();
   }
 
   /**
@@ -832,12 +845,13 @@ class AqoursComponent extends Component
    * @param $numbers
    * @return array
    */
-  public function settingUserLiveNumber($userId, $numbers){
+  public function settingUserLiveNumber($userId, $numbers, $shopId=0){
     $result = array();
 
     $body['date'] = date('Y-m-d');
     $body['user_id'] = $userId;
     $body['push_flg'] = 0;
+    $body['shop_id'] = $shopId;
     $body['created'] = date('Y-m-d H:i:s');
 
     foreach($numbers as $number){
@@ -858,6 +872,7 @@ class AqoursComponent extends Component
     $query = $this->UserLiveNumber->query();
     $query->insert([
       'id',
+      'shop_id',
       'user_id',
       'date',
       'number',
@@ -884,5 +899,145 @@ class AqoursComponent extends Component
       ->where(['id' => $id])
       ->where(['deleted IS NULL'])
       ->execute();
+  }
+
+  /**
+   * 整理券番号の最大値を取得
+   *
+   * @param $timeline
+   */
+  public function checkTweet($timeline,$now){
+    $num = 0;
+
+    $today = date('Y-m-d 00:00:00', strtotime($now));
+    if(!empty($timeline)) {
+      $timeline = json_decode($timeline, true);
+      foreach ($timeline as $tweet) {
+        $created_at = $tweet['created_at'];
+        // 投稿日Check
+        if($created_at > $today){
+          $text = $tweet['text'];
+          //「整理券番号」が含まれているか
+          if(strpos($text,'LIVE_SHOP_TICKET') !== false){
+            $num = self::checkNums($text,$num);
+          }
+        }
+      }
+    }
+
+    return $num;
+  }
+
+  /**
+   * 一番大きい数字を返す
+   *
+   * @param $text
+   * @param $num
+   * @return mixed
+   */
+  public function checkNums($text,$num){
+    $matches = array();
+
+    $search = array('、',',');//[,][、]を変更する
+    $text = str_replace($search, '', $text);
+    preg_match_all('/^[\-0-9]{1,5}$/',$text,$matches );
+
+    if(!empty($matches)){
+      if(isset($matches[0])) {
+        foreach ($matches[0] as $nums) {
+          if ($num < $nums) {
+            $num = $nums;
+          }
+        }
+      }
+    }
+
+    return $num;
+  }
+
+  /**
+   * 保存
+   * @param $contents
+   */
+  public function setShopNumber($shopId, $number=0){
+    $contents = array();
+    $contents['shop_id'] = $shopId;
+    $contents['date'] = date('Y-m-d');
+    $contents['notification_number'] = $number;
+    $contents['created'] = date('Y-m-d H:i:s');
+
+    $query = $this->LiveShopNumber->query();
+    $query->insert([
+      'id',
+      'shop_id',
+      'date',
+      'notification_number',
+      'created'
+    ]);
+    //設定
+    $query->values($contents);
+    $query->execute();
+  }
+
+  /**
+   * @param $id
+   * @param $number
+   */
+  public function updateShopNumber($id, $number){
+    $now = date('Y-m-d H:i:s');
+    $query = $this->LiveShopNumber->query();
+
+    $query->update()
+      ->set(['notification_number' => $number])
+      ->set(['updated' => $now])
+      ->where(['id' => $id])
+      ->where(['deleted IS NULL'])
+      ->execute();
+  }
+
+  /**
+   * 削除
+   * @param $id
+   */
+  public function deleteShopNumber($id){
+    $now = date('Y-m-d H:i:s');
+    $query = $this->LiveShopNumber->query();
+
+    $query->update()
+      ->set(['deleted' => $now])
+      ->where(['id' => $id])
+      ->where(['deleted IS NULL'])
+      ->execute();
+  }
+
+  /**
+   * 取得当日のマスターを取得する
+   * @return mixed
+   */
+  public function getShopNumber($shopId){
+    $date = date('Y-m-d');
+    $query=$this->LiveShopNumber->find()
+      ->where(['shop_id' => $shopId])
+      ->where(['deleted IS NULL'])
+      ->order(['date' => 'ASC']);
+    return $query->hydrate(false)->toArray();
+  }
+
+  /**
+   * 特定shop_idかつnum以下でpush_flg=0のデータを取得する
+   *
+   * @param $shopId
+   * @param $num
+   * @return mixed
+   */
+  public function checkUserNumber($shopId, $num){
+    $date = date('Y-m-d');
+    $query=$this->UserLiveNumber->find()
+      ->where(['num >= ' => $num])
+      ->where(['shop_id' => $shopId])
+      ->where(['push_flg' => 0])
+      ->where(['deleted IS NULL'])
+      ->order(['date' => 'ASC']);
+    return $query->hydrate(false)->toArray();
   }
 }

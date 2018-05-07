@@ -6,7 +6,7 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
-class AqoursUserLiveNumberTable extends Table
+class AqoursLiveShopNumberTable extends Table
 {
 
     /**
@@ -19,7 +19,7 @@ class AqoursUserLiveNumberTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('aqours_user_live_number');
+        $this->table('aqours_live_shop_number');
         $this->primaryKey('id');
 
         $this->addBehavior('Timestamp');
@@ -38,22 +38,16 @@ class AqoursUserLiveNumberTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-          ->requirePresence('shop_id', 'create')
-          ->notEmpty('shop_id');
-
-        $validator
-            ->requirePresence('user_id', 'create')
-            ->notEmpty('user_id');
-
-        $validator
-            ->integer('number')
-            ->requirePresence('number', 'create')
-            ->notEmpty('number','数字を入力してください')
-            ->naturalNumber('number', __('数字を入力してください'));
+            ->requirePresence('shop_id', 'create')
+            ->notEmpty('shop_id');
 
         $validator
             ->requirePresence('date', 'create')
             ->notEmpty('date');
+
+        $validator
+            ->requirePresence('notification_number', 'create')
+            ->notEmpty('notification_number');
 
         $validator
             ->dateTime('deleted')

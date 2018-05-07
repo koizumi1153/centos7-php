@@ -1,3 +1,36 @@
+<style>
+/* 日曜日のカラー設定 */
+td.ui-datepicker-week-end:last-child a.ui-state-default{
+  background-color: #ffecec;   /* 背景色を設定 */
+  color: #f00!important;       /* 文字色を設定 */
+}
+/* 土曜日のカラー設定 */
+td.ui-datepicker-week-end a.ui-state-default{
+  background-color: #eaeaff;   /* 背景色を設定 */
+  color: #00f!important;       /* 文字色を設定 */
+}
+/* ホバー時の動作 */
+td.ui-datepicker-week-end a.ui-state-hover{
+  opacity: 0.8;
+}
+/* 当日を示す色はそのまま */
+td.ui-datepicker-week-end a.ui-state-highlight{
+  background-color: #fffa90!important;
+}
+
+input[type="text"],
+textarea {
+  outline: none;
+  border: 1px solid #aaa;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+}
+input[type="text"]:focus,
+textarea:focus {
+  box-shadow: 0 0 7px #1abc9c;
+  border: 1px solid #1abc9c;
+}
+</style>
 <h2><?= __('整理券番号登録') ?></h2>
 
 <?= $this -> Form -> create (
@@ -40,14 +73,14 @@
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col">id</th>
-                <th scope="col">title</th>
-                <th scope="col">date</th>
-                <th scope="col">start_date</th>
-                <th scope="col">end_date</th>
-                <th scope="col">screen_name</th>
-                <th scope="col" class="actions">更新</th>
-                <th scope="col" class="actions">削除</th>
+                <th scope="col" width="5%">id</th>
+                <th scope="col" width="10%">title</th>
+                <th scope="col" width="10%">date</th>
+                <th scope="col" width="10%">start_date</th>
+                <th scope="col" width="10%">end_date</th>
+                <th scope="col" width="35%">screen_name</th>
+                <th scope="col" width="10%" class="actions">更新</th>
+                <th scope="col" width="10%" class="actions">削除</th>
             </tr>
         </thead>
         <tbody>
@@ -56,8 +89,8 @@
                 <td><?= $this->Number->format($list['id']) ?></td>
                 <td><?= $list['title'] ?></td>
                 <td><?= $list['date']->i18nFormat('MM月dd日') ?></td>
-                <td><?= $list['start_date']->i18nFormat('MM月dd日 H:i') ?></td>
-                <td><?= $list['end_date']->i18nFormat('MM月dd日 H:i') ?></td>
+                <td><?= $list['start_date']->i18nFormat('HH:mm') ?></td>
+                <td><?= $list['end_date']->i18nFormat('HH:mm') ?></td>
                 <?= $this -> Form -> create (
                                 "null", [ "type" => "post",
                                           "url" => [ "controller" => "aqours",
@@ -94,6 +127,7 @@
         dateFormat: 'yy-mm-dd',
         timeFormat: 'HH:mm',
         hourGrid: 6,
+        firstDay: 1,
         showOtherMonths:true,
     });
 
@@ -102,6 +136,7 @@
         dateFormat: 'yy-mm-dd',
         timeFormat: 'HH:mm',
         hourGrid: 6,
+        firstDay: 1,
         showOtherMonths:true,
     });
   });
