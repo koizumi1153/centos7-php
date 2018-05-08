@@ -28,14 +28,14 @@ class AqoursController extends AppController
       if(empty($user)){
         // 存在しない場合は404エラー
         throw new NotFoundException(__('User not found'));
-      }elseif(env('CAKEPHP_ENV') == "production"){
+      }else{
         // 本番は当日のマスターを取得する
         $master = $this->Aqours->getLiveShop();
         if(empty($master)){
           // 存在しない場合は404エラー
           throw new NotFoundException(__('Master not found'));
         }
-        $shopId = $master['id'];
+        if(isset($master[0]['id'])) $shopId = $master[0]['id'];
       }
     }
 

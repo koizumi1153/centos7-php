@@ -63,37 +63,20 @@ class AqoursLiveShopShell extends Shell
               $checkUsers = $this->Aqours->checkUserNumber($shop['id'], $num);
               $user_ids = array_unique(array_column($checkUsers,'user_id'));
               foreach($user_ids as $user_id) {
-                $number_text = "まもなく整理券番号".$num."番までのお客様へ、売場入場列へのご案内を開始いたします。";
-                $messageData = $this->You->setPushMessage($number_text);
+                $number_text = "現在、整理券番号".$num."番まで呼び出しています。\n\n";
+                $number_text .= "https://twitter.com/".$screen_name;
+                $messageData = $this->Line->setTextMessage($number_text);
 
                 // PUSH
                 $this->Line->sendPush(LINE_API_PUSH_URL, $this->ACCESS_TOKEN, $user_id, $messageData);
               }
+
+              $this->Aqours->updateUserNumber($shop['id'], $num);
             }
           }
         }
       }
     }
   }
-
-
-
-  /**
-   * 管理者のみPUSH
-   */
-  public function sell(){
-    $data = $this->Aqours->getInformationPush();
-    if(!empty($data)) {
-
-      // 登録されてPUSHされていないモノ
-      $messageData = $this->You->setPushMessageWeek($data, true);
-      // ユーザーは管理者のみ
-      // PUSH
-      $this->Line->sendPush(LINE_API_PUSH_URL, $this->ACCESS_TOKEN, $this->ADMIN_USER, $messageData);
-
-      // フラグ更新
-      $this->Aqours->updatePush();
-    }
-
-  }
+  
 }

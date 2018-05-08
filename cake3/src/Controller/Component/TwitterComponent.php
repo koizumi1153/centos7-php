@@ -44,6 +44,9 @@ class TwitterComponent extends Component
     $content = $connection->get("statuses/user_timeline", array(
       "screen_name" => "{$screen_name}",
       "count" => "{$count}",
+      "trim_user" => "true",
+      "exclude_replies" => "true",
+      "include_rts" => "false",
     ));
 
     return $content;
