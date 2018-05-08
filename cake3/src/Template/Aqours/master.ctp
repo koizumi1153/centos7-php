@@ -31,7 +31,7 @@ textarea:focus {
   border: 1px solid #1abc9c;
 }
 </style>
-<h2><?= __('整理券番号登録') ?></h2>
+<h2><?= __('イベント登録') ?></h2>
 
 <?= $this -> Form -> create (
                 "null", [ "type" => "post",
@@ -68,7 +68,7 @@ textarea:focus {
 <?= $this -> Form -> end (); ?>
 
 
-<div class="aqours index large-9 medium-8 columns content">
+
     <h3><?= __('登録イベント') ?></h3>
     <table cellpadding="0" cellspacing="0">
         <thead>
@@ -111,7 +111,7 @@ textarea:focus {
             <?php endforeach; ?>
         </tbody>
     </table>
-</div>
+
 
 <script>
   $(function () {
