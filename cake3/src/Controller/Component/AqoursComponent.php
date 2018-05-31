@@ -14,6 +14,7 @@ class AqoursComponent extends Component
 
     protected $AQOURS_RADIO = 'AqoursRadio';
     protected $AQOURS_MEDIA = 'AqoursMedia';
+    protected $AQOURS_LANTIS = 'AqoursLantis';
 
     /**
      * @param array $config
@@ -31,6 +32,7 @@ class AqoursComponent extends Component
       $this->LiveShop = TableRegistry::get("AqoursLiveShop");
       $this->UserLiveNumber = TableRegistry::get("AqoursUserLiveNumber");
       $this->LiveShopNumber = TableRegistry::get("AqoursLiveShopNumber");
+      $this->Lantis = TableRegistry::get($this->AQOURS_LANTIS);
     }
 
   /**
@@ -1060,5 +1062,40 @@ class AqoursComponent extends Component
       ->where(['shop_id' => $shopId])
       ->where(['deleted IS NULL'])
       ->execute();
+  }
+
+  /**
+   * @param int $offset
+   * @param int $limit
+   * @return mixed
+   */
+  public function getLantis($offset=0, $limit=10){
+    $query=$this->Lantis->find()
+      ->where(['deleted IS NULL'])
+      ->limit($limit)
+      ->offset($offset)
+      ->order(['id' => 'DESC']);
+    return $query->hydrate(false)->toArray();
+  }
+
+  /**
+   * @param $contents
+   */
+  public function setLantis($contents)
+  {
+    $query = $this->Lantis->query();
+    $query->insert([
+      'id',
+      'publish_date',
+      'title',
+      'created'
+    ]);
+    if (!empty($contents)) {
+      foreach ($contents as $news) {
+        $news['created'] = date('Y-m-d H:i:s');
+        $query->values($news);
+      }
+      $query->execute();
+    }
   }
 }

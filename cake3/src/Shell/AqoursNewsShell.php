@@ -242,4 +242,48 @@ class AqoursNewsShell extends Shell
     }
   }
 
+  public function lantis(){
+    $lantisNews = $this->Aqours->getLantis(0, 10);
+
+    $baseurl = "https://www.lantis.jp";
+    $url = "https://www.lantis.jp/title/lovelive_sunshine/";
+    $html = file_get_contents($url);
+    $dom = \phpQuery::newDocument($html);
+
+    $cnt = 0;
+    // 1ページ5データ
+    for ($i = 0; $i < 3; $i++) {
+      $href   = trim( $dom["#title-left"]->find("li:eq($i)")->find("a")->attr("href"));
+      $title = trim( $dom["#title-left"]->find("li:eq($i)")->text() );
+      $date  = trim( $dom["#title-left"]->find("li:eq($i)")->find(".news-date")->text() );
+
+      if($this->Aqours->checkNews($date, $title, $lantisNews)){
+        //存在していたらtrue
+        continue;
+      }else{
+        $contents[$cnt]['publish_date'] = $date;
+        $contents[$cnt]['title']        = $title;
+        $contents[$cnt]['url']          = $baseurl.$href;
+        $cnt++;
+      }
+    }
+
+    if(!empty($contents)) {
+      //bulkinsert
+      $this->Aqours->setLantis($contents);
+
+      //push
+      $text = '';
+      foreach($contents as $cnt => $data) {
+        if($cnt != 0) $text .= "\n\n";
+        $text .= "{$data['title']}";
+        $text .= "\n\n".$data['url'];
+      }
+
+      $messageData = $this->Line->setTextMessage($text);
+
+      $this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
+    }
+  }
+
 }
