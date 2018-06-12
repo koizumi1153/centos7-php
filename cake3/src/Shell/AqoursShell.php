@@ -6,15 +6,22 @@ use Cake\Controller\ComponentRegistry;
 use App\Controller\Component\AqoursComponent;
 use App\Controller\Component\RakutenComponent;
 use App\Controller\Component\ScraipingComponent;
+use App\Controller\Component\YouComponent;
+use App\Controller\Component\LineComponent;
 
 class AqoursShell extends Shell
 {
+
+  // アクセストークン
+  protected $ACCESS_TOKEN = 'Fi3v81mkVQooM1wF9l2P4+aSWaYJFumNi4Vr3DwwMU1wSETxbTPn9HPDc64WCHujPM1XqLsPyN0oZuaIsJ6oqEYWsOl9U3gZXbbgJss8tfqPi0B/afR0kIt1pTmvM+kYCvAZEwqz5Cg7g5ecZ0hCBAdB04t89/1O/w1cDnyilFU=';
 
   public function initialize() {
     // component
     $this->Aqours  = new AqoursComponent(new ComponentRegistry());
     $this->Rakuten = new RakutenComponent(new ComponentRegistry());
     $this->Scraping = new ScraipingComponent(new ComponentRegistry());
+    $this->You = new YouComponent(new ComponentRegistry());
+    $this->Line = new LineComponent(new ComponentRegistry());
   }
 
   public function main()
@@ -312,8 +319,8 @@ class AqoursShell extends Shell
     if (!empty($info)){
       $this->Aqours->setInfo($info);
 
-      foreach($messages as $message){
-        $messageData = $this->You->setPushMessage($message);
+      foreach($messages as $text){
+        $messageData = $this->Line->setTextMessage($text);
         $this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
       }
     }
