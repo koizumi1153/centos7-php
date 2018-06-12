@@ -249,12 +249,13 @@ class AqoursShell extends Shell
   /**
    * キャストの生放送番組取得
    */
-  public function cast_nico(){
+  public function castnico(){
     $list = $this->Aqours->getNico();
 
     $now = date('Y-m-d H:i:s');
     $category = AQOURS_KIND_RADIO;
     $info = array();
+    $messages = array();
     foreach($list as $data){
       $url = $data['url'];
       $doc = $this->Scraping->getScraping($url);
@@ -266,8 +267,11 @@ class AqoursShell extends Shell
         continue;
       }
 
+      $link = trim( $doc["section.contents_list.live"]->find("section.sub.future")->find("li")->find("div.item_right")->find("a")->attr("href") );
+
       // 日付チェック
       $dateStr = trim( $doc["section.contents_list.live"]->find("section.sub.future")->find("li")->find("div.item_right")->find(".date")->text() );
+      if(empty($dateStr)) continue;
       preg_match('/\d{1,2}月\d{1,2}日/', $dateStr, $date);
 
       if(isset($date[0])) {
@@ -283,7 +287,8 @@ class AqoursShell extends Shell
       }
 
       $discription = $data['discription'];
-      if(!empty($data['twitter'])) $discription .= "\n\nhttps://twitter.com/".$data['twitter'];
+      if(!empty($link)) $discription .= "\n\n".$link;
+#      if(!empty($data['twitter'])) $discription .= "\n\nhttps://twitter.com/".$data['twitter'];
 
       $day = $year."年".$date;
 
@@ -298,9 +303,19 @@ class AqoursShell extends Shell
       $data['push'] = PUSH_READY;
       $data['created'] = $now;
       $info[] = $data;
+
+      $message = $title."が".$dateStr."に予定されました。\n\n".$link;
+      $messages[] = $message;
     }
 
     // 追加する情報があれば追加
-    if (!empty($info)) $this->Aqours->setInfo($info);
+    if (!empty($info)){
+      $this->Aqours->setInfo($info);
+
+      foreach($messages as $message){
+        $messageData = $this->You->setPushMessage($message);
+        $this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
+      }
+    }
   }
 }
