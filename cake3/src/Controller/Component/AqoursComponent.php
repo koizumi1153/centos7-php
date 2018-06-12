@@ -15,6 +15,7 @@ class AqoursComponent extends Component
     protected $AQOURS_RADIO = 'AqoursRadio';
     protected $AQOURS_MEDIA = 'AqoursMedia';
     protected $AQOURS_LANTIS = 'AqoursLantis';
+    protected $AQOURS_NICO   = 'AqoursNico';
 
     /**
      * @param array $config
@@ -33,6 +34,7 @@ class AqoursComponent extends Component
       $this->UserLiveNumber = TableRegistry::get("AqoursUserLiveNumber");
       $this->LiveShopNumber = TableRegistry::get("AqoursLiveShopNumber");
       $this->Lantis = TableRegistry::get($this->AQOURS_LANTIS);
+      $this->Nico = TableRegistry::get($this->AQOURS_NICO);
     }
 
   /**
@@ -1097,5 +1099,35 @@ class AqoursComponent extends Component
       }
       $query->execute();
     }
+  }
+
+  /**
+   * 存在チェック　true:有る,false:無い
+   * @param $title
+   * @return bool
+   */
+  public function checkInfoTitle($title, $kind = AQOURS_KIND_RADIO){
+    $query=$this->Information->find();
+    $query->where(['title' => $title]);
+    $query->where(['kind' => $kind]);
+    $query->where(['deleted IS NULL']);
+
+    $data = $query->hydrate(false)->toArray();
+    if(!empty($data)){
+      return true;
+    }else{
+      false;
+    }
+  }
+
+  /**
+   * 生放送情報取得
+   * @return mixed
+   */
+  public function getNico(){
+    $query=$this->Nico->find();
+    $query->where(['deleted IS NULL']);
+
+    return $query->hydrate(false)->toArray();
   }
 }

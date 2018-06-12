@@ -211,15 +211,10 @@ return [
     "インターネットラジオステーション音泉 http://www.onsen.ag/program/llss/",
      ]),
 
-  // radio情報 url => 番組タイトル
-  define('SCRAPING_RADIO_URL', [
-    AQOURS_URA_RADIO_URL => AQOURS_URA_RADIO_TITLE,
-    AIDA_MARUGOTO_RIKAKO => AIDA_MARUGOTO_TITlE,
-    MOGU_COMI_URL => MOGU_COMI_TITLE,
-    FUWA_SATA_URL => FUWA_SATA_TITLE,
-  ]),
 
   define('LIVE_SHOP_TICKET', '整理券'), //文言指定
 
   define('LIVE_SHOP_NUMBER_MAX', '5'), //入力制限
-];//defien
+
+
+];//define

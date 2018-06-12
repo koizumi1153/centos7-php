@@ -5,6 +5,7 @@ use Cake\Console\Shell;
 use Cake\Controller\ComponentRegistry;
 use App\Controller\Component\AqoursComponent;
 use App\Controller\Component\RakutenComponent;
+use App\Controller\Component\ScraipingComponent;
 
 class AqoursShell extends Shell
 {
@@ -13,6 +14,7 @@ class AqoursShell extends Shell
     // component
     $this->Aqours  = new AqoursComponent(new ComponentRegistry());
     $this->Rakuten = new RakutenComponent(new ComponentRegistry());
+    $this->Scraping = new ScraipingComponent(new ComponentRegistry());
   }
 
   public function main()
@@ -241,6 +243,64 @@ class AqoursShell extends Shell
     }
 
     // 追加する情報があれば追加
-    if (!empty($title)) $this->Aqours->setInfo($info);
+    if (!empty($info)) $this->Aqours->setInfo($info);
+  }
+
+  /**
+   * キャストの生放送番組取得
+   */
+  public function cast_nico(){
+    $list = $this->Aqours->getNico();
+
+    $now = date('Y-m-d H:i:s');
+    $category = AQOURS_KIND_RADIO;
+    $info = array();
+    foreach($list as $data){
+      $url = $data['url'];
+      $doc = $this->Scraping->getScraping($url);
+      if(empty($doc)) continue;
+
+      $title= trim( $doc["section.contents_list.live"]->find("section.sub.future")->find("li")->find("div.item_right")->find("h2")->text() );
+      // データ存在チェック
+      if($this->Aqours->checkInfoTitle($title)){
+        continue;
+      }
+
+      // 日付チェック
+      $dateStr = trim( $doc["section.contents_list.live"]->find("section.sub.future")->find("li")->find("div.item_right")->find(".date")->text() );
+      preg_match('/\d{1,2}月\d{1,2}日/', $dateStr, $date);
+
+      if(isset($date[0])) {
+        $date = $date[0];
+      }
+
+      $year  = date('Y');
+      $month = date('m');
+      if($month == "11" || $month == "12"){
+        if(strpos($date,'01月')){
+          $year += 1;
+        }
+      }
+
+      $discription = $data['discription'];
+      if(!empty($data['twitter'])) $discription .= "\n\nhttps://twitter.com/".$data['twitter'];
+
+      $day = $year."年".$date;
+
+      $data = array();
+      $data['kind'] = $category;
+      $data['title'] = $title;
+      $data['discription'] = $discription;
+      $data['price'] = '';
+      $data['jan'] = '';
+      $data['img'] = '';
+      $data['date'] = $day;
+      $data['push'] = PUSH_READY;
+      $data['created'] = $now;
+      $info[] = $data;
+    }
+
+    // 追加する情報があれば追加
+    if (!empty($info)) $this->Aqours->setInfo($info);
   }
 }
