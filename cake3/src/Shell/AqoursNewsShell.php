@@ -59,7 +59,7 @@ class AqoursNewsShell extends Shell
           if(!in_array($id, $newsIds)) {
             $contents[$cnt]['category'] = $category;
             $contents[$cnt]['id'] = $id;
-            $contents[$cnt]['title'] = ($dom["#contents"]->find(".infobox")->find(".titlebase")->find(".title:eq($i)")->text());
+            $contents[$cnt]['title'] = ($dom["#contents"]->find(".infobox")->find(".title:eq($i)")->text());
             $contents[$cnt]['publish_date'] = ($dom["#contents"]->find(".infobox")->find(".date:eq($i)")->text());
             $contents[$cnt]['html_body'] = htmlspecialchars(trim($dom["#contents"]->find(".infobox:eq($i)")->find("p")->html()));
             $contents[$cnt]['body'] = htmlspecialchars(trim($dom["#contents"]->find(".infobox:eq($i)")->find("p")->text()));
