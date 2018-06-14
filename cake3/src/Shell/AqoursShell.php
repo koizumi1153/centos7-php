@@ -293,7 +293,7 @@ class AqoursShell extends Shell
         }
       }
 
-      $discription = $data['discription'];
+      $discription = $dateStr."\n\n".$data['discription'];
       if(!empty($link)) $discription .= "\n\n".$link;
 #      if(!empty($data['twitter'])) $discription .= "\n\nhttps://twitter.com/".$data['twitter'];
 
