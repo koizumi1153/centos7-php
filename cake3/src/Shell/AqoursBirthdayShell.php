@@ -7,7 +7,7 @@ use App\Controller\Component\AqoursComponent;
 use App\Controller\Component\LineComponent;
 use App\Controller\Component\YouComponent;
 use App\Controller\Component\TwitterComponent;
-use Abraham\TwitterOAuth\TwitterOAuth; //twitter
+use App\Controller\Component\EmailComponent;
 
 class AqoursBirthdayShell extends Shell
 {
@@ -20,6 +20,7 @@ class AqoursBirthdayShell extends Shell
     $this->Line   = new LineComponent(new ComponentRegistry());
     $this->You    = new YouComponent(new ComponentRegistry());
     $this->Twitter= new TwitterComponent(new ComponentRegistry());
+    $this->Email= new EmailComponent(new ComponentRegistry());
   }
 
 
@@ -34,15 +35,23 @@ class AqoursBirthdayShell extends Shell
       foreach($birthdays as $birthday) {
         $name = $birthday['name'];
         $tag = $name."生誕祭".$year;
+        $title = $tag;
+
         if($birthday['kind'] == 1){
           $str = "{$day}は{$name}さんの誕生日！！\nおめでとうございます！\n#{$tag}";
+
+          $body = "{$day}は{$name}さんの誕生日！！\nおめでとうございます！";
         }else{
           //キャラ
           $str = "{$day}は{$name}の誕生日！！\nおめでとう！\n#{$tag}";
+          $title = "{$day}は{$name}の誕生日！！\nおめでとう！";
         }
 
         // twitter送信
         $result = $this->Twitter->post($str);
+
+        // はてなブログ用
+        $this->Mail->send(HATENA_BLOG_MAIL, HATENA_BLOG_MAIL_NAME, HATENA_SEND_MAIL, $title, $body);
       }
     }
   }

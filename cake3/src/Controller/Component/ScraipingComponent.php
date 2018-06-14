@@ -3,6 +3,10 @@ namespace App\Controller\Component;
 
 use Cake\Controller\Component;
 
+/**
+ * Class ScraipingComponent
+ * @package App\Controller\Component
+ */
 class ScraipingComponent extends Component
 {
 
