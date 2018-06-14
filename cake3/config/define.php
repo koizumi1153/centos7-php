@@ -218,7 +218,7 @@ return [
 
 
   define('HATENA_SEND_MAIL', "x1b40kr0r8.o5mt5hrbm6azu@blog.hatena.ne.jp"),
-  define('HATENA_BLOG_MAIL', "koisan1153@gmail.com"),
+  define('HATENA_BLOG_MAIL', "koizumi1153@gmail.com"),
   define('HATENA_BLOG_MAIL_NAME', "KOI"),
 
 ];//define

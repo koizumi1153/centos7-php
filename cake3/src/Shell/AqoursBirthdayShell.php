@@ -44,14 +44,14 @@ class AqoursBirthdayShell extends Shell
         }else{
           //キャラ
           $str = "{$day}は{$name}の誕生日！！\nおめでとう！\n#{$tag}";
-          $title = "{$day}は{$name}の誕生日！！\nおめでとう！";
+          $body = "{$day}は{$name}の誕生日！！\nおめでとう！";
         }
 
         // twitter送信
         $result = $this->Twitter->post($str);
 
         // はてなブログ用
-        $this->Mail->send(HATENA_BLOG_MAIL, HATENA_BLOG_MAIL_NAME, HATENA_SEND_MAIL, $title, $body);
+        $this->Email->send(HATENA_BLOG_MAIL, HATENA_BLOG_MAIL_NAME, HATENA_SEND_MAIL, $title, $body);
       }
     }
   }

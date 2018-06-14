@@ -23,7 +23,7 @@ class EmailComponent extends Component
   public function send($senderMail, $senderName, $destinationMail, $title, $body){
     $email = new Email('default');
 
-    $email->from([$senderMail => $senderName])
+    $email->from($senderMail , $senderName)
           ->to($destinationMail)
           ->subject($title)
           ->send($body);
