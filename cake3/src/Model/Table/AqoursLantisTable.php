@@ -32,8 +32,8 @@ class AqoursLantisTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('aqours_lantis');
-        $this->primaryKey('id');
+        $this->setTable('aqours_lantis');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
     }

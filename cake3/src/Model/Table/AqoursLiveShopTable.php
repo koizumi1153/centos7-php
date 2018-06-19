@@ -19,8 +19,8 @@ class AqoursLiveShopTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('aqours_live_shop');
-        $this->primaryKey('id');
+        $this->setTable('aqours_live_shop');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
     }

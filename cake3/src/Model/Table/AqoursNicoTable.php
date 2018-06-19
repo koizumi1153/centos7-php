@@ -23,8 +23,8 @@ class AqoursNicoTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('aqours_nico');
-        $this->primaryKey('id');
+        $this->setTable('aqours_nico');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
     }

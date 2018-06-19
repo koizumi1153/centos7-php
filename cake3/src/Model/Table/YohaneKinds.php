@@ -19,8 +19,8 @@ class YohaneKinds extends Table
   {
     parent::initialize($config);
 
-    $this->table('yohane_kinds');
-    $this->primaryKey('id');
+    $this->setTable('yohane_kinds');
+    $this->setPrimaryKey('id');
 
     $this->addBehavior('Timestamp');
   }

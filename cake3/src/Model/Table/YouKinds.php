@@ -19,8 +19,8 @@ class YouKinds extends Table
   {
     parent::initialize($config);
 
-    $this->table('you_kinds');
-    $this->primaryKey('id');
+    $this->setTable('you_kinds');
+    $this->setPrimaryKey('id');
 
     $this->addBehavior('Timestamp');
   }

@@ -19,8 +19,8 @@ class AqoursUserLiveNumberTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('aqours_user_live_number');
-        $this->primaryKey('id');
+        $this->setTable('aqours_user_live_number');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
     }

@@ -32,8 +32,8 @@ class AqoursClub2017Table extends Table
     {
         parent::initialize($config);
 
-        $this->table('aqours_club2017');
-        $this->primaryKey('id');
+        $this->setTable('aqours_club2017');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
     }

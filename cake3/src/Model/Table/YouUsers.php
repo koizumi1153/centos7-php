@@ -19,8 +19,8 @@ class YouUsers extends Table
   {
     parent::initialize($config);
 
-    $this->table('you_users');
-    $this->primaryKey('id');
+    $this->setTable('you_users');
+    $this->setPrimaryKey('id');
 
     $this->addBehavior('Timestamp');
   }

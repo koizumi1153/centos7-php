@@ -23,8 +23,8 @@ class AqoursRadioTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('aqours_radio');
-        $this->primaryKey('id');
+        $this->setTable('aqours_radio');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
     }

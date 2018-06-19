@@ -19,8 +19,8 @@ class YohaneFortunes extends Table
   {
     parent::initialize($config);
 
-    $this->table('yohane_fortunes');
-    $this->primaryKey('id');
+    $this->setTable('yohane_fortunes');
+    $this->setPrimaryKey('id');
 
     $this->addBehavior('Timestamp');
   }

@@ -19,8 +19,8 @@ class YohaneWeathers extends Table
   {
     parent::initialize($config);
 
-    $this->table('yohane_weathers');
-    $this->primaryKey('id');
+    $this->setTable('yohane_weathers');
+    $this->setPrimaryKey('id');
 
     $this->addBehavior('Timestamp');
   }

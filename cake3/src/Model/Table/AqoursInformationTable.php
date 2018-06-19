@@ -32,8 +32,8 @@ class AqoursInformationTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('aqours_information');
-        $this->primaryKey('id');
+        $this->setTable('aqours_information');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
     }

@@ -19,8 +19,8 @@ class YohaneMaps extends Table
   {
     parent::initialize($config);
 
-    $this->table('yohane_maps');
-    $this->primaryKey('id');
+    $this->setTable('yohane_maps');
+    $this->setPrimaryKey('id');
 
     $this->addBehavior('Timestamp');
   }

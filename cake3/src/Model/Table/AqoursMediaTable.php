@@ -32,8 +32,8 @@ class AqoursMediaTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('aqours_media');
-        $this->primaryKey('id');
+        $this->setTable('aqours_media');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
     }

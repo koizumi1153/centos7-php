@@ -32,8 +32,8 @@ class AqoursBirthdayTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('aqours_birthday');
-        $this->primaryKey('id');
+        $this->setTable('aqours_birthday');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
     }

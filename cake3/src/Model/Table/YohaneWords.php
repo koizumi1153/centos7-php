@@ -19,8 +19,8 @@ class YohaneWords extends Table
   {
     parent::initialize($config);
 
-    $this->table('yohane_words');
-    $this->primaryKey('id');
+    $this->setTable('yohane_words');
+    $this->setPrimaryKey('id');
 
     $this->addBehavior('Timestamp');
   }
