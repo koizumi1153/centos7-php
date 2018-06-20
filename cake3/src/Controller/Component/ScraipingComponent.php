@@ -63,4 +63,5 @@ class ScraipingComponent extends Component
 
     return $result;
   }
+
 }

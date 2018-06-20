@@ -1,6 +1,7 @@
 <?php
 namespace App\Shell;
 
+use App\Controller\Component\ScraipingComponent;
 use Cake\Console\Shell;
 use Cake\Controller\ComponentRegistry;
 use App\Controller\Component\AqoursComponent;
@@ -19,6 +20,7 @@ class AqoursNewsShell extends Shell
     $this->Aqours = new AqoursComponent(new ComponentRegistry());
     $this->Line   = new LineComponent(new ComponentRegistry());
     $this->You    = new YouComponent(new ComponentRegistry());
+    $this->Scraiping = new ScraipingComponent(new ComponentRegistry());
   }
 
   /**
@@ -283,6 +285,155 @@ class AqoursNewsShell extends Shell
       $messageData = $this->Line->setTextMessage($text);
 
       $this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
+    }
+  }
+
+  /**
+   * 特定のページを取得して行く。
+   *
+   */
+  public function live_page(){
+    $links = $this->Aqours->getScraping();
+    if(!empty($links)){
+      $scrapingData = [];
+      $linkUpate = [];
+      $contentsUpdate = [];
+
+      foreach($links as $link){
+        $contentsUpdateFlg = false; //内容変更
+        $linkNumUpdateFlg  = false; //リンク数変更
+
+        $scrapingId = $link['id'];
+        $title = $link['title'];
+        $url = $link['url'];
+        $baseUrl = $this->You->getUrlPath($url);
+
+        $linkFlg = $link['link_flg'];
+        $data = $this->Aqours->getScrapingData($scrapingId);
+
+        $linkData = $this->Aqours->checkUrlData($url, $data);
+        if(empty($lindData)) {
+          $linkData = $this->Aqours->initUrlData($scrapingId, $url, $title);
+        }
+
+        // スクレイピングで取得
+        $doc = $this->Scraiping->getScraping($url);
+        if(!empty($doc)){
+          $urls=[];
+          $contents = $doc["#contents"]->text();
+          $cnt=0;
+          for($i=0;$i<10;$i++){
+            $link = $doc["#contents"]->find("a:eq($i)")->attr("href");
+            if(!empty($link)){
+              $cnt++;
+              if($link != $url) $urls[] = $link;
+            }
+          }
+
+          // リンク数チェック
+          if($linkFlg) {
+            if ($linkData['link_num'] != $cnt) {
+              $linkData['link_num'] = $cnt;
+              $linkNumUpdateFlg = true;
+            }
+          }
+
+          if($linkData['contents_data'] != $contents){
+            $linkData['contents_data'] = $contents;
+            $contentsUpdateFlg = true;
+          }
+
+          $scrapingData[] = $linkData;
+
+          // 更新チェック
+          if($linkNumUpdateFlg){
+            $linkUpate[] = $linkData;
+          }elseif($contentsUpdateFlg){
+            $contentsUpdate[] = $linkData;
+          }
+        }
+
+        // linkチェック
+        if(!empty($urls)) {
+          foreach ($urls as $url){
+            $str = substr($url, 0, 4);
+            if($str != "http" && !empty($baseUrl)){
+              // 内部リンク
+              $url = $baseUrl. $url;
+
+              // スクレイピングで取得
+              $doc = $this->Scraiping->getScraping($url);
+
+              if(!empty($doc)){
+                $linkData = $this->Aqours->checkUrlData($url, $data);
+                if(empty($lindData)) {
+                  $linkData = $this->Aqours->initUrlData($scrapingId, $url, $title);
+                }
+
+                $contents = $doc["#contents"]->text();
+                $cnt=0;
+                for($i=0;$i<10;$i++){
+                  $link = $doc["#contents"]->find("a:eq($i)")->attr("href");
+                  if(!empty($link)){
+                    $cnt++;
+                  }
+                }
+
+                // リンク数チェック
+                if($linkFlg) {
+                  if ($linkData['link_num'] != $cnt) {
+                    $linkData['link_num'] = $cnt;
+                    $linkNumUpdateFlg = true;
+                  }
+                }
+
+                if($linkData['contents_data'] != $contents){
+                  $linkData['contents_data'] = $contents;
+                  $contentsUpdateFlg = true;
+                }
+
+                $scrapingData[] = $linkData;
+
+                // 更新チェック
+                if($linkNumUpdateFlg){
+                  $linkUpate[] = $linkData;
+                }elseif($contentsUpdateFlg){
+                  $contentsUpdate[] = $linkData;
+                }
+              }
+
+            }else{
+              continue;
+            }
+          }
+        }
+
+        if(!empty($scrapingData)){
+          $this->Aqours->setScrapingData($scrapingData);
+        }
+
+        $text = '';
+        if(!empty($linkUpate)){
+          foreach($linkUpate as $value){
+            if(!empty($text)) $text .= "\n\n\n";
+            $text .= "[".$value['title'] . "]のリンク数が更新されました。\n\n".$value['url'];
+          }
+        }
+
+        if(!empty($contentsUpdate)){
+          foreach($contentsUpdate as $value){
+            if(!empty($text)) $text .= "\n\n\n";
+            $text .= "[".$value['title'] . "]が更新されました。\n\n".$value['url'];
+          }
+        }
+
+        if(!empty($text)) {
+          // 更新送信
+          $messageData = $this->Line->setTextMessage($text);
+          $this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
+        }
+
+      }
     }
   }
 

@@ -221,4 +221,9 @@ return [
   define('HATENA_BLOG_MAIL', "koizumi1153@gmail.com"),
   define('HATENA_BLOG_MAIL_NAME', "KOI"),
 
+
+  // ライブページ
+  define('SCRAPING_KIND_LIVE', '1'),
+  define('SCRAPING_KIND_SHOP', '2'),
+
 ];//define

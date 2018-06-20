@@ -76,6 +76,5 @@ class AqoursInfoShell extends Shell
       // フラグ更新
       $this->Aqours->updatePush();
     }
-
   }
 }

@@ -448,4 +448,18 @@ class YouComponent extends Component
     return $messageData;
   }
 
+
+  /**
+   * urlからベースとなるパスを取得する
+   * @param $url
+   * @return mixed
+   */
+  public function getUrlPath($url){
+    $filename = strrchr( $url, "/" );
+    $filename = substr( $filename, 1 );
+
+    if($filename === false) return $url;
+    return str_replace($filename, '', $url);
+  }
+
 }

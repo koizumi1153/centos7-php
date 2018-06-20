@@ -16,6 +16,8 @@ class AqoursComponent extends Component
     protected $AQOURS_MEDIA = 'AqoursMedia';
     protected $AQOURS_LANTIS = 'AqoursLantis';
     protected $AQOURS_NICO   = 'AqoursNico';
+    protected $AQOURS_SCRAPING = "Aqours_Scraping";
+    protected $AQOURS_SCRAPING_DATA = "Aqours_Scraping_Data";
 
     /**
      * @param array $config
@@ -35,6 +37,9 @@ class AqoursComponent extends Component
       $this->LiveShopNumber = TableRegistry::get("AqoursLiveShopNumber");
       $this->Lantis = TableRegistry::get($this->AQOURS_LANTIS);
       $this->Nico = TableRegistry::get($this->AQOURS_NICO);
+
+      $this->Scraping = TableRegistry::get($this->AQOURS_SCRAPING);
+      $this->ScrapingData = TableRegistry::get($this->AQOURS_SCRAPING_DATA);
     }
 
   /**
@@ -1129,5 +1134,117 @@ class AqoursComponent extends Component
     $query->where(['deleted IS NULL']);
 
     return $query->hydrate(false)->toArray();
+  }
+
+  /**
+   * スクレイピング
+   * @param $kind
+   * @param null $id
+   * @return mixed
+   */
+  public function getScraping($kind,$id=''){
+    $query = $this->Scraping->find();
+
+    $query->where(['kind' => $kind]);
+    if(!empty($id)) $query->where(['id' => $id]);
+    $query->where(['deleted IS NULL']);
+
+    return $query->hydrate(false)->toArray();
+  }
+
+  /**
+   * スクレイピングデータ
+   * @param $scrapingId
+   * @param $id
+   * @return mixed
+   */
+  public function getScrapingData($scrapingId, $id=''){
+    $query = $this->ScrapingData->find();
+
+    $query->where(['scraping_id' => $scrapingId]);
+    if(!empty($id)) $query->where(['id' => $id]);
+    $query->where(['deleted IS NULL']);
+
+    return $query->hydrate(false)->toArray();
+  }
+
+  /**
+   * 更新する情報配列
+   * @param $datas
+   */
+  public function setScrapingData($datas){
+    foreach($datas as $data){
+      if(!empty($data['id'])){
+        self::updateScrapingData($data);
+      }else{
+        self::insertScrapingData($data);
+      }
+    }
+  }
+
+  /**
+   * @param $data
+   */
+  public function insertScrapingData($data){
+    $query = $this->ScrapingData->query();
+    $query->insert([
+      'id',
+      'scraping_id',
+      'url',
+      'title',
+      'contents_data',
+      'link_num',
+      'created'
+    ]);
+    if (!empty($data)) {
+      $data['created'] = date('Y-m-d H:i:s');
+      $query->values($data);
+      $query->execute();
+    }
+  }
+
+  /**
+   * @param $data
+   */
+  public function updateScrapingData($data){
+    $now = date('Y-m-d H:i:s');
+    $query = $this->ScrapingData->query();
+
+    $query->update()
+      ->set(['contents_data' => $data['contents_data']])
+      ->set(['link_num' => $data['link_num']])
+      ->where(['id' => $data['id']])
+      ->where(['deleted IS NULL'])
+      ->execute();
+  }
+
+  /**
+   * @param $url
+   * @param $data
+   */
+  public function checkUrlData($url, $data){
+    $result = [];
+    foreach($data as $row){
+      if($row['url'] == $url){
+        $result = $row;
+        break;
+      }
+    }
+
+    return $result;
+  }
+
+  /**
+   * 初期化
+   * @param $scrapingId
+   * @param $url
+   * @param $title
+   */
+  public function initUrlData($scrapingId, $url, $title){
+    $result['scraping_id'] = $scrapingId;
+    $result['url'] = $url;
+    $result['title'] = $title;
+    $result['contents_data'] = '';
+    $result['link_num'] = 0;
   }
 }
