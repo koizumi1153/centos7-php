@@ -487,16 +487,23 @@ class AqoursNewsShell extends Shell
             if(!empty($text)){
               $text .= "\n\n". $value['url'];
             }else{
-              $text .= $BaseTitle."からのお知らせです。";
+              $text .= $BaseTitle."からのお知らせです。\n". $value['url'];
             }
 
             if($value['is_new']){
-              $text .= "[" . $value['title'] . "]が追加されました。\n" . $value['url'];
+              $text .= "[" . $value['title'] . "]が追加されました。" ;
             }else {
-              $text .= "[" . $value['title'] . "]が更新されました。\n" . $value['url'];
+              $text .= "[" . $value['title'] . "]が更新されました。";
             }
 
           }
+        }
+
+        //送信
+        if(!empty($text)) {
+          // 更新送信
+          $messageData = $this->Line->setTextMessage($text);
+          $this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
         }
 
       }
