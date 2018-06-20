@@ -312,7 +312,7 @@ class AqoursNewsShell extends Shell
         $data = $this->Aqours->getScrapingData($scrapingId);
 
         $linkData = $this->Aqours->checkUrlData($url, $data);
-        if(empty($lindData)) {
+        if(empty($linkData)) {
           $linkData = $this->Aqours->initUrlData($scrapingId, $url, $title);
         }
 
@@ -365,7 +365,7 @@ class AqoursNewsShell extends Shell
 
               if(!empty($doc)){
                 $linkData = $this->Aqours->checkUrlData($url, $data);
-                if(empty($lindData)) {
+                if(empty($linkData)) {
                   $linkData = $this->Aqours->initUrlData($scrapingId, $url, $title);
                 }
 
@@ -435,8 +435,9 @@ class AqoursNewsShell extends Shell
    *
    */
   public function shopPage(){
-    $links = $this->Aqours->getScraping(SCRAPING_KIND_LIVE);
+    $links = $this->Aqours->getScraping(SCRAPING_KIND_SHOP);
     if(!empty($links)) {
+      $scrapingData = [];
       $contentsUpdate = [];
       foreach($links as $link) {
         $scrapingId = $link['id'];
@@ -449,21 +450,21 @@ class AqoursNewsShell extends Shell
         $doc = $this->Scraiping->getScraping($url);
         for($i=0;$i<=10;$i++) {
           $newFlg = false;
-          $contents = str_replace("\t", '', trim($doc["main"]->find("ul")->find("li:eq($i)")->find("div.left")->text()));
+          $contents = str_replace("\t", '', trim($doc["main"]->find("ul")->find("li")->find("div.left:eq($i)")->text()));
           if (!empty($contents)) {
             $contentsData = explode("\n", $contents);
             if(!empty($contentsData[0])){
               $title = $contentsData[0];
               $linkData = $this->Aqours->checkTitleData($title, $data);
-              if(empty($lindData)) {
+              if(empty($linkData)) {
                 $linkData = $this->Aqours->initUrlData($scrapingId, $url, $title);
                 $newFlg = true;
               }
 
-              if($linkData['contents'] != $contents){
-                $linkData['contents'] = $contents;
+              if($linkData['contents_data'] != $contents){
+                $linkData['contents_data'] = $contents;
                 // データ更新用
-                $scrapingData[] = $lindData;
+                $scrapingData[] = $linkData;
 
                 // 通知用
                 $linkData['is_new'] = $newFlg;
