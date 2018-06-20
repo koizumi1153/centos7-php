@@ -1142,7 +1142,7 @@ class AqoursComponent extends Component
    * @param null $id
    * @return mixed
    */
-  public function getScraping($kind,$id=''){
+  public function getScraping($kind, $id=''){
     $query = $this->Scraping->find();
 
     $query->where(['kind' => $kind]);
@@ -1246,5 +1246,7 @@ class AqoursComponent extends Component
     $result['title'] = $title;
     $result['contents_data'] = '';
     $result['link_num'] = 0;
+
+    return $result;
   }
 }

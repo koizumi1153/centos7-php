@@ -292,11 +292,10 @@ class AqoursNewsShell extends Shell
    * 特定のページを取得して行く。
    *
    */
-  public function live_page(){
-    $links = $this->Aqours->getScraping();
+  public function livePage(){
+    $links = $this->Aqours->getScraping(SCRAPING_KIND_LIVE);
     if(!empty($links)){
       $scrapingData = [];
-      $linkUpate = [];
       $contentsUpdate = [];
 
       foreach($links as $link){
@@ -305,8 +304,9 @@ class AqoursNewsShell extends Shell
 
         $scrapingId = $link['id'];
         $title = $link['title'];
-        $url = $link['url'];
-        $baseUrl = $this->You->getUrlPath($url);
+        $baseUrl = $url = $link['url'];
+        $base = $this->You->getUrlPath($url);
+
 
         $linkFlg = $link['link_flg'];
         $data = $this->Aqours->getScrapingData($scrapingId);
@@ -346,9 +346,7 @@ class AqoursNewsShell extends Shell
           $scrapingData[] = $linkData;
 
           // 更新チェック
-          if($linkNumUpdateFlg){
-            $linkUpate[] = $linkData;
-          }elseif($contentsUpdateFlg){
+          if($linkNumUpdateFlg || $contentsUpdateFlg){
             $contentsUpdate[] = $linkData;
           }
         }
@@ -357,9 +355,10 @@ class AqoursNewsShell extends Shell
         if(!empty($urls)) {
           foreach ($urls as $url){
             $str = substr($url, 0, 4);
-            if($str != "http" && !empty($baseUrl)){
+            if($str != "http" && !empty($base)){
               // 内部リンク
-              $url = $baseUrl. $url;
+              $url = $base. $url;
+              if($baseUrl == $url) continue;
 
               // スクレイピングで取得
               $doc = $this->Scraiping->getScraping($url);
@@ -395,9 +394,7 @@ class AqoursNewsShell extends Shell
                 $scrapingData[] = $linkData;
 
                 // 更新チェック
-                if($linkNumUpdateFlg){
-                  $linkUpate[] = $linkData;
-                }elseif($contentsUpdateFlg){
+                if($linkNumUpdateFlg || $contentsUpdateFlg){
                   $contentsUpdate[] = $linkData;
                 }
               }
@@ -413,17 +410,14 @@ class AqoursNewsShell extends Shell
         }
 
         $text = '';
-        if(!empty($linkUpate)){
-          foreach($linkUpate as $value){
-            if(!empty($text)) $text .= "\n\n\n";
-            $text .= "[".$value['title'] . "]のリンク数が更新されました。\n\n".$value['url'];
-          }
-        }
 
         if(!empty($contentsUpdate)){
           foreach($contentsUpdate as $value){
-            if(!empty($text)) $text .= "\n\n\n";
-            $text .= "[".$value['title'] . "]が更新されました。\n\n".$value['url'];
+            if(!empty($text)){
+              $text .= "\n\n". $value['url'];
+            }else {
+              $text .= "[" . $value['title'] . "]が更新されました。\n\n" . $value['url'];
+            }
           }
         }
 
