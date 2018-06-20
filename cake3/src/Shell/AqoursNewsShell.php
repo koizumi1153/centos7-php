@@ -416,7 +416,7 @@ class AqoursNewsShell extends Shell
             if(!empty($text)){
               $text .= "\n\n". $value['url'];
             }else {
-              $text .= "[" . $value['title'] . "]が更新されました。\n\n" . $value['url'];
+              $text .= "[" . $value['title'] . "]が更新されました。\n" . $value['url'];
             }
           }
         }
@@ -425,6 +425,77 @@ class AqoursNewsShell extends Shell
           // 更新送信
           $messageData = $this->Line->setTextMessage($text);
           $this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
+        }
+
+      }
+    }
+  }
+
+  /**
+   *
+   */
+  public function shopPage(){
+    $links = $this->Aqours->getScraping(SCRAPING_KIND_LIVE);
+    if(!empty($links)) {
+      $contentsUpdate = [];
+      foreach($links as $link) {
+        $scrapingId = $link['id'];
+        $BaseTitle = $link['title'];
+        $url = $link['url'];
+
+        $data = $this->Aqours->getScrapingData($scrapingId);
+
+        // スクレイピングで取得
+        $doc = $this->Scraiping->getScraping($url);
+        for($i=0;$i<=10;$i++) {
+          $newFlg = false;
+          $contents = str_replace("\t", '', trim($doc["main"]->find("ul")->find("li:eq($i)")->find("div.left")->text()));
+          if (!empty($contents)) {
+            $contentsData = explode("\n", $contents);
+            if(!empty($contentsData[0])){
+              $title = $contentsData[0];
+              $linkData = $this->Aqours->checkTitleData($title, $data);
+              if(empty($lindData)) {
+                $linkData = $this->Aqours->initUrlData($scrapingId, $url, $title);
+                $newFlg = true;
+              }
+
+              if($linkData['contents'] != $contents){
+                $linkData['contents'] = $contents;
+                // データ更新用
+                $scrapingData[] = $lindData;
+
+                // 通知用
+                $linkData['is_new'] = $newFlg;
+                $contentsUpdate[] = $linkData;
+              }
+            }
+          }else{
+            break;
+          }
+        }
+
+        if(!empty($scrapingData)){
+          $this->Aqours->setScrapingData($scrapingData);
+        }
+
+        $text = '';
+
+        if(!empty($contentsUpdate)){
+          foreach($contentsUpdate as $value){
+            if(!empty($text)){
+              $text .= "\n\n". $value['url'];
+            }else{
+              $text .= $BaseTitle."からのお知らせです。";
+            }
+
+            if($value['is_new']){
+              $text .= "[" . $value['title'] . "]が追加されました。\n" . $value['url'];
+            }else {
+              $text .= "[" . $value['title'] . "]が更新されました。\n" . $value['url'];
+            }
+
+          }
         }
 
       }

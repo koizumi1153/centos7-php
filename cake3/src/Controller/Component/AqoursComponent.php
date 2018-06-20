@@ -1219,6 +1219,7 @@ class AqoursComponent extends Component
   }
 
   /**
+   * urlで判別
    * @param $url
    * @param $data
    */
@@ -1226,6 +1227,24 @@ class AqoursComponent extends Component
     $result = [];
     foreach($data as $row){
       if($row['url'] == $url){
+        $result = $row;
+        break;
+      }
+    }
+
+    return $result;
+  }
+
+  /**
+   * タイトルで判別
+   * @param $title
+   * @param $data
+   * @return array
+   */
+  public function checkTitleData($title, $data){
+    $result = [];
+    foreach($data as $row){
+      if($row['title'] == $title){
         $result = $row;
         break;
       }
