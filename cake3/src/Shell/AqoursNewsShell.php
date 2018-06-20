@@ -485,9 +485,9 @@ class AqoursNewsShell extends Shell
         if(!empty($contentsUpdate)){
           foreach($contentsUpdate as $value){
             if(!empty($text)){
-              $text .= "\n\n". $value['url'];
+              $text .= "\n\n";
             }else{
-              $text .= $BaseTitle."からのお知らせです。\n". $value['url'];
+              $text .= $BaseTitle."からのお知らせです。\n". $value['url']."\n";
             }
 
             if($value['is_new']){
