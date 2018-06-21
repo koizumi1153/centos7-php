@@ -194,7 +194,8 @@ class AqoursShell extends Shell
 
       // title
       $title = trim($dom["#channel-main"]->find("a:eq(1)")->text());
-      $text .= "\n\n".$url;
+      $text .= "\n\n";
+      $text .= trim($dom["#channel-main"]->find("a:eq(0)")->attr('href'));
 
 /*
       $text .= "\n\n";
