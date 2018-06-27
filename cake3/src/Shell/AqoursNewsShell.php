@@ -7,6 +7,7 @@ use Cake\Controller\ComponentRegistry;
 use App\Controller\Component\AqoursComponent;
 use App\Controller\Component\LineComponent;
 use App\Controller\Component\YouComponent;
+use App\Controller\Component\EmailComponent;
 
 require_once('/var/www/cake/cake3/vendor/phpQuery-onefile.php');
 
@@ -21,6 +22,7 @@ class AqoursNewsShell extends Shell
     $this->Line   = new LineComponent(new ComponentRegistry());
     $this->You    = new YouComponent(new ComponentRegistry());
     $this->Scraiping = new ScraipingComponent(new ComponentRegistry());
+    $this->Email= new EmailComponent(new ComponentRegistry());
   }
 
   /**
@@ -432,11 +434,13 @@ class AqoursNewsShell extends Shell
   }
 
   /**
-   *
+   * 公式通販サイト処理
    */
   public function shopPage(){
     $links = $this->Aqours->getScraping(SCRAPING_KIND_SHOP);
     if(!empty($links)) {
+      $blogTitle = "";
+      $blogBody  = "";
       $scrapingData = [];
       $contentsUpdate = [];
       foreach($links as $link) {
@@ -488,16 +492,22 @@ class AqoursNewsShell extends Shell
               $text .= "\n\n";
             }else{
               $text .= $BaseTitle."からのお知らせです。\n". $value['url']."\n";
+              $blogTitle = $BaseTitle."に新商品が追加されました。";
             }
+
+            if(!empty($blogBody)) $blogBody .= "\n\n";
 
             if($value['is_new']){
               $text .= "[" . $value['title'] . "]が追加されました。" ;
+              $blogBody .= "[" . $value['title'] . "]が追加されました。" ;
             }else {
               $text .= "[" . $value['title'] . "]が更新されました。";
             }
 
           }
         }
+
+        if(!empty($blogBody)) $blogBody .= "\n\n{$url}";
 
         //送信
         if(!empty($text)) {
@@ -506,6 +516,10 @@ class AqoursNewsShell extends Shell
           $this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
         }
 
+        if(!empty($blogTitle) && !empty($blogBody)) {
+          // はてなブログ用
+          $this->Email->send(HATENA_BLOG_MAIL, HATENA_BLOG_MAIL_NAME, HATENA_SEND_MAIL, $blogTitle, $blogBody);
+        }
       }
     }
   }
