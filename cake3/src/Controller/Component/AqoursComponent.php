@@ -719,16 +719,20 @@ class AqoursComponent extends Component
    */
   public function getWeek($date){
     $time = strtotime($date);
+    $week = intval(date('d',$time));
+    $week_day = 7;
+/*
     $saturday = 6;
     $week_day = 7;
     $w = intval(date('w',$time));
     $d = intval(date('d',$time));
-    if ($w!=$saturday) {
-      $w = ($saturday - $w) + $d;
+    if ($w!=$week) {
+      $w = ($week - $w) + $d;
     } else { // 土曜日の場合を修正
       $w = $d;
     }
-    return ceil($w/$week_day);
+    */
+    return ceil($week/$week_day);
   }
 
   /**
