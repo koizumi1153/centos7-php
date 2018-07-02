@@ -202,12 +202,41 @@ class AqoursNewsShell extends Shell
     }
   }
 
+  /**
+   * Aqours CLUB 2017→2018 お知らせ取得
+   */
   public function club(){
     $contents = array();
     $clubNews = array();
     // 最新10件に含まれていなければOKとする
-    $clubNews = $this->Aqours->getClubNews2017(0, 10);
+    $clubNews = $this->Aqours->getClubNews(0, 10);
 
+    #2018用
+    $pushUrl = "https://lovelive-aqoursclub.jp/";
+    $url="https://lovelive-aqoursclub.jp/mob/form/ajaxLogin.php";
+    $nextUrl = "https://lovelive-aqoursclub.jp/mob/news/newsLis.php";
+    $posts = array(
+      'loginUser' => 'koizumi1153@gmail.com',
+      'loginPass' => 'sakura3939');
+
+    $dom = $this->Scraping->postScraping($url, $posts, $nextUrl);
+    if(!empty($dom)) {
+      $cnt=0;
+      for ($i = 0; $i < 5; $i++) {
+        $date  = ($dom["#container"]->find(".items-item:eq($i)")->find(".info-date")->text());
+        $title = ($dom["#container"]->find(".items-item:eq($i)")->find(".info-desc")->text());
+        if($this->Aqours->checkNews($date, $title, $clubNews)){
+          //存在していたらtrue
+          continue;
+        }else{
+          $contents[$cnt]['publish_date']  = $date;
+          $contents[$cnt]['title'] = $title;
+          $cnt++;
+        }
+      }
+
+    }
+/*
     $url = "https://lovelive-aqoursclub.jp/mob/index.php";
     $html = file_get_contents($url);
     $dom = \phpQuery::newDocument($html);
@@ -225,10 +254,10 @@ class AqoursNewsShell extends Shell
         $cnt++;
       }
     }
-
+*/
     if(!empty($contents)) {
       //bulkinsert
-      $this->Aqours->setClubNews2017($contents);
+      $this->Aqours->setClubNews($contents);
 
       //push
       $text = '';

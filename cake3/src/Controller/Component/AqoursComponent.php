@@ -10,7 +10,7 @@ class AqoursComponent extends Component
     protected $AQOURS_BLOG = 'AqoursBlog';
     protected $AQOURS_BIRTHDAY = 'AqoursBirthday';
     protected $AQOURS_NEWS = 'AqoursNews';
-    protected $AQOURS_CLUB2017 = 'AqoursClub2017';
+    protected $AQOURS_CLUB = 'AqoursClub2018';
 
     protected $AQOURS_RADIO = 'AqoursRadio';
     protected $AQOURS_MEDIA = 'AqoursMedia';
@@ -27,7 +27,7 @@ class AqoursComponent extends Component
       $this->Blog = TableRegistry::get($this->AQOURS_BLOG);
       $this->Birthday = TableRegistry::get($this->AQOURS_BIRTHDAY);
       $this->News = TableRegistry::get($this->AQOURS_NEWS);
-      $this->Club2017 = TableRegistry::get($this->AQOURS_CLUB2017);
+      $this->Club = TableRegistry::get($this->AQOURS_CLUB);
 
       $this->Media = TableRegistry::get($this->AQOURS_MEDIA);
       $this->Radio = TableRegistry::get($this->AQOURS_RADIO);
@@ -602,8 +602,8 @@ class AqoursComponent extends Component
    * @param int $limit
    * @return mixed
    */
-  public function getClubNews2017($offset=0, $limit=10){
-    $query=$this->Club2017->find()
+  public function getClubNews($offset=0, $limit=10){
+    $query=$this->Club->find()
       ->where(['deleted IS NULL'])
       ->limit($limit)
       ->offset($offset)
@@ -614,9 +614,9 @@ class AqoursComponent extends Component
   /**
    * @param $contents
    */
-  public function setClubNews2017($contents)
+  public function setClubNews($contents)
   {
-    $query = $this->Club2017->query();
+    $query = $this->Club->query();
     $query->insert([
       'id',
       'publish_date',
