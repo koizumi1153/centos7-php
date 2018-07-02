@@ -1,13 +1,13 @@
 <?php
 namespace App\Shell;
 
-use App\Controller\Component\ScraipingComponent;
 use Cake\Console\Shell;
 use Cake\Controller\ComponentRegistry;
 use App\Controller\Component\AqoursComponent;
 use App\Controller\Component\LineComponent;
 use App\Controller\Component\YouComponent;
 use App\Controller\Component\EmailComponent;
+use App\Controller\Component\ScraipingComponent;
 
 require_once('/var/www/cake/cake3/vendor/phpQuery-onefile.php');
 
@@ -219,7 +219,7 @@ class AqoursNewsShell extends Shell
       'loginUser' => 'koizumi1153@gmail.com',
       'loginPass' => 'sakura3939');
 
-    $dom = $this->Scraping->postScraping($url, $posts, $nextUrl);
+    $dom = $this->Scraiping->postScraping($url, $posts, $nextUrl);
     if(!empty($dom)) {
       $cnt=0;
       for ($i = 0; $i < 5; $i++) {
