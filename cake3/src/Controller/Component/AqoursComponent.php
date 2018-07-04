@@ -60,7 +60,8 @@ class AqoursComponent extends Component
     public function getInformationDate($date){
       $query=$this->Information->find()
         ->where(['date' => $date])
-        ->where(['deleted IS NULL']);
+        ->where(['deleted IS NULL'])
+        ->order(['kind' => 'ASC']);
       return $query->hydrate(false)->toArray();
     }
 

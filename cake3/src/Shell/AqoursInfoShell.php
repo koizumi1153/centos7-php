@@ -32,10 +32,17 @@ class AqoursInfoShell extends Shell
     $day = date('Y年m月d日');
 #    $day = '2018年01月26日'; //test用
     $data = $this->Aqours->getInformationDate($day);
-    if(!empty($data)) {
+    $kinds = [];
 
-      $messageData = $this->You->setPushMessage($data);
-      $this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
+    if(!empty($data)) {
+      foreach($data as $row){
+        $kinds[$data['kind']] = $row;
+      }
+
+      foreach($kinds as $kind => $val) {
+        $messageData = $this->You->setPushMessage($val);
+        $this->You->sendMessage($messageData, $this->ACCESS_TOKEN, $kind);
+      }
     }
   }
 

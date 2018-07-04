@@ -343,6 +343,8 @@ class YouComponent extends Component
       if($count != 0) $text .= "\n\n";
       if (in_array($row['kind'], $sell)) {
         $text .= "{$row['title']}が{$row['date']}に発売だよ。";
+      }elseif($row['kind'] == AQOURS_KIND_TICKET){
+        $text .= "{$row['title']}は{$row['date']}です。";
       } else {
         $text .= "{$row['title']}が{$row['date']}にあるよ。";
       }
@@ -455,7 +457,7 @@ class YouComponent extends Component
         $usersId = array_unique(array_merge($usersKindId, $usersMemberId));
       }
 
-      if(!empty($kind) && !empty($memberIds)){
+      if(!empty($kind) || !empty($memberIds)){
         //id指定
         $userCount = count($usersId);
         if ($userCount > 0) {
