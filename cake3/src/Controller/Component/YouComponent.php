@@ -447,7 +447,7 @@ class YouComponent extends Component
         $usersMemberId = array_column($users, 'users_id');
       }
 
-      if(!empty($usersKindId) && !empty($usersMemberId)){
+      if(!empty($kind) && !empty($memberIds)){
         //両方
         $usersId = array_intersect($usersKindId, $usersMemberId);
       }else {
@@ -455,7 +455,7 @@ class YouComponent extends Component
         $usersId = array_unique(array_merge($usersKindId, $usersMemberId));
       }
 
-      if(!empty($usersId)){
+      if(!empty($kind) && !empty($memberIds)){
         //id指定
         $userCount = count($usersId);
         if ($userCount > 0) {
