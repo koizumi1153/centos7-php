@@ -59,6 +59,10 @@ class AqoursMediaTable extends Table
             ->notEmpty('number');
 
         $validator
+          ->requirePresence('member_ids')
+          ->allowEmpty('member_ids', 'create');
+
+        $validator
             ->dateTime('deleted')
             ->allowEmpty('deleted');
 

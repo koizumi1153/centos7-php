@@ -58,6 +58,10 @@ class AqoursNicoTable extends Table
           ->notEmpty('twitter');
 
         $validator
+          ->requirePresence('member_ids')
+          ->allowEmpty('member_ids', 'create');
+
+        $validator
             ->dateTime('deleted')
             ->allowEmpty('deleted');
 

@@ -7,17 +7,22 @@ use Cake\ORM\TableRegistry;
 class AqoursComponent extends Component
 {
     protected $AQOURS_INFORMATION = 'AqoursInformation';
-    protected $AQOURS_BLOG = 'AqoursBlog';
-    protected $AQOURS_BIRTHDAY = 'AqoursBirthday';
-    protected $AQOURS_NEWS = 'AqoursNews';
-    protected $AQOURS_CLUB = 'AqoursClub2018';
+    protected $AQOURS_BLOG        = 'AqoursBlog';
+    protected $AQOURS_BIRTHDAY    = 'AqoursBirthday';
+    protected $AQOURS_NEWS        = 'AqoursNews';
+    protected $AQOURS_CLUB        = 'AqoursClub2018';
+    protected $AQOURS_RADIO       = 'AqoursRadio';
+    protected $AQOURS_MEDIA       = 'AqoursMedia';
+    protected $AQOURS_LANTIS      = 'AqoursLantis';
+    protected $AQOURS_NICO        = 'AqoursNico';
 
-    protected $AQOURS_RADIO = 'AqoursRadio';
-    protected $AQOURS_MEDIA = 'AqoursMedia';
-    protected $AQOURS_LANTIS = 'AqoursLantis';
-    protected $AQOURS_NICO   = 'AqoursNico';
-    protected $AQOURS_SCRAPING = "Aqours_Scraping";
-    protected $AQOURS_SCRAPING_DATA = "Aqours_Scraping_Data";
+    //scraping
+    protected $AQOURS_SCRAPING      = "AqoursScraping";
+    protected $AQOURS_SCRAPING_DATA = "AqoursScrapingData";
+
+    // push関連
+    protected $PUSH_KIND    = "AqoursUserPushKind";
+    protected $PUSH_MEMBER  = "AqoursUserPushMember";
 
     /**
      * @param array $config
@@ -40,6 +45,9 @@ class AqoursComponent extends Component
 
       $this->Scraping = TableRegistry::get($this->AQOURS_SCRAPING);
       $this->ScrapingData = TableRegistry::get($this->AQOURS_SCRAPING_DATA);
+
+      $this->PushKind = TableRegistry::get($this->PUSH_KIND);
+      $this->PushMember = TableRegistry::get($this->PUSH_MEMBER);
     }
 
   /**
@@ -1271,5 +1279,115 @@ class AqoursComponent extends Component
     $result['link_num'] = 0;
 
     return $result;
+  }
+
+  /**
+   * push_kind 初期化
+   *
+   * @param $usersId
+   */
+  public function initPushKind($usersId){
+    $kinds = PUSH_KIND;
+    $data['users_id'] = $usersId;
+    $data['push_flg'] = ON_FLG;
+
+    $query = $this->PushKind->query();
+    $query->insert([
+      'id',
+      'users_id',
+      'kind',
+      'push_flg',
+      'created'
+    ]);
+    foreach($kinds as $kind){
+      $data['kind'] = $kind;
+      $data['created'] = date('Y-m-d H:i:s');
+      $query->values($data);
+    }
+    $query->execute();
+  }
+
+  /**
+   * push_member 初期化
+   *
+   * @param $usersId
+   */
+  public function initPushMember($usersId){
+    $data['users_id'] = $usersId;
+    $data['push_flg'] = ON_FLG;
+    $memberIds = PUSH_MEMBER_IDS;
+
+    $query = $this->PushMember->query();
+    $query->insert([
+      'id',
+      'users_id',
+      'member_id',
+      'push_flg',
+      'created'
+    ]);
+    foreach($memberIds as $memberId => $name){
+      $data['member_id'] = $memberId;
+      $data['created'] = date('Y-m-d H:i:s');
+      $query->values($data);
+    }
+    $query->execute();
+  }
+
+  /**
+   * @param $data
+   */
+  public function updatePushKind($data){
+    $now = date('Y-m-d H:i:s');
+    $query = $this->PushKind->query();
+
+    $query->update()
+      ->set(['users_id' => $data['users_id']])
+      ->set(['kind'     => $data['kind']])
+      ->set(['push_flg' => $data['push_flg']])
+      ->set(['updated'  => $now])
+      ->where(['id'     => $data['id']])
+      ->where(['deleted IS NULL'])
+      ->execute();
+  }
+
+  /**
+   * @param $data
+   */
+  public function updatePushMember($data){
+    $now = date('Y-m-d H:i:s');
+    $query = $this->PushMember->query();
+
+    $query->update()
+      ->set(['users_id' => $data['users_id']])
+      ->set(['member_id'=> $data['member_id']])
+      ->set(['push_flg' => $data['push_flg']])
+      ->set(['updated'  => $now])
+      ->where(['id'     => $data['id']])
+      ->where(['deleted IS NULL'])
+      ->execute();
+  }
+
+  /**
+   * @param $kind
+   * @return mixed
+   */
+  public function getPushKindUser($kind){
+    $query=$this->PushKind->find();
+    $query->where(['kind' => $kind]);
+    $query->where(['deleted IS NULL']);
+
+    return $query->hydrate(false)->toArray();
+  }
+
+  /**
+   * @param $memberId
+   * @return mixed
+   */
+  public function getPushMemberUser($memberId){
+    $query=$this->PushKind->find();
+    $query->where(['member_id' => $memberId]);
+    $query->where(['deleted IS NULL']);
+
+    return $query->hydrate(false)->toArray();
   }
 }

@@ -226,4 +226,40 @@ return [
   define('SCRAPING_KIND_LIVE', '1'),
   define('SCRAPING_KIND_SHOP', '2'),
 
+  // push kind
+  define('PUSH_KIND_SELL',        '101'),
+  define('PUSH_KIND_PERFORMANCE', '102'),
+  define('PUSH_KIND_BLOG',        '103'),
+  define('PUSH_SELL_OFFICIAL',    '104'),
+
+  define('PUSH_KIND_CATEGORY',
+            array(PUSH_KIND_SELL => array( AQOURS_KIND_BOOK,
+                                           AQOURS_KIND_CD,
+                                           AQOURS_KIND_DVD,
+                                           AQOURS_KIND_TICKET,
+                                           AQOURS_KIND_GOODS,)),
+
+            array(PUSH_KIND_PERFORMANCE => array( AQOURS_KIND_EVENT,
+                                                  AQOURS_KIND_TV,
+                                                  AQOURS_KIND_RADIO,)),
+            array(PUSH_KIND_BLOG => array('BLOG')),
+            array(PUSH_SELL_OFFICIAL => array('OFFICIAL','CLUB'))
+  ),
+
+
+  define('PUSH_KIND', array(PUSH_KIND_SELL, PUSH_KIND_PERFORMANCE, PUSH_KIND_BLOG, PUSH_SELL_OFFICIAL)),
+
+  // master代わり
+  define('PUSH_MEMBER_IDS', array(  '11' => '伊波杏樹',
+                                    '12' => '逢田梨香子',
+                                    '13' => '諏訪ななか',
+                                    '14' => '小宮有紗',
+                                    '15' => '斉藤朱夏',
+                                    '16' => '小林愛香',
+                                    '17' => '高槻かなこ',
+                                    '18' => '鈴木愛奈',
+                                    '19' => '降幡愛',
+                                                          )
+  ),
+
 ];//define

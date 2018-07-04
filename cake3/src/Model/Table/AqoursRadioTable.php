@@ -58,6 +58,10 @@ class AqoursRadioTable extends Table
           ->notEmpty('weekday');
 
         $validator
+          ->requirePresence('member_ids')
+          ->allowEmpty('member_ids', 'create');
+
+        $validator
             ->dateTime('deleted')
             ->allowEmpty('deleted');
 

@@ -12,7 +12,7 @@ use Cake\ORM\TableRegistry;
  */
 class YouComponent extends Component
 {
-  public $components = ["Line", "Lottery", "WeatherMap"];
+  public $components = ["Line", "Lottery", "WeatherMap", "Aqours"];
 
   /** @var string */
   protected $USERS = 'YouUsers';
@@ -43,7 +43,15 @@ class YouComponent extends Component
       'created' => date('Y-m-d H:i:s')
     ]);
 
-    $this->Users->save($user);
+    $user = $this->Users->save($user);
+
+    if(!empty($user) && $user !== false){
+      // kind
+      $this->Aqours->initPushKind($user->id);
+
+      // member
+      $this->Aqours->initPushMember($user->id);
+    }
   }
 
   /**
@@ -462,4 +470,18 @@ class YouComponent extends Component
     return str_replace($filename, '', $url);
   }
 
+  /**
+   * 全ユーザー取得
+   * @param $page
+   * @return mixed
+   */
+  public function getAllUsers($page)
+  {
+    $query = $this->Users->find()->select(['user_id']);
+    $query->order(['id' => 'ASC']);
+    $query->limit(LINE_MULTI_USER)->page($page);
+
+    $users = $query->hydrate(false)->toArray();
+    return $users;
+  }
 }

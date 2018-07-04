@@ -22,7 +22,7 @@ class YouController extends AppController
     $this->autoRender = false;
 
     $messageData = array();
-    $request = $this->request->data;
+    $request = $this->request->getQueryParams();
 
     // ユーザーから送られてきたデータ
     $event = $request['events'][0];
@@ -41,8 +41,7 @@ class YouController extends AppController
 
       $text = <<<EOT
 YOUだよ、よろしくね。
-CD販売情報とか、イベント情報をPUSHするよ。
-位置情報を教えてくれたら天気予報もするかもね。
+ラブライブ!サンシャイン!!やAqoursに関する情報をPUSHするよ。
 EOT;
       $messageData = $this->Line->setTextMessage($text, $messageData);
     }elseif($type == 'unfollow'){
