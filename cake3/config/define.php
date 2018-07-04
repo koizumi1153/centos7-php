@@ -237,13 +237,14 @@ return [
                                            AQOURS_KIND_CD,
                                            AQOURS_KIND_DVD,
                                            AQOURS_KIND_TICKET,
-                                           AQOURS_KIND_GOODS,)),
+                                           AQOURS_KIND_GOODS,),
 
-            array(PUSH_KIND_PERFORMANCE => array( AQOURS_KIND_EVENT,
+                  PUSH_KIND_PERFORMANCE => array( AQOURS_KIND_EVENT,
                                                   AQOURS_KIND_TV,
-                                                  AQOURS_KIND_RADIO,)),
-            array(PUSH_KIND_BLOG => array('BLOG')),
-            array(PUSH_SELL_OFFICIAL => array('OFFICIAL','CLUB'))
+                                                  AQOURS_KIND_RADIO,),
+                  PUSH_KIND_BLOG        => array('BLOG'),
+                  PUSH_SELL_OFFICIAL    => array('OFFICIAL','CLUB'),
+            )
   ),
 
 
