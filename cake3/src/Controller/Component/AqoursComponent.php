@@ -391,6 +391,7 @@ class AqoursComponent extends Component
           $link  = $item['link'];
           if(!in_array($link,$linkAll)){
             $blogData[] = $item;
+            $item['creator'] = $creator;
             $return[] = $item;
           }
         }
@@ -401,6 +402,7 @@ class AqoursComponent extends Component
           $link  = $item['link'];
           if(!in_array($link,$linkAll)){
             $blogData[] = $item;
+            $item['creator'] = $creator;
             $return[] = $item;
           }
         }
@@ -1385,7 +1387,7 @@ class AqoursComponent extends Component
    * @return mixed
    */
   public function getPushMemberUser($membersId){
-    $query=$this->PushKind->find();
+    $query=$this->PushMember->find();
     $query->where(['member_id IN' => [$membersId]]);
     $query->where(['push_flg' => ON_FLG]);
     $query->where(['deleted IS NULL']);

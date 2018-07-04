@@ -242,6 +242,7 @@ class YouComponent extends Component
    */
   public function getPushUsersFromId($page, $ids, $time='')
   {
+    if(is_array($ids)) $ids = implode(',',$ids);
     $query = $this->Users->find()->select(['user_id']);
     $query->where(['push_flg' => ON_FLG]);
     $query->where(['id IN' => [$ids]]);
@@ -313,12 +314,9 @@ class YouComponent extends Component
   public function setPushBlogMessage($data)
   {
     $messageData = [];
-    $name = AQOURS_BLOG_NAMES;
     foreach ($data as $key => $row) {
       $text = '';
-      if(isset($name[$key])){
-        $text .= $name[$key]."\n";
-      }
+      $text .= $row['name']."\n";
       $text .= $row['title']."\n";
       $text .= $row['link'];
       $messageData = $this->Line->setTextMessage($text, $messageData);
@@ -437,21 +435,26 @@ class YouComponent extends Component
     $usersMemberId  = []; // member指定のusers_id
     if(!empty($messageData)) {
 
+      // kind確認
       if(!empty($kind)){
         $users = $this->Aqours->getPushKindUser($kind);
         $usersKindId = array_column($users, 'users_id');
       }
 
+      //　member確認
       if(!empty($memberIds)){
-        $memberIdsArr = explode(',',$memberIds);
-        foreach($memberIdsArr as $memberId){
-          $users = $this->Aqours->getPushMemberUser($memberId);
-          $list  = array_column($users, 'users_id');
-          array_merge($usersMemberId, $list);
-        }
+        $users = $this->Aqours->getPushMemberUser($memberIds);
+        $usersMemberId = array_column($users, 'users_id');
       }
 
-      $usersId = array_unique(array_merge($usersKindId, $usersMemberId));
+      if(!empty($usersKindId) && !empty($usersMemberId)){
+        //両方
+        $usersId = array_intersect($usersKindId, $usersMemberId);
+      }else {
+        //どちらか片方
+        $usersId = array_unique(array_merge($usersKindId, $usersMemberId));
+      }
+
       if(!empty($usersId)){
         //id指定
         $userCount = count($usersId);
