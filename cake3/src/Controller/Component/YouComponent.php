@@ -477,7 +477,7 @@ class YouComponent extends Component
    */
   public function getAllUsers($page)
   {
-    $query = $this->Users->find()->select(['user_id']);
+    $query = $this->Users->find()->select();
     $query->order(['id' => 'ASC']);
     $query->limit(LINE_MULTI_USER)->page($page);
 
