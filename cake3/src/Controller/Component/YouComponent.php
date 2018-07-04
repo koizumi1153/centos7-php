@@ -235,6 +235,27 @@ class YouComponent extends Component
   }
 
   /**
+   * @param $page
+   * @param $ids
+   * @param string $time
+   * @return mixed
+   */
+  public function getPushUsersFromId($page, $ids, $time='')
+  {
+    $query = $this->Users->find()->select(['user_id']);
+    $query->where(['push_flg' => ON_FLG]);
+    $query->where(['id IN' => [$ids]]);
+    $query->where(['deleted IS NULL']);
+    $query->order(['id' => 'ASC']);
+    $query->limit(LINE_MULTI_USER)->page($page);
+
+    if(!empty($time)) $query->where(['push_time' => $time]);
+
+    $users = $query->hydrate(false)->toArray();
+    return $users;
+  }
+
+  /**
    * 緯度経度登録
    *
    * @param $userId
@@ -410,24 +431,65 @@ class YouComponent extends Component
    * @param $messageData
    * @param $access_token
    */
-  public function sendMessage($messageData, $access_token){
+  public function sendMessage($messageData, $access_token, $kind='', $memberIds=''){
+    $usersId        = []; // you_user の id
+    $usersKindId    = []; // kind指定のusers_id
+    $usersMemberId  = []; // member指定のusers_id
     if(!empty($messageData)) {
-      // ユーザー取得
-      $userCount = $this->getPushUsersCount();
-      if ($userCount > 0) {
-        $allPage = ceil($userCount / LINE_MULTI_USER);
-        for ($page = 1; $page <= $allPage; $page++) {
-          $user = $this->getPushUsers($page);
-          $userIds = array_column($user, 'user_id');
 
-          // PUSH
-          if (count($messageData) > LINE_MESSAGE_COUNT) {
-            $messages = array_chunk($messageData, LINE_MESSAGE_COUNT);
-            foreach ($messages as $message) {
-              $this->Line->sendPush(LINE_API_MULTI_URL, $access_token, $userIds, $message);
+      if(!empty($kind)){
+        $users = $this->Aqours->getPushKindUser($kind);
+        $usersKindId = array_column($users, 'users_id');
+      }
+
+      if(!empty($memberIds)){
+        $memberIdsArr = explode(',',$memberIds);
+        foreach($memberIdsArr as $memberId){
+          $users = $this->Aqours->getPushMemberUser($memberId);
+          $list  = array_column($users, 'users_id');
+          array_merge($usersMemberId, $list);
+        }
+      }
+
+      $usersId = array_unique(array_merge($usersKindId, $usersMemberId));
+      if(!empty($usersId)){
+        //id指定
+        $userCount = count($usersId);
+        if ($userCount > 0) {
+          $allPage = ceil($userCount / LINE_MULTI_USER);
+          for ($page = 1; $page <= $allPage; $page++) {
+            $user = self::getPushUsersFromId($page, $usersId);
+            $userIds = array_column($user, 'user_id');
+
+            // PUSH
+            if (count($messageData) > LINE_MESSAGE_COUNT) {
+              $messages = array_chunk($messageData, LINE_MESSAGE_COUNT);
+              foreach ($messages as $message) {
+                $this->Line->sendPush(LINE_API_MULTI_URL, $access_token, $userIds, $message);
+              }
+            } else {
+              $this->Line->sendPush(LINE_API_MULTI_URL, $access_token, $userIds, $messageData);
             }
-          } else {
-            $this->Line->sendPush(LINE_API_MULTI_URL, $access_token, $userIds, $messageData);
+          }
+        }
+      }else {
+        // ユーザー取得
+        $userCount = $this->getPushUsersCount();
+        if ($userCount > 0) {
+          $allPage = ceil($userCount / LINE_MULTI_USER);
+          for ($page = 1; $page <= $allPage; $page++) {
+            $user = self::getPushUsers($page);
+            $userIds = array_column($user, 'user_id');
+
+            // PUSH
+            if (count($messageData) > LINE_MESSAGE_COUNT) {
+              $messages = array_chunk($messageData, LINE_MESSAGE_COUNT);
+              foreach ($messages as $message) {
+                $this->Line->sendPush(LINE_API_MULTI_URL, $access_token, $userIds, $message);
+              }
+            } else {
+              $this->Line->sendPush(LINE_API_MULTI_URL, $access_token, $userIds, $messageData);
+            }
           }
         }
       }

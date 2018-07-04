@@ -8,6 +8,7 @@ class AqoursComponent extends Component
 {
     protected $AQOURS_INFORMATION = 'AqoursInformation';
     protected $AQOURS_BLOG        = 'AqoursBlog';
+    protected $AQOURS_CHECK_BLOG  = 'AqoursCheckBlog';
     protected $AQOURS_BIRTHDAY    = 'AqoursBirthday';
     protected $AQOURS_NEWS        = 'AqoursNews';
     protected $AQOURS_CLUB        = 'AqoursClub2018';
@@ -28,26 +29,27 @@ class AqoursComponent extends Component
      * @param array $config
      */
     public function initialize(array $config) {
-      $this->Information = TableRegistry::get($this->AQOURS_INFORMATION);
-      $this->Blog = TableRegistry::get($this->AQOURS_BLOG);
-      $this->Birthday = TableRegistry::get($this->AQOURS_BIRTHDAY);
-      $this->News = TableRegistry::get($this->AQOURS_NEWS);
-      $this->Club = TableRegistry::get($this->AQOURS_CLUB);
+      $this->Information    = TableRegistry::get($this->AQOURS_INFORMATION);
+      $this->Blog           = TableRegistry::get($this->AQOURS_BLOG);
+      $this->CheckBlog      = TableRegistry::get($this->AQOURS_CHECK_BLOG);
+      $this->Birthday       = TableRegistry::get($this->AQOURS_BIRTHDAY);
+      $this->News           = TableRegistry::get($this->AQOURS_NEWS);
+      $this->Club           = TableRegistry::get($this->AQOURS_CLUB);
 
-      $this->Media = TableRegistry::get($this->AQOURS_MEDIA);
-      $this->Radio = TableRegistry::get($this->AQOURS_RADIO);
+      $this->Media          = TableRegistry::get($this->AQOURS_MEDIA);
+      $this->Radio          = TableRegistry::get($this->AQOURS_RADIO);
 
-      $this->LiveShop = TableRegistry::get("AqoursLiveShop");
+      $this->LiveShop       = TableRegistry::get("AqoursLiveShop");
       $this->UserLiveNumber = TableRegistry::get("AqoursUserLiveNumber");
       $this->LiveShopNumber = TableRegistry::get("AqoursLiveShopNumber");
-      $this->Lantis = TableRegistry::get($this->AQOURS_LANTIS);
-      $this->Nico = TableRegistry::get($this->AQOURS_NICO);
+      $this->Lantis         = TableRegistry::get($this->AQOURS_LANTIS);
+      $this->Nico           = TableRegistry::get($this->AQOURS_NICO);
 
-      $this->Scraping = TableRegistry::get($this->AQOURS_SCRAPING);
-      $this->ScrapingData = TableRegistry::get($this->AQOURS_SCRAPING_DATA);
+      $this->Scraping       = TableRegistry::get($this->AQOURS_SCRAPING);
+      $this->ScrapingData   = TableRegistry::get($this->AQOURS_SCRAPING_DATA);
 
-      $this->PushKind = TableRegistry::get($this->PUSH_KIND);
-      $this->PushMember = TableRegistry::get($this->PUSH_MEMBER);
+      $this->PushKind       = TableRegistry::get($this->PUSH_KIND);
+      $this->PushMember     = TableRegistry::get($this->PUSH_MEMBER);
     }
 
   /**
@@ -369,7 +371,7 @@ class AqoursComponent extends Component
    * ブログチェック
    * @return array
    */
-    public function checkBlog(){
+    public function checkBlog($master){
       $return = [];
       $linkAll = [];
       $blogs = $this->getBlog();
@@ -377,38 +379,35 @@ class AqoursComponent extends Component
         $linkAll = array_column($blogs, 'link');
       }
 
-      $rssUrl = AQOURS_BLOG_RSS_URLS;
-      $name = AQOURS_BLOG_NAMES;
-      foreach($rssUrl as $key => $url){
-        $blogData = array();
-        $creator = $name[$key];
-        $rss = simplexml_load_file($url);
-        if(strpos($url, 'lineblog') !== false){
-          // line
-          foreach($rss as $item){
-            if(isset($item->items)) continue;
-            $item = (array)$item;
-            $link  = $item['link'];
-            if(!in_array($link,$linkAll)){
-              $blogData[] = $item;
-              if(!isset($return[$key])) $return[$key] = $item;
-            }
-          }
-        }elseif(strpos($url, '.xml') !== false){
-          // xml
-          foreach($rss->channel->item as $item){
-            $item = (array)$item;
-            $link  = $item['link'];
-            if(!in_array($link,$linkAll)){
-              $blogData[] = $item;
-              if(!isset($return[$key])) $return[$key] = $item;
-            }
+      $url = $master['url'];
+      $blogData = array();
+      $creator = $master['title'];
+      $rss = simplexml_load_file($url);
+      if(strpos($url, 'lineblog') !== false){
+        // line
+        foreach($rss as $item){
+          if(isset($item->items)) continue;
+          $item = (array)$item;
+          $link  = $item['link'];
+          if(!in_array($link,$linkAll)){
+            $blogData[] = $item;
+            $return[] = $item;
           }
         }
+      }elseif(strpos($url, '.xml') !== false){
+        // xml
+        foreach($rss->channel->item as $item){
+          $item = (array)$item;
+          $link  = $item['link'];
+          if(!in_array($link,$linkAll)){
+            $blogData[] = $item;
+            $return[] = $item;
+          }
+        }
+      }
 
-        if(!empty($blogData)){
-          $this->setBlog($blogData, $creator);
-        }
+      if(!empty($blogData)){
+        $this->setBlog($blogData, $creator);
       }
 
       return $return;
@@ -456,7 +455,8 @@ class AqoursComponent extends Component
    */
     public function getBlog(){
       $query = $this->Blog->find()
-          ->where(['deleted IS NULL']);
+                          ->where(['deleted IS NULL'])
+                          ->limit(100);
       return $query->hydrate(false)->toArray();
     }
 
@@ -1374,6 +1374,7 @@ class AqoursComponent extends Component
   public function getPushKindUser($kind){
     $query=$this->PushKind->find();
     $query->where(['kind' => $kind]);
+    $query->where(['push_flg' => ON_FLG]);
     $query->where(['deleted IS NULL']);
 
     return $query->hydrate(false)->toArray();
@@ -1383,9 +1384,20 @@ class AqoursComponent extends Component
    * @param $memberId
    * @return mixed
    */
-  public function getPushMemberUser($memberId){
+  public function getPushMemberUser($membersId){
     $query=$this->PushKind->find();
-    $query->where(['member_id' => $memberId]);
+    $query->where(['member_id IN' => [$membersId]]);
+    $query->where(['push_flg' => ON_FLG]);
+    $query->where(['deleted IS NULL']);
+
+    return $query->hydrate(false)->toArray();
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getCheckBlog(){
+    $query=$this->CheckBlog->find();
     $query->where(['deleted IS NULL']);
 
     return $query->hydrate(false)->toArray();

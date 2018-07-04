@@ -21,11 +21,15 @@ class AqoursBlogShell extends Shell
 
   public function main()
   {
-    $blogs = $this->Aqours->checkBlog();
+    $masters = $this->Aqours->getCheckBlog();
+    foreach($masters as $master){
+      $memberIds = $master['member_ids'];
+      $blogs = $this->Aqours->checkBlog($master);
 
-    if(!empty($blogs)){
-      $messageData = $this->You->setPushBlogMessage($blogs);
-      $this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
+      if(!empty($blogs)){
+        $messageData = $this->You->setPushBlogMessage($blogs);
+        $this->You->sendMessage($messageData, $this->ACCESS_TOKEN, PUSH_KIND_BLOG, $memberIds);
+      }
     }
   }
 }
