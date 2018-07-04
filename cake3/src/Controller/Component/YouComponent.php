@@ -316,7 +316,7 @@ class YouComponent extends Component
     $messageData = [];
     foreach ($data as $key => $row) {
       $text = '';
-      $text .= $row['name']."\n";
+      $text .= $row['creator']."\n";
       $text .= $row['title']."\n";
       $text .= $row['link'];
       $messageData = $this->Line->setTextMessage($text, $messageData);
