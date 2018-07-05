@@ -84,6 +84,7 @@ class AqoursShell extends Shell
       if(!empty($weekday)) {
         $nextday = date('Y-m-d', strtotime($weekday));
       }
+      $data['member_ids'] = $row['member_ids'];
 
       $number = 0;
       $media = $this->Aqours->getMediaFromTitle($title);

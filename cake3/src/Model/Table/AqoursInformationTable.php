@@ -83,8 +83,13 @@ class AqoursInformationTable extends Table
             ->allowEmpty('push');
 
         $validator
-            ->dateTime('deleted')
-            ->allowEmpty('deleted');
+          ->requirePresence('member_ids')
+          ->allowEmpty('member_ids', 'create');
+
+
+        $validator
+              ->dateTime('deleted')
+              ->allowEmpty('deleted');
 
         return $validator;
     }

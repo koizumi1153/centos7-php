@@ -33,16 +33,37 @@ class AqoursInfoShell extends Shell
 #    $day = '2018年01月26日'; //test用
     $data = $this->Aqours->getInformationDate($day);
     $kinds = [];
+    $kindMembers = [];
 
     if(!empty($data)) {
       foreach($data as $row){
-        $kinds[$data['kind']] = $row;
+        //member指定がある場合
+        if(!empty($row['members_id'])){
+          $kindMembers[$row['kind']][] = $row;
+        }else {
+          // 種別のみ
+          $kinds[$row['kind']][] = $row;
+        }
       }
 
-      foreach($kinds as $kind => $val) {
-        $messageData = $this->You->setPushMessage($val);
-        $this->You->sendMessage($messageData, $this->ACCESS_TOKEN, $kind);
+      // 指定処理なし
+      if(!empty($kinds)) {
+        foreach ($kinds as $kind => $val) {
+          $messageData = $this->You->setPushMessage($val);
+          $this->You->sendMessage($messageData, $this->ACCESS_TOKEN, $kind);
+        }
       }
+
+      // member指定処理
+      if(!empty($kindMembers)){
+        foreach ($kindMembers as $kind => $val) {
+          foreach($val as $key => $row) {
+            $messageData = $this->You->setPushMessage(array($row));
+            $this->You->sendMessage($messageData, $this->ACCESS_TOKEN, $kind, $row['members_id']);
+          }
+        }
+      }
+
     }
   }
 

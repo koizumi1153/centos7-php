@@ -143,6 +143,7 @@ class AqoursComponent extends Component
         'img',
         'date',
         'push',
+        'member_ids',
         'created'
       ]);
       if(!empty($lists)){
