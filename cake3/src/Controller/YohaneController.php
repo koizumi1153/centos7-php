@@ -22,7 +22,7 @@ class YohaneController extends AppController
       $this->autoRender = false;
 
       $messageData = array();
-      $request = $this->request->data;
+      $request = $this->request->getData();
 
       // ユーザーから送られてきたデータ
       $event = $request['events'][0];

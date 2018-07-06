@@ -22,7 +22,7 @@ class YouController extends AppController
     $this->autoRender = false;
 
     $messageData = array();
-    $request = $this->request->getQueryParams();
+    $request = $this->request->getData();
 
     // ユーザーから送られてきたデータ
     $event = $request['events'][0];
