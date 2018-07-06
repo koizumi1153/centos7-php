@@ -248,6 +248,7 @@ class AqoursShell extends Shell
       $data['img'] = 'al/profile.jpg';
       $data['date'] = $date;
       $data['push'] = PUSH_READY;
+      $data['member_ids'] = "12,17"; // 固定
       $data['created'] = $now;
 
       $info[] = $data;
@@ -267,8 +268,8 @@ class AqoursShell extends Shell
     $category = AQOURS_KIND_RADIO;
     $info = array();
     $messages = array();
-    foreach($list as $data){
-      $url = $data['url'];
+    foreach($list as $val){
+      $url = $val['url'];
       $doc = $this->Scraping->getScraping($url);
       if(empty($doc)) continue;
 
@@ -297,7 +298,7 @@ class AqoursShell extends Shell
         }
       }
 
-      $discription = $dateStr."\n\n".$data['discription'];
+      $discription = $dateStr."\n\n".$val['discription'];
       if(!empty($link)) $discription .= "\n\n".$link;
 #      if(!empty($data['twitter'])) $discription .= "\n\nhttps://twitter.com/".$data['twitter'];
 
@@ -312,6 +313,7 @@ class AqoursShell extends Shell
       $data['img'] = '';
       $data['date'] = $day;
       $data['push'] = PUSH_READY;
+      $data['member_ids'] = $val['member_ids'];
       $data['created'] = $now;
       $info[] = $data;
 
