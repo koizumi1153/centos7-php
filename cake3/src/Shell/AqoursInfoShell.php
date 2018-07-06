@@ -38,7 +38,7 @@ class AqoursInfoShell extends Shell
     if(!empty($data)) {
       foreach($data as $row){
         //member指定がある場合
-        if(!empty($row['members_id'])){
+        if(!empty($row['member_ids'])){
           $kindMembers[$row['kind']][] = $row;
         }else {
           // 種別のみ
@@ -59,7 +59,7 @@ class AqoursInfoShell extends Shell
         foreach ($kindMembers as $kind => $val) {
           foreach($val as $key => $row) {
             $messageData = $this->You->setPushMessage(array($row));
-            $this->You->sendMessage($messageData, $this->ACCESS_TOKEN, $kind, $row['members_id']);
+            $this->You->sendMessage($messageData, $this->ACCESS_TOKEN, $kind, $row['member_ids']);
           }
         }
       }
