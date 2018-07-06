@@ -1406,4 +1406,22 @@ class AqoursComponent extends Component
 
     return $query->hydrate(false)->toArray();
   }
+
+  /**
+   * @param $kind
+   * @return int
+   */
+  public function getPushKind($kind){
+    $pushKind = 0;
+
+    $kinds = PUSH_KIND_CATEGORY;
+    foreach($kinds as $kindId => $val){
+      if(in_array($kind, $val)){
+        $pushKind = $kindId;
+        break;
+      }
+    }
+
+    return $pushKind;
+  }
 }

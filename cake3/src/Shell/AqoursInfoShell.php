@@ -37,12 +37,14 @@ class AqoursInfoShell extends Shell
 
     if(!empty($data)) {
       foreach($data as $row){
+        $pushKind = $this->Aqours->getPushKind($row['kind']);
+
         //member指定がある場合
         if(!empty($row['member_ids'])){
-          $kindMembers[$row['kind']][] = $row;
+          $kindMembers[$pushKind][] = $row;
         }else {
           // 種別のみ
-          $kinds[$row['kind']][] = $row;
+          $kinds[$pushKind][] = $row;
         }
       }
 

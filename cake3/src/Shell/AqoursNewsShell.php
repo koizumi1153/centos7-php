@@ -272,6 +272,7 @@ class AqoursNewsShell extends Shell
 
       #$this->Line->sendPush(LINE_API_PUSH_URL, $this->ACCESS_TOKEN, $this->ADMIN_USER, $messageData);
       $this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
+      $this->Twitter->post($messageData);
     }
   }
 
