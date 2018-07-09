@@ -271,7 +271,7 @@ class AqoursNewsShell extends Shell
       $messageData = $this->Line->setTextMessage($text);
 
       #$this->Line->sendPush(LINE_API_PUSH_URL, $this->ACCESS_TOKEN, $this->ADMIN_USER, $messageData);
-      $this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
+      $this->You->sendMessage($messageData, $this->ACCESS_TOKEN, PUSH_SELL_OFFICIAL);
       $this->Twitter->post($messageData);
     }
   }
@@ -316,7 +316,7 @@ class AqoursNewsShell extends Shell
 
       $messageData = $this->Line->setTextMessage($text);
 
-      $this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
+      $this->You->sendMessage($messageData, $this->ACCESS_TOKEN, PUSH_KIND_SELL);
     }
   }
 
@@ -456,7 +456,7 @@ class AqoursNewsShell extends Shell
         if(!empty($text)) {
           // 更新送信
           $messageData = $this->Line->setTextMessage($text);
-          $this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
+          $this->You->sendMessage($messageData, $this->ACCESS_TOKEN, PUSH_KIND_PERFORMANCE);
         }
 
       }
@@ -543,7 +543,7 @@ class AqoursNewsShell extends Shell
         if(!empty($text)) {
           // 更新送信
           $messageData = $this->Line->setTextMessage($text);
-          $this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
+          $this->You->sendMessage($messageData, $this->ACCESS_TOKEN, PUSH_KIND_SELL);
         }
 
         if(!empty($blogTitle) && !empty($blogBody)) {
