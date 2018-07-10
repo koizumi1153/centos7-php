@@ -152,6 +152,10 @@ EOT;
   }
 
   public function info($dbKind=AQOURS_KIND_CD){
+    // 1ヶ月毎の予定を表示する。
+    $month = date('Y-m');
+
+
     $information = $this->Aqours->getDataFromKind($dbKind);
     $this->set(compact('information'));
 

@@ -1424,4 +1424,57 @@ class AqoursComponent extends Component
 
     return $pushKind;
   }
+
+  /**
+   * ユーザーのpush設定取得
+   *
+   * @param $user
+   * @return mixed
+   */
+  public function getUserSettings($user){
+    $usersId = $user['id'];
+    $result[' user_id'] = $user['user_id'];
+      // 大元PUSHフラグ
+    $result['push_flg'] = $user['push_flg'];
+
+    //種別
+    $kind = PUSH_KIND;
+    foreach($kind as $kindId => $kinds) {
+      $result['kind'][$kindId] = self::findPushKindUser($kindId, $usersId);
+    }
+
+    foreach(PUSH_MEMBER_IDS as $memberId => $name) {
+      // 暗号毎
+      $result['member'][$memberId] = self::findPushMemberUser($memberId, $usersId);
+    }
+
+   return $result;
+  }
+
+
+  /**
+   * @param $kind
+   * @return mixed
+   */
+  public function findPushKindUser($kind, $usersId){
+    $query=$this->PushKind->find();
+    $query->where(['kind' => $kind]);
+    $query->where(['users_id' => $usersId]);
+    $query->where(['deleted IS NULL']);
+
+    return $query->hydrate(false)->toArray();
+  }
+
+  /**
+   * @param $memberId
+   * @return mixed
+   */
+  public function findPushMemberUser($membersId, $usersId){
+    $query=$this->PushMember->find();
+    $query->where(['member_id' => $membersId]);
+    $query->where(['users_id' => $usersId]);
+    $query->where(['deleted IS NULL']);
+
+    return $query->hydrate(false)->toArray();
+  }
 }

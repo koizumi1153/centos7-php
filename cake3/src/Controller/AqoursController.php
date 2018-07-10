@@ -175,4 +175,31 @@ class AqoursController extends AppController
     // masterへ戻す
     return $this->redirect(['action' => 'master']);
   }
+
+
+
+  /**
+   * @param string $userHash
+   */
+  public function userSetting($userHash='')
+  {
+    //userHashがない
+    if(empty($userHash)) {
+      throw new NotFoundException(__('Hash not found'));
+    }else{
+      $user = $this->You->getUserHash($userHash);
+      if(empty($user)){
+        // 存在しない場合は404エラー
+        throw new NotFoundException(__('User not found'));
+      }
+    }
+
+    // 設定済の情報取得
+    $setting = $this->Aqours->getUserSettings($user);
+    $this->set('setting', $setting);
+  }
+
+  public function updateUserPushFlg(){
+
+  }
 }
