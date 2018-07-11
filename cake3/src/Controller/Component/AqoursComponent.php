@@ -1046,7 +1046,7 @@ class AqoursComponent extends Component
     $result = $query->first();
     if(!empty($result)){
       $result = $result->toArray();
-    }
+  }
 
     return $result;
   }
@@ -1433,7 +1433,7 @@ class AqoursComponent extends Component
    */
   public function getUserSettings($user){
     $usersId = $user['id'];
-    $result[' user_id'] = $user['user_id'];
+    $result['user_id'] = $user['user_id'];
       // 大元PUSHフラグ
     $result['push_flg'] = $user['push_flg'];
 
@@ -1462,7 +1462,7 @@ class AqoursComponent extends Component
     $query->where(['users_id' => $usersId]);
     $query->where(['deleted IS NULL']);
 
-    return $query->hydrate(false)->toArray();
+    return $query->first()->toArray();
   }
 
   /**
@@ -1475,6 +1475,6 @@ class AqoursComponent extends Component
     $query->where(['users_id' => $usersId]);
     $query->where(['deleted IS NULL']);
 
-    return $query->hydrate(false)->toArray();
+    return $query->first()->toArray();
   }
 }
