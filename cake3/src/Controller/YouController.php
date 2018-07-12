@@ -151,6 +151,12 @@ EOT;
     print_r($result['Items']);exit;
   }
 
+  /**
+   * todo 0711変更予定
+   *
+   * @param int $dbKind
+   *
+   */
   public function info($dbKind=AQOURS_KIND_CD){
     // 1ヶ月毎の予定を表示する。
     $month = date('Y-m');

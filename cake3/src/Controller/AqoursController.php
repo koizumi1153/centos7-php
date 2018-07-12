@@ -199,7 +199,79 @@ class AqoursController extends AppController
     $this->set('setting', $setting);
   }
 
-  public function updateUserPushFlg(){
+  /**
+   * you_user push_flgを変更する
+   */
+  public function updateUserPushFlg($userHash){
+    //userHashがない
+    if(empty($userHash)) {
+      throw new NotFoundException(__('Hash not found'));
+    }else{
+      $user = $this->You->getUserHash($userHash);
+      if(empty($user)){
+        // 存在しない場合は404エラー
+        throw new NotFoundException(__('User not found'));
+      }
+    }
 
+    $post = $this->request->getData();
+    if(!empty($post)){
+      $pushFlg = $post['push_flg'];
+      // 変更
+      $this->YOU->setPushFlg($user['user_id'], $pushFlg);
+    }
+
+    // indexへ戻す
+    return $this->redirect(['action' => 'userSetting/'.$userHash]);
+  }
+
+  /**
+   * @param $userHash
+   * @return \Cake\Http\Response|null
+   */
+  public function updateUserSettingKind($userHash){
+    //userHashがない
+    if(empty($userHash)) {
+      throw new NotFoundException(__('Hash not found'));
+    }else{
+      $user = $this->You->getUserHash($userHash);
+      if(empty($user)){
+        // 存在しない場合は404エラー
+        throw new NotFoundException(__('User not found'));
+      }
+    }
+
+    $post = $this->request->getData();
+    if(!empty($post)){
+      $kinds = $post['kinds'];
+      // 変更
+      $this->Aqours->updateUserPushKind($user['id'], $kinds);
+    }
+
+    // indexへ戻す
+    return $this->redirect(['action' => 'userSetting/'.$userHash]);
+  }
+
+  public function updateUserSettingMember($userHash){
+    //userHashがない
+    if(empty($userHash)) {
+      throw new NotFoundException(__('Hash not found'));
+    }else{
+      $user = $this->You->getUserHash($userHash);
+      if(empty($user)){
+        // 存在しない場合は404エラー
+        throw new NotFoundException(__('User not found'));
+      }
+    }
+
+    $post = $this->request->getData();
+    if(!empty($post)){
+      $members = $post['members'];
+      // 変更
+      $this->Aqours->updateUserPushMember($user['id'], $members);
+    }
+
+    // indexへ戻す
+    return $this->redirect(['action' => 'userSetting/'.$userHash]);
   }
 }

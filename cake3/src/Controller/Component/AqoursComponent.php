@@ -1438,7 +1438,7 @@ class AqoursComponent extends Component
     $result['push_flg'] = $user['push_flg'];
 
     //種別
-    $kind = PUSH_KIND;
+    $kind = PUSH_KIND_DISP;
     foreach($kind as $kindId => $kinds) {
       $result['kind'][$kindId] = self::findPushKindUser($kindId, $usersId);
     }
@@ -1476,5 +1476,33 @@ class AqoursComponent extends Component
     $query->where(['deleted IS NULL']);
 
     return $query->first()->toArray();
+  }
+
+  /**
+   * @param $usersId
+   * @param $kinds
+   */
+  public function updateUserPushKind($usersId, $kinds){
+    foreach($kinds as $kind => $pushFlg){
+      $pushKind = self::findPushKindUser($kind, $usersId);
+      if($pushKind['push_flg'] != $pushFlg){
+        $pushKind['push_flg'] = $pushFlg;
+        self::updatePushKind($pushKind);
+      }
+    }
+  }
+
+  /**
+   * @param $usersId
+   * @param $members
+   */
+  public function updateUserPushMember($usersId, $members){
+    foreach($members as $membersId => $pushFlg){
+      $pushMember = self::findPushMemberUser($membersId, $usersId);
+      if($pushMember['push_flg'] != $pushFlg){
+        $pushMember['push_flg'] = $pushFlg;
+        self::updatePushMember($pushMember);
+      }
+    }
   }
 }
