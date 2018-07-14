@@ -197,6 +197,7 @@ class AqoursController extends AppController
     // 設定済の情報取得
     $setting = $this->Aqours->getUserSettings($user);
     $this->set('setting', $setting);
+    $this->set('userHash', $userHash);
   }
 
   /**
