@@ -568,7 +568,7 @@ class YouComponent extends Component
 
     // url生成
     $text  = "こちらにて設定を変更してください。\n\n";
-    $text .= "https://line.yohane.work/aqours/user_setting/".md5($userId);
+    $text .= "https://line.yohane.work/aqours/user-setting/".md5($userId);
     $messageData = $this->Line->setTextMessage($text, $messageData);
 
     return $messageData;
