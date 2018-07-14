@@ -219,7 +219,7 @@ class AqoursController extends AppController
     if(!empty($post)){
       $pushFlg = $post['push_flg'];
       // 変更
-      $this->YOU->setPushFlg($user['user_id'], $pushFlg);
+      $this->You->setPushFlg($user['user_id'], $pushFlg);
     }
 
     // indexへ戻す
