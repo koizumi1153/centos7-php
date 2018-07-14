@@ -1,7 +1,8 @@
 <style type="text/css">
-.check input {
+.check input{
         display: none;
 }
+
 .check label{
         display: block;
         float: left;
@@ -16,20 +17,24 @@
         line-height: 1;
         transition: .2s;
 }
+
 .check label:first-of-type{
         border-radius: 3px 0 0 3px;
 }
 .check label:last-of-type{
         border-radius: 0 3px 3px 0;
 }
-.check input[type="radio"]:checked + .switch-on {
-        background-color: #a1b91d;
-        color: #fff;
+
+.check-flg input[type="radio"]:checked + .switch-on{
+    background-color: #a1b91d;
+    color: #fff;
 }
-.check input[type="radio"]:checked + .switch-off {
-        background-color: #e67168;
-        color: #fff;
+
+.check-flg input[type="radio"]:checked + .switch-off{
+    background-color: #e67168;
+    color: #fff;
 }
+
 </style>
 
 <div class="first">
@@ -42,7 +47,7 @@
                           "name" => "form-push_flg"] ); ?>
 <input type="hidden" name="user_id" value="<?= $setting['user_id'] ?>" >
 
-<div class="check">
+<div class="check check-flg">
     <input type="radio" name="push_flg" id="on" value="<?= ON_FLG ?>" <?php if($setting['push_flg'] === ON_FLG) echo "checked=checked"; ?> ONCHANGE="submit(this.form)">
     <label for="on" class="switch-on">ON</label>
     <input type="radio" name="push_flg" id="off" value="<?= OFF_FLG ?>" <?php if($setting['push_flg'] === OFF_FLG) echo "checked=checked"; ?> ONCHANGE="submit(this.form)">
@@ -68,15 +73,16 @@
   foreach($kind as $kindId => $title) { ?>
   <?= $this -> Form -> label ( $title, $title ); ?>
 
-		<div class="check">
+		<div class=" kind<?= $kindId; ?>">
 				<input type="radio" name="kinds[<?= $kindId; ?>]" id="kinds[<?= $kindId; ?>] on" value="<?= ON_FLG ?>" <?php if($setting['kind'][$kindId]['push_flg'] === ON_FLG) echo "checked=checked"; ?> ONCHANGE="submit(this.form)">
 				<label for="on" class="switch-on">ON</label>
 				<input type="radio" name="kinds[<?= $kindId; ?>]" id="kinds[<?= $kindId; ?>] off" value="<?= OFF_FLG ?>" <?php if($setting['kind'][$kindId]['push_flg'] === OFF_FLG) echo "checked=checked"; ?> ONCHANGE="submit(this.form)">
 				<label for="off" class="switch-off">OFF</label>
 		</div>
-<br /><br />
+<br />
 <?php } ?>
 <?= $this -> Form -> end (); ?>
+
 <br />
 <h3><?= __('PUSH推しメンバー設定') ?></h3>
 <?= $this -> Form -> create (
@@ -91,12 +97,12 @@
   foreach($members as $memberId => $name) { ?>
   <?= $this -> Form -> label ( $name, $name ); ?>
 
-  		<div class="check">
+  		<div class=" member<?= $memberId; ?>">
   				<input type="radio" name="members[<?= $memberId; ?>]" id="members[<?= $memberId; ?>] on" value="<?= ON_FLG ?>" <?php if($setting['member'][$memberId]['push_flg'] === ON_FLG) echo "checked=checked"; ?> ONCHANGE="submit(this.form)">
   				<label for="on" class="switch-on">ON</label>
   				<input type="radio" name="members[<?= $memberId; ?>]" id="members[<?= $memberId; ?>] off" value="<?= OFF_FLG ?>" <?php if($setting['member'][$memberId]['push_flg'] === OFF_FLG) echo "checked=checked"; ?> ONCHANGE="submit(this.form)">
   				<label for="off" class="switch-off">OFF</label>
   		</div>
-<br /><br />
+<br />
 <?php } ?>
 <?= $this -> Form -> end (); ?>
