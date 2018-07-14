@@ -73,6 +73,8 @@ class AqoursInfoShell extends Shell
    * 週間情報PUSH
    * 取得日から7日間のデータを取得する
    * 返すのは1メッセージ(量が多くなっても見ずらくなりそうなので
+   *
+   * ここを修正するか悩みどころ
    */
   public function week(){
     $days = [];
