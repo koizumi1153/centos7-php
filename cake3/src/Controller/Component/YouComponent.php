@@ -551,4 +551,26 @@ class YouComponent extends Component
     $users = $query->hydrate(false)->toArray();
     return $users;
   }
+
+  /**
+   * 設定ページ
+   * @param $userId
+   * @return array
+   */
+  public function getAqoursSettignUrl($userId){
+    $messageData = array();
+
+    //hash確認
+    $user = self::getUsers($userId);
+    if(empty($user['hash'])){
+      self::setUserHash($userId);
+    }
+
+    // url生成
+    $text  = "こちらにて設定を変更してください。\n\n";
+    $text .= "https://line.yohane.work/aqours/user_setting/".md5($userId);
+    $messageData = $this->Line->setTextMessage($text, $messageData);
+
+    return $messageData;
+  }
 }

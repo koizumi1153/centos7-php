@@ -37,6 +37,7 @@ return [
   define('PUSHOFF',   1002), //push通知OFF
   define('PUSHTIME',  1003), //push通知時間変更
   define('AQOURS_LIVE_URL', 1004), //aqours ライブ物販用URL呼出
+  define('AQOURS_SETTING_URL', 1005),
 
   //priority
   define('PRIORITY_DEFAULT', 0), // 全て

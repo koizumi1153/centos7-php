@@ -95,6 +95,11 @@ EOT;
           case AQOURS_LIVE_URL:
             $messageData = $this->You->getAqoursLiveUrl($userId);
               break;
+
+          case AQOURS_SETTING_URL:
+            $messageData = $this->You->getAqoursSettignUrl($userId);
+            break;
+
           default:
             $messageData = $this->You->getWordsMessage($kind);
             break;
