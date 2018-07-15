@@ -458,6 +458,13 @@ class YouComponent extends Component
       }
 
       if(!empty($kind) || !empty($memberIds)){
+
+        $userCount = 0;
+        if(!empty($usersId)) {
+          // 人数取得変更
+          $userCount = self::getPushUsersCountIds($usersId);
+        }
+
         //id指定
         $userCount = count($usersId);
         if ($userCount > 0) {
@@ -477,7 +484,7 @@ class YouComponent extends Component
             }
           }
         }
-      }else {
+      } else {
         // ユーザー取得
         $userCount = $this->getPushUsersCount();
         if ($userCount > 0) {
@@ -572,5 +579,20 @@ class YouComponent extends Component
     $messageData = $this->Line->setTextMessage($text, $messageData);
 
     return $messageData;
+  }
+
+  /**
+   * PUSH 可能ユーザー数取得
+   * @return mixed
+   */
+  public function getPushUsersCountIds($ids=array())
+  {
+    $query = $this->Users->find();
+    $query->where(['push_flg' => ON_FLG]);
+    $query->where(['id IN' => [$ids]]);
+    $query->where(['deleted IS NULL']);
+
+    $total = $query->count();
+    return $total;
   }
 }
