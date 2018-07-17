@@ -458,26 +458,29 @@ class YouComponent extends Component
       }
 
       if(!empty($kind) || !empty($memberIds)){
+
         //id指定
         $userCount = count($usersId);
         if ($userCount > 0) {
           $allPage = ceil($userCount / LINE_MULTI_USER);
           for ($page = 1; $page <= $allPage; $page++) {
             $user = self::getPushUsersFromId($page, $usersId);
-            $userIds = array_column($user, 'user_id');
+            if(!empty($user)) {
+              $userIds = array_column($user, 'user_id');
 
-            // PUSH
-            if (count($messageData) > LINE_MESSAGE_COUNT) {
-              $messages = array_chunk($messageData, LINE_MESSAGE_COUNT);
-              foreach ($messages as $message) {
-                $this->Line->sendPush(LINE_API_MULTI_URL, $access_token, $userIds, $message);
+              // PUSH
+              if (count($messageData) > LINE_MESSAGE_COUNT) {
+                $messages = array_chunk($messageData, LINE_MESSAGE_COUNT);
+                foreach ($messages as $message) {
+                  $this->Line->sendPush(LINE_API_MULTI_URL, $access_token, $userIds, $message);
+                }
+              } else {
+                $this->Line->sendPush(LINE_API_MULTI_URL, $access_token, $userIds, $messageData);
               }
-            } else {
-              $this->Line->sendPush(LINE_API_MULTI_URL, $access_token, $userIds, $messageData);
             }
           }
         }
-      }else {
+      } else {
         // ユーザー取得
         $userCount = $this->getPushUsersCount();
         if ($userCount > 0) {
@@ -573,4 +576,5 @@ class YouComponent extends Component
 
     return $messageData;
   }
+
 }
