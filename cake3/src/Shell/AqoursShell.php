@@ -327,7 +327,7 @@ class AqoursShell extends Shell
 
       foreach($messages as $text){
         $messageData = $this->Line->setTextMessage($text);
-        $this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
+        $this->You->sendMessage($messageData, $this->ACCESS_TOKEN, PUSH_KIND_PERFORMANCE);
       }
     }
   }
