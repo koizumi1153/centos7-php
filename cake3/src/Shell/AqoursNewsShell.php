@@ -329,6 +329,7 @@ class AqoursNewsShell extends Shell
     if(!empty($links)){
       $scrapingData = [];
       $contentsUpdate = [];
+      $newUrl = [];
 
       foreach($links as $link){
         $updateFlg = false;
@@ -392,6 +393,7 @@ class AqoursNewsShell extends Shell
               // 内部リンク
               $url = $base. $url;
               if($baseUrl == $url) continue;
+              if(in_array($url, $newUrl)) continue;
 
               // スクレイピングで取得
               $doc = $this->Scraiping->getScraping($url);
@@ -400,6 +402,7 @@ class AqoursNewsShell extends Shell
                 $linkData = $this->Aqours->checkUrlData($url, $data);
                 if(empty($linkData)) {
                   $linkData = $this->Aqours->initUrlData($scrapingId, $url, $title);
+                  $newUrl[] = $url;
                 }
 
                 $contents = $doc["#contents"]->text();
