@@ -331,6 +331,7 @@ class AqoursNewsShell extends Shell
       $contentsUpdate = [];
 
       foreach($links as $link){
+        $updateFlg = false;
         $contentsUpdateFlg = false; //内容変更
         $linkNumUpdateFlg  = false; //リンク数変更
 
@@ -338,7 +339,6 @@ class AqoursNewsShell extends Shell
         $title = $link['title'];
         $baseUrl = $url = $link['url'];
         $base = $this->You->getUrlPath($url);
-
 
         $linkFlg = $link['link_flg'];
         $data = $this->Aqours->getScrapingData($scrapingId);
@@ -380,6 +380,7 @@ class AqoursNewsShell extends Shell
           // 更新チェック
           if($linkNumUpdateFlg || $contentsUpdateFlg){
             $contentsUpdate[] = $linkData;
+            $updateFlg = true;
           }
         }
 
@@ -426,7 +427,7 @@ class AqoursNewsShell extends Shell
                 $scrapingData[] = $linkData;
 
                 // 更新チェック
-                if($linkNumUpdateFlg || $contentsUpdateFlg){
+                if($updateFlg == false){
                   $contentsUpdate[] = $linkData;
                 }
               }
