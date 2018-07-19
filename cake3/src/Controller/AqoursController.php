@@ -183,7 +183,7 @@ class AqoursController extends AppController
    */
   public function userSetting($userHash='')
   {
-    $this->assign('title', 'PUSH設定画面');
+    $this->set('title', 'PUSH設定画面');
     //userHashがない
     if(empty($userHash)) {
       throw new NotFoundException(__('Hash not found'));
