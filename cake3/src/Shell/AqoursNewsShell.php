@@ -330,9 +330,7 @@ class AqoursNewsShell extends Shell
       $newUrl = [];
 
       foreach($links as $link){
-        $updateFlg = false;
         $contentsUpdateFlg = false; //内容変更
-        $linkNumUpdateFlg  = false; //リンク数変更
         $scrapingData = [];
         $contentsUpdate = [];
 
@@ -367,7 +365,6 @@ class AqoursNewsShell extends Shell
           if($linkFlg) {
             if ($linkData['link_num'] != $cnt) {
               $linkData['link_num'] = $cnt;
-              $linkNumUpdateFlg = true;
             }
           }
 
@@ -379,15 +376,15 @@ class AqoursNewsShell extends Shell
           $scrapingData[] = $linkData;
 
           // 更新チェック
-          if($linkNumUpdateFlg || $contentsUpdateFlg){
+          if($contentsUpdateFlg){
             $contentsUpdate[] = $linkData;
-            $updateFlg = true;
           }
         }
 
         // linkチェック
         if(!empty($urls)) {
           foreach ($urls as $url){
+            $contentsUpdateFlg = false; //内容変更
             $str = substr($url, 0, 4);
             if($str != "http" && !empty($base)){
               // 内部リンク
@@ -418,11 +415,10 @@ class AqoursNewsShell extends Shell
                 if($linkFlg) {
                   if ($linkData['link_num'] != $cnt) {
                     $linkData['link_num'] = $cnt;
-                    $linkNumUpdateFlg = true;
                   }
                 }
 
-                if($linkData['contents_data'] != $contents){
+                if($linkData['contents_data'] !== $contents){
                   $linkData['contents_data'] = $contents;
                   $contentsUpdateFlg = true;
                 }
@@ -430,7 +426,7 @@ class AqoursNewsShell extends Shell
                 $scrapingData[] = $linkData;
 
                 // 更新チェック
-                if($updateFlg == false){
+                if($contentsUpdateFlg){
                   $contentsUpdate[] = $linkData;
                 }
               }
