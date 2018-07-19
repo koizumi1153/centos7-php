@@ -327,14 +327,14 @@ class AqoursNewsShell extends Shell
   public function livePage(){
     $links = $this->Aqours->getScraping(SCRAPING_KIND_LIVE);
     if(!empty($links)){
-      $scrapingData = [];
-      $contentsUpdate = [];
       $newUrl = [];
 
       foreach($links as $link){
         $updateFlg = false;
         $contentsUpdateFlg = false; //内容変更
         $linkNumUpdateFlg  = false; //リンク数変更
+        $scrapingData = [];
+        $contentsUpdate = [];
 
         $scrapingId = $link['id'];
         $title = $link['title'];
