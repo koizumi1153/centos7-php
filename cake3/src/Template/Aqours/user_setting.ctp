@@ -1,11 +1,14 @@
 <style type="text/css">
+.contents {
+				text-align: center;
+}
 .check input{
         display: none;
 }
 
 .check label{
         display: block;
-        float: left;
+        float: center;
         cursor: pointer;
         width: 60px;
         margin: 0;
@@ -36,6 +39,7 @@
 }
 
 </style>
+<div class="contents">
 
 <div class="first">
 <h3><?= __('PUSH設定') ?></h3>
@@ -107,3 +111,5 @@
 <?= $this -> Form -> end (); ?>
 
 <a target="_blank"  href="https://www.amazon.co.jp/gp/product/B07DLJBGNW/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=B07DLJBGNW&linkCode=as2&tag=angelnet-22&linkId=ab16ce17ba743863b19d12b1eb111f7d"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=B07DLJBGNW&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=angelnet-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=angelnet-22&l=am2&o=9&a=B07DLJBGNW" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+
+</div>
