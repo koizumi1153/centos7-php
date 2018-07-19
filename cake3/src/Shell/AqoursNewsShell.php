@@ -271,7 +271,7 @@ class AqoursNewsShell extends Shell
       $messageData = $this->Line->setTextMessage($text);
 
       #$this->Line->sendPush(LINE_API_PUSH_URL, $this->ACCESS_TOKEN, $this->ADMIN_USER, $messageData);
-      $this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
+      $this->You->sendMessage($messageData, $this->ACCESS_TOKEN, PUSH_SELL_OFFICIAL);
       $this->Twitter->post($messageData);
     }
   }
@@ -316,7 +316,7 @@ class AqoursNewsShell extends Shell
 
       $messageData = $this->Line->setTextMessage($text);
 
-      $this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
+      $this->You->sendMessage($messageData, $this->ACCESS_TOKEN, PUSH_KIND_SELL);
     }
   }
 
@@ -327,18 +327,17 @@ class AqoursNewsShell extends Shell
   public function livePage(){
     $links = $this->Aqours->getScraping(SCRAPING_KIND_LIVE);
     if(!empty($links)){
-      $scrapingData = [];
-      $contentsUpdate = [];
+      $newUrl = [];
 
       foreach($links as $link){
         $contentsUpdateFlg = false; //内容変更
-        $linkNumUpdateFlg  = false; //リンク数変更
+        $scrapingData = [];
+        $contentsUpdate = [];
 
         $scrapingId = $link['id'];
         $title = $link['title'];
         $baseUrl = $url = $link['url'];
         $base = $this->You->getUrlPath($url);
-
 
         $linkFlg = $link['link_flg'];
         $data = $this->Aqours->getScrapingData($scrapingId);
@@ -366,7 +365,6 @@ class AqoursNewsShell extends Shell
           if($linkFlg) {
             if ($linkData['link_num'] != $cnt) {
               $linkData['link_num'] = $cnt;
-              $linkNumUpdateFlg = true;
             }
           }
 
@@ -378,7 +376,7 @@ class AqoursNewsShell extends Shell
           $scrapingData[] = $linkData;
 
           // 更新チェック
-          if($linkNumUpdateFlg || $contentsUpdateFlg){
+          if($contentsUpdateFlg){
             $contentsUpdate[] = $linkData;
           }
         }
@@ -386,11 +384,13 @@ class AqoursNewsShell extends Shell
         // linkチェック
         if(!empty($urls)) {
           foreach ($urls as $url){
+            $contentsUpdateFlg = false; //内容変更
             $str = substr($url, 0, 4);
             if($str != "http" && !empty($base)){
               // 内部リンク
               $url = $base. $url;
               if($baseUrl == $url) continue;
+              if(in_array($url, $newUrl)) continue;
 
               // スクレイピングで取得
               $doc = $this->Scraiping->getScraping($url);
@@ -399,6 +399,7 @@ class AqoursNewsShell extends Shell
                 $linkData = $this->Aqours->checkUrlData($url, $data);
                 if(empty($linkData)) {
                   $linkData = $this->Aqours->initUrlData($scrapingId, $url, $title);
+                  $newUrl[] = $url;
                 }
 
                 $contents = $doc["#contents"]->text();
@@ -414,11 +415,10 @@ class AqoursNewsShell extends Shell
                 if($linkFlg) {
                   if ($linkData['link_num'] != $cnt) {
                     $linkData['link_num'] = $cnt;
-                    $linkNumUpdateFlg = true;
                   }
                 }
 
-                if($linkData['contents_data'] != $contents){
+                if($linkData['contents_data'] !== $contents){
                   $linkData['contents_data'] = $contents;
                   $contentsUpdateFlg = true;
                 }
@@ -426,7 +426,7 @@ class AqoursNewsShell extends Shell
                 $scrapingData[] = $linkData;
 
                 // 更新チェック
-                if($linkNumUpdateFlg || $contentsUpdateFlg){
+                if($contentsUpdateFlg){
                   $contentsUpdate[] = $linkData;
                 }
               }
@@ -456,7 +456,7 @@ class AqoursNewsShell extends Shell
         if(!empty($text)) {
           // 更新送信
           $messageData = $this->Line->setTextMessage($text);
-          $this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
+          $this->You->sendMessage($messageData, $this->ACCESS_TOKEN, PUSH_KIND_PERFORMANCE);
         }
 
       }
@@ -543,7 +543,7 @@ class AqoursNewsShell extends Shell
         if(!empty($text)) {
           // 更新送信
           $messageData = $this->Line->setTextMessage($text);
-          $this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
+          $this->You->sendMessage($messageData, $this->ACCESS_TOKEN, PUSH_KIND_SELL);
         }
 
         if(!empty($blogTitle) && !empty($blogBody)) {

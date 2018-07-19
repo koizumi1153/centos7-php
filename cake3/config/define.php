@@ -228,10 +228,11 @@ return [
   define('SCRAPING_KIND_SHOP', '2'),
 
   // push kind
-  define('PUSH_KIND_SELL',        '101'),
-  define('PUSH_KIND_PERFORMANCE', '102'),
-  define('PUSH_KIND_BLOG',        '103'),
-  define('PUSH_SELL_OFFICIAL',    '104'),
+  define('PUSH_KIND_SELL',        '101'), // 販売系＋ランティス 購買部スクレイピング
+  define('PUSH_KIND_PERFORMANCE', '102'), // イベント系 ライブHPスクレイピング
+  define('PUSH_KIND_BLOG',        '103'), // BLOG
+  define('PUSH_SELL_OFFICIAL',    '104'), // 公式系 HP CLUB
+
 
   define('PUSH_KIND_CATEGORY',
             array(PUSH_KIND_SELL => array( AQOURS_KIND_BOOK,

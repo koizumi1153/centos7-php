@@ -1229,6 +1229,7 @@ class AqoursComponent extends Component
     $query->update()
       ->set(['contents_data' => $data['contents_data']])
       ->set(['link_num' => $data['link_num']])
+      ->set(['updated' => $now])
       ->where(['id' => $data['id']])
       ->where(['deleted IS NULL'])
       ->execute();
