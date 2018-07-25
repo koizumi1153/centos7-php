@@ -87,7 +87,7 @@
 <?= $this -> Form -> end (); ?>
 
 <br />
-<h3><?= __('PUSH推しメンバー設定') ?></h3>
+<h3><?= __('PUSHメンバー設定') ?></h3>
 <?= $this -> Form -> create (
                 "null", [ "type" => "post",
                           "url" => [ "controller" => "aqours",
