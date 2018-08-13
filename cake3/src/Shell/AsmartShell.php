@@ -9,7 +9,7 @@ use App\Controller\Component\ScraipingComponent;
 use App\Controller\Component\YouComponent;
 use App\Controller\Component\LineComponent;
 
-class AqoursShell extends Shell
+class AsmartShell extends Shell
 {
 
   // アクセストークン
