@@ -216,6 +216,7 @@ EOT;
         $data['img'] = "";
         $data['push'] = PUSH_NONE;
         $data['created'] = date('Y-m-d H:i:s');
+        $data['member_ids'] = $post['member_ids'];
 
         $lists[] = $data;
         $this->Aqours->setInfo($lists);

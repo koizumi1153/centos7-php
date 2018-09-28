@@ -24,19 +24,19 @@ td.ui-datepicker-week-end a.ui-state-highlight{
                                      "action" => "add" ] ] ); ?>
 
 
-<?= $this -> Form -> input ( "textbox", [ "type" => "text",
+<?= $this -> Form -> input ( "タイトル", [ "type" => "text",
                                               "name" => "title",
                                               "size" => 250,
                                               "label" => "タイトル",
-                                              "default" => "タイトル" ] ); ?>
+                                              "default" => "" ] ); ?>
 
-<?= $this -> Form -> input ( "area", [ "type" => "textarea",
+<?= $this -> Form -> input ( "説明", [ "type" => "textarea",
                                             "cols" => 20,
                                             "rows" => 3,
                                             "label" => "説明",
                                             "name" => "discription" ] ); ?>
 
-<?= $this -> Form -> input  ( "select4",
+<?= $this -> Form -> input  ( "種類",
                                      [ "type" => "select",
                                        "name" => "kind",
                                        "options" => [ [ "value" => AQOURS_KIND_BOOK,
@@ -58,6 +58,14 @@ td.ui-datepicker-week-end a.ui-state-highlight{
                                                         "text" => "グッズの情報", ],
                                                         ]]
                                         ); ?>
+
+<?= $this -> Form -> input  ( "メンバー",
+    [ "type" => "select",
+        "name" => "member_ids",
+        "multiple" => true,
+        "options" => PUSH_MEMBER_IDS,
+    ]
+); ?>
 
 <label for="textbox">日付</label>
 <input type="text" name="date" id="datepicker">
