@@ -205,6 +205,8 @@ EOT;
       //処理記述
       if(!empty($post['title'])) {
         $data = array();
+        $member_ids_str = '';
+        if(!empty($post['member_ids'])) $member_ids_str = implode(',', $post['member_ids']);
 
         $data['kind'] = $post['kind'];
         $data['title'] = $post['title'];
@@ -216,7 +218,7 @@ EOT;
         $data['img'] = "";
         $data['push'] = PUSH_NONE;
         $data['created'] = date('Y-m-d H:i:s');
-        $data['member_ids'] = $post['member_ids'];
+        $data['member_ids'] = $member_ids_str;
 
         $lists[] = $data;
         $this->Aqours->setInfo($lists);
