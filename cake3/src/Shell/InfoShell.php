@@ -30,7 +30,7 @@ class InfoShell extends Shell
           $list = $query->hydrate(false)->toArray();
           if(empty($list)) break;
           foreach($list as $info){
-              if(empty($info['push_date']) && mb_strlen($info['date'] == 11)){
+              if(empty($info['push_date']) && mb_strlen($info['date']) == 11){
                   $id = $info['id'];
                   $pushDate = mb_substr($info['date'], 0, 4) . '-'. mb_substr($info['date'], 5, 2). '-'. mb_substr($info['date'], 8, 2);
 
