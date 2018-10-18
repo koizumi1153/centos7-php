@@ -73,12 +73,13 @@ $sell = array(AQOURS_KIND_BOOK, AQOURS_KIND_CD, AQOURS_KIND_DVD);
                   <?= nl2br($info['discription']); ?><br /><br />
 
                     <?php
+                    $text = '';
                     if (in_array($info['kind'], $sell)) {
-                    $text .= "{$info['title']}が{$info['date']}に発売だよ。";
+                    $text = "{$info['title']}が{$info['date']}に発売だよ。";
                     }elseif($info['kind'] == AQOURS_KIND_TICKET){
-                    $text .= "{$info['title']}は{$info['date']}です。";
+                    $text = "{$info['title']}は{$info['date']}です。";
                     } else {
-                    $text .= "{$info['title']}が{$info['date']}にあるよ。";
+                    $text = "{$info['title']}が{$info['date']}にあるよ。";
                     }
                     ?>
                     <div class="twitter">
