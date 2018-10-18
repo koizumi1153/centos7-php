@@ -1513,4 +1513,18 @@ class AqoursComponent extends Component
       }
     }
   }
+
+    /**
+     * 特定期間のデータを取得
+     * @param $date
+     * @return mixed
+     */
+  public function getInformationLists($startDate, $endDate){
+    $query=$this->Information->find()
+                ->where(['push_date >=' => $startDate])
+                ->where(['push_date <=' => $endDate])
+                ->where(['deleted IS NULL'])
+                ->order(['push_date' => 'ASC']);
+    return $query->hydrate(false)->toArray();
+  }
 }
