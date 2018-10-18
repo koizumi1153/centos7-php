@@ -68,7 +68,13 @@ $this->layout = false;
                   <?= h($info['title']) ?></p>
                   <div class="contentWrap displayNone">
                   <?= h(DISP_KINDS[$info['kind']]); ?><br /><br />
-                  <?= nl2br($info['discription']); ?>
+                  <?= nl2br($info['discription']); ?><br /><br />
+
+                    <div class="twitter">
+                      　<a href="//twitter.com/share" class="twitter-share-button" data-text="<?= h($info['date']) ?>に<?= h($info['title']) ?>があります" data-url="https://line.me/R/ti/p/%40ikg0475w" data-lang="ja">
+                        Tweet
+                      </a>
+                    </div>
                   </div>
                 </div>
               </td>
@@ -99,3 +105,5 @@ $this->layout = false;
         });
     })(jQuery);
 </script>
+
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
