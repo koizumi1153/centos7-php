@@ -1,5 +1,7 @@
 <?php
 $this->layout = false;
+
+$sell = array(AQOURS_KIND_BOOK, AQOURS_KIND_CD, AQOURS_KIND_DVD);
 ?>
 <!DOCTYPE html>
 <html>
@@ -70,8 +72,17 @@ $this->layout = false;
                   <?= h(DISP_KINDS[$info['kind']]); ?><br /><br />
                   <?= nl2br($info['discription']); ?><br /><br />
 
+                    <?php
+                    if (in_array($info['kind'], $sell)) {
+                    $text .= "{$info['title']}が{$info['date']}に発売だよ。";
+                    }elseif($info['kind'] == AQOURS_KIND_TICKET){
+                    $text .= "{$info['title']}は{$info['date']}です。";
+                    } else {
+                    $text .= "{$info['title']}が{$info['date']}にあるよ。";
+                    }
+                    ?>
                     <div class="twitter">
-                      　<a href="//twitter.com/share" class="twitter-share-button" data-text="<?= h($info['date']) ?>に<?= h($info['title']) ?>があります" data-url="https://line.me/R/ti/p/%40ikg0475w" data-lang="ja">
+                      　<a href="//twitter.com/share" class="twitter-share-button" data-text="<?= $text ?>" data-url="https://line.me/R/ti/p/%40ikg0475w" data-lang="ja">
                         Tweet
                       </a>
                     </div>
