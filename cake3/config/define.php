@@ -274,7 +274,7 @@ return [
   define('DISP_KINDS',
     [ AQOURS_KIND_BOOK=> "本&雑誌の情報 " ,
     AQOURS_KIND_CD=> "CDの情報",
-    AQOURS_KIND_CD=> "DVD & Blu-rayの情報",
+    AQOURS_KIND_DVD=> "DVD & Blu-rayの情報",
     AQOURS_KIND_EVENT=> "イベント情報",
     AQOURS_KIND_TV=> "TV出演情報",
     AQOURS_KIND_RADIO=> "ラジオ・ネットラジオ・ニコ生などの情報",

@@ -43,7 +43,7 @@ td.ui-datepicker-week-end a.ui-state-highlight{
                                                         "text" => "本&雑誌の情報 " ],
                                                       [ "value" => AQOURS_KIND_CD,
                                                         "text" => "CDの情報", ],
-                                                      [ "value" => AQOURS_KIND_CD,
+                                                      [ "value" => AQOURS_KIND_DVD,
                                                         "text" => "DVD & Blu-rayの情報", ],
                                                       [ "value" => AQOURS_KIND_EVENT,
                                                         "text" => "イベント情報", ],

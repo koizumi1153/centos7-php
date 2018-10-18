@@ -1,6 +1,32 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-</nav>
-<div class="users index large-9 medium-8 columns content">
+<?php
+$this->layout = false;
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <?= $this->Html->charset() ?>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+      <?= $title ?>
+  </title>
+    <?= $this->Html->meta('icon') ?>
+
+    <?= $this->Html->css('base.css') ?>
+    <?= $this->Html->css('cake.css') ?>
+    <?= $this->Html->css('jquery-ui.min.css') ?>
+    <?= $this->Html->script('jquery-3.3.1.min.js') ?>
+    <?= $this->Html->script('jquery-ui.min.js') ?>
+
+    <?= $this->Html->css('jquery-ui-timepicker-addon.css') ?>
+    <?= $this->Html->script('jquery-ui-timepicker-addon.js') ?>
+    <?= $this->Html->script('jquery-ui-timepicker-ja.js') ?>
+
+    <?= $this->fetch('meta') ?>
+    <?= $this->fetch('css') ?>
+    <?= $this->fetch('script') ?>
+</head>
+<body>
+<div class="users index columns content">
     <h3><?= date('Y年m月',strtotime($month)) ?></h3>
 
   <?= $this->Form->create (); ?>
@@ -28,3 +54,5 @@
         </tbody>
     </table>
 </div>
+</body>
+</html>
