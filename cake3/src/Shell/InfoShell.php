@@ -15,7 +15,7 @@ class InfoShell extends Shell
 
   public function main()
   {
-      echo "start";
+      echo "start\n";
       $this->loadModel('AqoursInformation');
       // 100件づつ取得
       for($i=0;$i<5;$i++){
@@ -30,7 +30,7 @@ class InfoShell extends Shell
           $list = $query->hydrate(false)->toArray();
           if(empty($list)) break;
           foreach($list as $info){
-              if(empty($info['push_date']) && strlen($info['date'] == 11)){
+              if(empty($info['push_date']) && mb_strlen($info['date'] == 11)){
                   $id = $info['id'];
                   $pushDate = mb_substr($info['date'], 0, 4) . '-'. mb_substr($info['date'], 5, 2). '-'. mb_substr($info['date'], 8, 2);
 
@@ -42,8 +42,9 @@ class InfoShell extends Shell
                               ->execute();
               }
           }
+          echo "sleep\n";
         sleep(1);
       }
-      echo "end";
+      echo "end\n";
   }
 }
