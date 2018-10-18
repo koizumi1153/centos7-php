@@ -133,6 +133,7 @@ class AqoursComponent extends Component
    * @param $lists
    */
     public function setInfo($lists){
+      $list['push_date'] = '';
       $query = $this->Information->query();
       $query->insert([
         'kind',
@@ -142,13 +143,19 @@ class AqoursComponent extends Component
         'jan',
         'img',
         'date',
+        'push_date',
         'push',
         'member_ids',
         'created'
       ]);
       if(!empty($lists)){
         foreach($lists as $data){
-          $query->values($data);
+          // push_date追加
+          if(isset($data['date'])){
+            $data['push_date'] =mb_substr($data['date'], 0, 4) . '-'. mb_substr($data['date'], 5, 2). '-'. mb_substr($data['date'], 8, 2);
+          }
+
+            $query->values($data);
         }
         $query->execute();
       }

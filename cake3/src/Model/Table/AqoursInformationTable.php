@@ -79,6 +79,10 @@ class AqoursInformationTable extends Table
             ->allowEmpty('date');
 
         $validator
+            ->date('push_date', ['ymd'])
+            ->allowEmpty('push_date');
+
+        $validator
             ->integer('push')
             ->allowEmpty('push');
 
