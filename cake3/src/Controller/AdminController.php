@@ -21,9 +21,12 @@ class AdminController extends AppController
         $startDate = date('Y-m-01');
         $endDate = date('Y-m-t');
         if(isset($post['month'])){
-            $startDate = $post['month'].'-01';
-            $endDate = date('Y-m-t', strtotime($startDate));
-            $month = $post['month'];
+            //攻撃チェック
+            if(mb_strlen($post['month']) == 7 && preg_match("\d{4}-\d{2}", $post['month'])) {
+                $startDate = $post['month'] . '-01';
+                $endDate = date('Y-m-t', strtotime($startDate));
+                $month = $post['month'];
+            }
         }
 
         $list = $this->Aqours->getInformationLists($startDate, $endDate);
