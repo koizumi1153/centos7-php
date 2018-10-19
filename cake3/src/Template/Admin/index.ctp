@@ -33,6 +33,7 @@ $sell = array(AQOURS_KIND_BOOK, AQOURS_KIND_CD, AQOURS_KIND_DVD);
   .black {
     background-color: #000000;
     color: #FFFFFF;
+    padding-left: 5pt;
   }
 
   .accordion {
