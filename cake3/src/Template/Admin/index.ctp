@@ -55,7 +55,7 @@ $sell = array(AQOURS_KIND_BOOK, AQOURS_KIND_CD, AQOURS_KIND_DVD);
     <h3><?= date('Y年m月',strtotime($month)) ?></h3>
 
   <?= $this->Form->create (); ?>
-  <input type="text" name="month" id="monthPick" value="<?= $month ?>">
+  <input type="text" name="month" class="monthPick" value="<?= $month ?>">
   <input type="submit" value="送信">
   <?= $this->Form->end(); ?>
 
