@@ -49,21 +49,26 @@ $sell = array(AQOURS_KIND_BOOK, AQOURS_KIND_CD, AQOURS_KIND_DVD);
   .open {
   text-decoration: underline;
   }
+
+  .admin {
+    padding-bottom: 10px;
+  }
+
   </style>
 </head>
 <body>
-<div class="users index columns content">
+<div class="content admin">
     <h3><?= date('Y年m月',strtotime($month)) ?></h3>
 
   <?= $this->Form->create (); ?>
   <input type="text" name="month" class="monthPick" value="<?= $month ?>">
-  <input type="submit" value="送信">
+  <input type="submit" value="変更">
   <?= $this->Form->end(); ?>
 
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col"><?= $this->Paginator->sort('タイトル') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('詳細はタイトルをタップ') ?></th>
             </tr>
         </thead>
         <tbody>
