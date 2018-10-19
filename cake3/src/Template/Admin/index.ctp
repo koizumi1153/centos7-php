@@ -56,7 +56,7 @@ $sell = array(AQOURS_KIND_BOOK, AQOURS_KIND_CD, AQOURS_KIND_DVD);
     <h3><?= date('Y年m月',strtotime($month)) ?></h3>
 
   <?= $this->Form->create (); ?>
-  <input type="text" name="month" id="datepicker" value="<?= $month ?>">
+  <input type="text" name="month" id="ympicker" value="<?= $month ?>">
   <input type="submit" value="送信">
   <?= $this->Form->end(); ?>
 
@@ -121,6 +121,19 @@ $sell = array(AQOURS_KIND_BOOK, AQOURS_KIND_CD, AQOURS_KIND_DVD);
 
         });
     })(jQuery);
+
+    //日本語仕様オプション
+    $(セレクタ).ympicker({
+        closeText: '閉じる',
+        prevText: '<前',
+        nextText: '次>',
+        currentText: '今日',
+        monthNames: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+        monthNamesShort: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+        dateFormat: 'yy/mm',
+        yearSuffix: '年'
+    });
+
 </script>
 
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
