@@ -21,7 +21,7 @@ $sell = array(AQOURS_KIND_BOOK, AQOURS_KIND_CD, AQOURS_KIND_DVD);
 
     <?= $this->Html->css('jquery-ui-timepicker-addon.css') ?>
     <?= $this->Html->script('jquery-ui-timepicker-addon.js') ?>
-    <?= $this->Html->script('jquery-ui-timepicker-ja.js') ?>
+    <?= $this->Html->script('jquery.ui.ympicker-ja.js') ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
@@ -29,6 +29,11 @@ $sell = array(AQOURS_KIND_BOOK, AQOURS_KIND_CD, AQOURS_KIND_DVD);
   <style>
   .displayNone {
   display: none;
+  }
+
+  .black {
+    background-color: #000000;
+    color: #FFFFFF;
   }
 
   .accordion {
@@ -58,7 +63,7 @@ $sell = array(AQOURS_KIND_BOOK, AQOURS_KIND_CD, AQOURS_KIND_DVD);
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col"><?= $this->Paginator->sort('日付:タイトル') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('タイトル') ?></th>
             </tr>
         </thead>
         <tbody>
@@ -66,8 +71,8 @@ $sell = array(AQOURS_KIND_BOOK, AQOURS_KIND_CD, AQOURS_KIND_DVD);
             <tr>
               <td>
                 <div class="accordion">
-                  <p class="switch"><?= h($info['date']) ?>:
-                  <?= h($info['title']) ?></p>
+                  <p class="black"><?= h($info['date']) ?></p>
+                  <p class="switch"><?= h($info['title']) ?></p>
                   <div class="contentWrap displayNone">
                   <?= h(DISP_KINDS[$info['kind']]); ?><br /><br />
                   <?= nl2br($info['discription']); ?><br /><br />
