@@ -105,7 +105,7 @@ class AqoursInfoShell extends Shell
       //$this->Line->sendPush(LINE_API_PUSH_URL, $this->ACCESS_TOKEN, $this->ADMIN_USER, $messageData);
 
       // 特定ユーザーにのみ
-      $this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
+      $this->You->sendMessage($messageData, $this->ACCESS_TOKEN, PUSH_SELL_REGISTRATION);
 
       // フラグ更新
       $this->Aqours->updatePush();
