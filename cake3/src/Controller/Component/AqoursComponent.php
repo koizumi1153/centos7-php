@@ -206,7 +206,7 @@ class AqoursComponent extends Component
         }
 
         //過去のデータは入れない
-        if($this->dateCheck($list['salesDate']) == false){
+        if($list['salesDate'] != null && $this->dateCheck($list['salesDate']) == false){
             continue;
         }
 
@@ -666,8 +666,10 @@ class AqoursComponent extends Component
     $now = date('Y-m-d');
     $format = 'Y年m月d日';
     $date = \DateTime::createFromFormat($format, $saleDate);
-    $saleDateFormat = $date->format('Y-m-d');
-    if($now < $saleDateFormat) return true;
+    if(!empty($date)) {
+        $saleDateFormat = $date->format('Y-m-d');
+        if ($now < $saleDateFormat) return true;
+    }
 
     return false;
   }
