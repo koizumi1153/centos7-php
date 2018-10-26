@@ -115,10 +115,15 @@ class AqoursComponent extends Component
         'img',
         'date',
         'push',
+        'push_date',
         'created'
       ]);
       if(!empty($lists)){
         foreach($lists as $item){
+          $item['push_date'] = '';
+          if(isset($item['date'])){
+              $item['push_date'] =mb_substr($item['date'], 0, 4) . '-'. mb_substr($item['date'], 5, 2). '-'. mb_substr($item['date'], 8, 2);
+          }
           if(!isset($item['title'])) continue;
           $data = $this->generateData($dbKind, $item);
           $query->values($data);
