@@ -93,7 +93,7 @@ class AqoursInfoShell extends Shell
   }
 
   /**
-   * 管理者のみPUSH
+   * 全員にPUSH
    */
   public function sell(){
     $data = $this->Aqours->getInformationPush();
@@ -101,9 +101,11 @@ class AqoursInfoShell extends Shell
 
       // 登録されてPUSHされていないモノ
       $messageData = $this->You->setPushMessageWeek($data, true);
-      // ユーザーは管理者のみ
-      // PUSH
-      $this->Line->sendPush(LINE_API_PUSH_URL, $this->ACCESS_TOKEN, $this->ADMIN_USER, $messageData);
+      // PUSH(管理者のみ)
+      //$this->Line->sendPush(LINE_API_PUSH_URL, $this->ACCESS_TOKEN, $this->ADMIN_USER, $messageData);
+
+      // 特定ユーザーにのみ
+      $this->You->sendMessage($messageData, $this->ACCESS_TOKEN);
 
       // フラグ更新
       $this->Aqours->updatePush();

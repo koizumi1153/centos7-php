@@ -1527,4 +1527,27 @@ class AqoursComponent extends Component
                 ->order(['push_date' => 'ASC']);
     return $query->hydrate(false)->toArray();
   }
+
+    /**
+     * @param $usersId
+     * @param $kind
+     */
+  public function setPushKind($usersId, $kind){
+
+      $query = $this->PushKind->query();
+      $query->insert([
+          'id',
+          'users_id',
+          'kind',
+          'push_flg',
+          'created'
+      ]);
+
+      $data['users_id'] = $usersId;
+      $data['push_flg'] = ON_FLG;
+      $data['kind'] = $kind;
+      $data['created'] = date('Y-m-d H:i:s');
+      $query->values($data);
+      $query->execute();
+  }
 }

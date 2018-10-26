@@ -43,4 +43,22 @@ class AqoursPushUserInitShell extends Shell
     }
   }
 
+    /**
+     * @param int $kind
+     */
+  public function add($kind = 105){
+      $max = 10;
+      for($page=1;$page<=$max;$page++) {
+          $users = $this->You->getAllUsers($page);
+          if(!empty($users)){
+              $userIds = array_column($users, 'id');
+              foreach($userIds as $usersId){
+                  $this->Aqours->setPushKind($usersId, $kind);
+              }
+          }else {
+              break;
+          }
+      }
+  }
+
 }

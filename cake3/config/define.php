@@ -232,7 +232,7 @@ return [
   define('PUSH_KIND_PERFORMANCE', '102'), // イベント系 ライブHPスクレイピング
   define('PUSH_KIND_BLOG',        '103'), // BLOG
   define('PUSH_SELL_OFFICIAL',    '104'), // 公式系 HP CLUB
-
+  define('PUSH_SELL_REGISTRATION', '105'), //情報登録通知
 
   define('PUSH_KIND_CATEGORY',
             array(PUSH_KIND_SELL => array( AQOURS_KIND_BOOK,
@@ -250,12 +250,13 @@ return [
   ),
 
 
-  define('PUSH_KIND', array(PUSH_KIND_SELL, PUSH_KIND_PERFORMANCE, PUSH_KIND_BLOG, PUSH_SELL_OFFICIAL)),
+  define('PUSH_KIND', array(PUSH_KIND_SELL, PUSH_KIND_PERFORMANCE, PUSH_KIND_BLOG, PUSH_SELL_OFFICIAL, PUSH_SELL_REGISTRATION)),
   define('PUSH_KIND_DISP',
     array(PUSH_KIND_SELL => "本、CD、DVD(Blu-ray)",
           PUSH_KIND_PERFORMANCE => "イベント、TV、ラジオ関連",
           PUSH_KIND_BLOG => "ブログ",
-          PUSH_SELL_OFFICIAL => "公式ページ")),
+          PUSH_SELL_OFFICIAL => "公式ページ",
+          PUSH_SELL_REGISTRATION => "情報登録通知")),
 
   // master代わり
   define('PUSH_MEMBER_IDS', array(  '11' => '伊波杏樹',
