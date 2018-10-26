@@ -348,7 +348,7 @@ class AqoursComponent extends Component
    */
     public function setImg($img, $name, $imgKind){
       $imgName = $name. $imgKind;
-      exec("wget -O ".AQOURS_IMG_DIR.$imgName." $img");
+      exec("wget --no-check-certificate ". $img . " -O " .AQOURS_IMG_DIR.$imgName);
     }
 
   /**
