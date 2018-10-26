@@ -120,10 +120,6 @@ class AqoursComponent extends Component
       ]);
       if(!empty($lists)){
         foreach($lists as $item){
-          $item['push_date'] = '';
-          if(isset($item['date'])){
-              $item['push_date'] =mb_substr($item['date'], 0, 4) . '-'. mb_substr($item['date'], 5, 2). '-'. mb_substr($item['date'], 8, 2);
-          }
           if(!isset($item['title'])) continue;
           $data = $this->generateData($dbKind, $item);
           $query->values($data);
@@ -209,6 +205,11 @@ class AqoursComponent extends Component
           continue;
         }
 
+        //過去のデータは入れない
+        if($this->dateCheck($list['salesDate']) == false){
+            continue;
+        }
+
         // 本
 
         // CD アーティスト名不一致は除去
@@ -272,6 +273,7 @@ class AqoursComponent extends Component
       $data['jan'] = "";
       $data['img'] = "";
       $data['date'] = "";
+      $data['push_date'] = "";
       $data['push'] = PUSH_NONE;
       $data['created'] = date('Y-m-d H:i:s');
 
@@ -308,6 +310,7 @@ class AqoursComponent extends Component
       // date
       if(isset($item['salesDate'])){
         $data['date'] = $item['salesDate'];
+        $data['push_date'] =mb_substr($item['salesDate'], 0, 4) . '-'. mb_substr($item['salesDate'], 5, 2). '-'. mb_substr($item['salesDate'], 8, 2);
       }
 
       $sell = array(AQOURS_KIND_BOOK, AQOURS_KIND_CD, AQOURS_KIND_DVD);
