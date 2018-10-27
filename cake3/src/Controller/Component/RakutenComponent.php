@@ -19,7 +19,7 @@ class RakutenComponent extends Component
   public function getBaseUrl($kind=TOTAL_BASE){
     $baseurl = '';
     switch($kind){
-      case BOKK_BASE:
+      case BOOK_BASE:
       case CD_BASE:
       case DVD_BASE:
       case MAGAZINE_BASE:
@@ -55,7 +55,7 @@ class RakutenComponent extends Component
     }
 
     // api_idを付与
-    $requesturl .= '&applicationId='.RAKUTEN_API_ID;
+    $requesturl .= '&applicationId='.RAKUTEN_API_ID.'&affiliateId='.RAKUTEN_AFFILIATEID;
 
     return $requesturl;
   }
@@ -134,7 +134,7 @@ class RakutenComponent extends Component
   public function getRequest($kind, $keyword){
     $request = [];
     switch($kind){
-      case BOKK_BASE:
+      case BOOK_BASE:
         $request = $this->setBookInfo($keyword);
         break;
       case CD_BASE:

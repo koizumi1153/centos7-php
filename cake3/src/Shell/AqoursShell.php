@@ -34,7 +34,7 @@ class AqoursShell extends Shell
     $rakuten_kind=AQOURS_RAKUTEN_KIND;
     foreach($keywords as $keyword){
       foreach($rakuten_kind as $kind){
-        for($page=1;$page<=10;$page++) {
+        for($page=1;$page<=5;$page++) {
           $url = $this->Rakuten->setRequestUrl($kind, $keyword, $page);
           if (!empty($url)) {
             $curl = curl_init();
@@ -52,7 +52,7 @@ class AqoursShell extends Shell
           if (!empty($result['Items'])){
             $this->Aqours->setRakutenEvent($result['Items'], $kind, $keyword);
           }else{
-            break;
+            continue;
           }
         }
       }

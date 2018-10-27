@@ -61,7 +61,7 @@ return [
   //総合
   define('TOTAL_BASE', 'BooksTotal'),
   //楽天ブックス書籍検索
-  define('BOKK_BASE','BooksBook'),
+  define('BOOK_BASE','BooksBook'),
   //楽天ブックスCD検索
   define('CD_BASE','BooksCD'),
   //楽天ブックスDVD Blu-Ray検索
@@ -98,7 +98,7 @@ return [
   define('AQOURS_EXCLUSION_WORDS', ['先着特典','通常版','通常盤']),
 
   // 検索種別
-  define('AQOURS_RAKUTEN_KIND', [BOKK_BASE,CD_BASE,DVD_BASE,MAGAZINE_BASE]),
+  define('AQOURS_RAKUTEN_KIND', [BOOK_BASE,CD_BASE,DVD_BASE,MAGAZINE_BASE]),
 
   define('AQOURS_KIND_BOOK',  1), //本の情報
   define('AQOURS_KIND_CD',    2), //CDの情報

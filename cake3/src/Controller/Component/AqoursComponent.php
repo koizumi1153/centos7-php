@@ -170,7 +170,7 @@ class AqoursComponent extends Component
     public function changeRakutenKind($kind){
       $dbKind = 0;
       switch ($kind){
-        case BOKK_BASE:
+        case BOOK_BASE:
         case MAGAZINE_BASE:
           $dbKind = AQOURS_KIND_BOOK;
           break;
@@ -280,6 +280,9 @@ class AqoursComponent extends Component
       // 説明
       if(isset($item['itemCaption'])){
         $data['discription'] = $item['itemCaption'];
+        if(!empty($item['affiliateUrl'])){
+            $data['discription'] .= "\n\n".$item['affiliateUrl'];
+        }
       }
 
       // price
