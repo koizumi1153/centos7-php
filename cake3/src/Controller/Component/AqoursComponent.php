@@ -278,11 +278,13 @@ class AqoursComponent extends Component
       $data['created'] = date('Y-m-d H:i:s');
 
       // 説明
-      if(isset($item['itemCaption'])){
+      if(!empty($item['itemCaption'])){
         $data['discription'] = $item['itemCaption'];
         if(!empty($item['affiliateUrl'])){
             $data['discription'] .= "\n\n".$item['affiliateUrl'];
         }
+      }elseif(!empty($item['affiliateUrl'])){
+          $data['discription'] .= $item['affiliateUrl'];
       }
 
       // price
