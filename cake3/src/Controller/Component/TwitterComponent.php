@@ -51,4 +51,31 @@ class TwitterComponent extends Component
 
     return $content;
   }
+
+    /**
+     * @param $str
+     * @param $img
+     * @param string $access_token
+     * @param string $access_token_secret
+     * @return array|object
+     */
+  public function setImgPost($str, $img, $access_token='', $access_token_secret=''){
+      if(empty($access_token)) $access_token = $this->TWITTER_ACCESS_TOKEN;
+      if(empty($access_token_secret)) $access_token_secret = $this->TWITTER_ACCESS_TOKEN_SECRET;
+
+      $connection = new TwitterOAuth($this->TWITTER_CONSUMER_KEY, $this->TWITTER_CONSUMER_SECRET, $access_token, $access_token_secret);
+      $media = $connection->upload('media/upload', ['media' => '/var/www/cake/cake3/webroot/img/'.$img]);
+
+      // ツイートの内容を設定
+      $params = [
+          'status' => "{$str}",
+          'media_ids' => implode(',', [$media->media_id_string])
+      ];
+
+      $result = $connection->post("statuses/update", $params);
+
+      return $result;
+  }
+
+
 }
