@@ -5,7 +5,7 @@ use Cake\Console\Shell;
 use Cake\Controller\ComponentRegistry;
 use App\Controller\Component\TwitterComponent;
 
-class AqoursBlogShell extends Shell
+class YohaneCenterShell extends Shell
 {
 
     public function initialize() {
