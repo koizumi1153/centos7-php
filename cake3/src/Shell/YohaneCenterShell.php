@@ -15,9 +15,22 @@ class YohaneCenterShell extends Shell
 
     public function main()
     {
+        $img = '';
+        $consumer_key='7DYuCu9prA4w1a72xa8PLDhqC';
+        $consumer_secret='frwouwxUOnPiCfHWOkY1SaqtUWDJouo5yL5fNFA1zsdB1630TY';
+        $api_token = "1064543763870081025-UsVYb5doFnvfJdcB99QEss0yqOk7TF";
+        $api_token_secret = "KdcbYS4FsJVKWLbKQjs4xQ4fB8Wo48zYjzqQljKj0mDPZ";
 
-        $str="小林愛香と一緒に同じ夢を見て、同じ夢を叶えよう！！\n\n#津島善子センター計画\n#小林愛香センター計画\n#津島善子センタープロジェクト\n";
-        $img = "yohane/4thcenter.jpg";
-        $this->Twitter->setImgPost($str, $img);
+        $str = <<<EOT
+みなさまフォローありがとうございます。
+こちらは投票期間中に投票忘れを防止するためのBOTです。
+
+【津島善子への投票を強制するものではありません】
+
+また、リプ等いただきましても基本的には返事をしておりません。
+あらかじめご了承ください。
+EOT;
+#        $img = "yohane/4thcenter.jpg";
+        $this->Twitter->setImgPost($str, $img, $consumer_key, $consumer_secret, $api_token, $api_token_secret);
     }
 }

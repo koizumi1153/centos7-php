@@ -55,17 +55,23 @@ class TwitterComponent extends Component
     /**
      * @param $str
      * @param $img
+     * @param $consumer_key
+     * @param $consumer_secret
      * @param string $access_token
      * @param string $access_token_secret
      * @return array|object
      */
-  public function setImgPost($str, $img, $access_token='', $access_token_secret=''){
+  public function setImgPost($str, $img='', $consumer_key='', $consumer_secret='', $access_token='', $access_token_secret=''){
       if(empty($access_token)) $access_token = $this->TWITTER_ACCESS_TOKEN;
       if(empty($access_token_secret)) $access_token_secret = $this->TWITTER_ACCESS_TOKEN_SECRET;
+      if(empty($consumer_key)) $consumer_key = $this->TWITTER_CONSUMER_KEY;
+      if(empty($consumer_secret)) $consumer_secret = $this->TWITTER_CONSUMER_SECRET;
 
-      $connection = new TwitterOAuth($this->TWITTER_CONSUMER_KEY, $this->TWITTER_CONSUMER_SECRET, $access_token, $access_token_secret);
-      $media = $connection->upload('media/upload', ['media' => '/var/www/cake/cake3/webroot/img/'.$img]);
+      $connection = new TwitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
 
+      if(!empty($img)) {
+          $media = $connection->upload('media/upload', ['media' => '/var/www/cake/cake3/webroot/img/' . $img]);
+      }
       // ツイートの内容を設定
       $params = [
           'status' => "{$str}",
