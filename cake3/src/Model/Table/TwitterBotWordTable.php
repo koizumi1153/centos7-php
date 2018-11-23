@@ -1,0 +1,98 @@
+<?php
+namespace App\Model\Table;
+
+use Cake\ORM\Query;
+use Cake\ORM\RulesChecker;
+use Cake\ORM\Table;
+use Cake\Validation\Validator;
+
+/**
+ * TwitterBotWord Model
+ *
+ * @property \App\Model\Table\BasesTable|\Cake\ORM\Association\BelongsTo $Bases
+ *
+ * @method \App\Model\Entity\TwitterBotWord get($primaryKey, $options = [])
+ * @method \App\Model\Entity\TwitterBotWord newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\TwitterBotWord[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\TwitterBotWord|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\TwitterBotWord patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\TwitterBotWord[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\TwitterBotWord findOrCreate($search, callable $callback = null, $options = [])
+ *
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ */
+class TwitterBotWordTable extends Table
+{
+
+    /**
+     * Initialize method
+     *
+     * @param array $config The configuration for the Table.
+     * @return void
+     */
+    public function initialize(array $config)
+    {
+        parent::initialize($config);
+
+        $this->setTable('twitter_bot_word');
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
+
+        $this->addBehavior('Timestamp');
+
+        $this->belongsTo('Bases', [
+            'foreignKey' => 'base_id',
+            'joinType' => 'INNER'
+        ]);
+    }
+
+    /**
+     * Default validation rules.
+     *
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
+     */
+    public function validationDefault(Validator $validator)
+    {
+        $validator
+            ->integer('id')
+            ->allowEmpty('id', 'create');
+
+        $validator
+            ->scalar('word')
+            ->maxLength('word', 140)
+            ->requirePresence('word', 'create')
+            ->notEmpty('word');
+
+        $validator
+            ->scalar('img')
+            ->maxLength('img', 50)
+            ->requirePresence('img', 'create')
+            ->notEmpty('img');
+
+        $validator
+            ->integer('use_count')
+            ->requirePresence('use_count', 'create')
+            ->notEmpty('use_count');
+
+        $validator
+            ->dateTime('deleted')
+            ->allowEmpty('deleted');
+
+        return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->existsIn(['base_id'], 'Bases'));
+
+        return $rules;
+    }
+}
