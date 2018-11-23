@@ -16,21 +16,58 @@ class YohaneCenterShell extends Shell
     public function main()
     {
         $img = '';
-        $consumer_key='7DYuCu9prA4w1a72xa8PLDhqC';
-        $consumer_secret='frwouwxUOnPiCfHWOkY1SaqtUWDJouo5yL5fNFA1zsdB1630TY';
-        $api_token = "1064543763870081025-UsVYb5doFnvfJdcB99QEss0yqOk7TF";
-        $api_token_secret = "KdcbYS4FsJVKWLbKQjs4xQ4fB8Wo48zYjzqQljKj0mDPZ";
+        $word = '';
+        $wordId = 0;
+        $useCount = 0;
 
-        $str = <<<EOT
-みなさまフォローありがとうございます。
-こちらは投票期間中に投票忘れを防止するためのBOTです。
+        $now = date('Y-m-d H:i:00');
+        $base = $this->Twitter->getBase(1);
+        if(!empty($base)){
+            //時間チェック
+            $date = $this->Twitter->getDate($base['id'], $now);
+            if(!empty($date)){
+                // 基本画像
+                $img  = $base['img'];
+                // 基本ワード
+                $baseWord = $base['word'];
 
-【津島善子への投票を強制するものではありません】
+                //文言チェック
+                $words = $this->Twitter->getWords($date['word_ids']);
+                if(!empty($words)){
+                    $count = count($words);
+                    if($count == 1){
+                        $wordId = $words[0]['id'];
+                        $useCount = $words[0]['use_count'];
 
-また、リプ等いただきましても基本的には返事をしておりません。
-あらかじめご了承ください。
-EOT;
-#        $img = "yohane/4thcenter.jpg";
-        $this->Twitter->setImgPost($str, $img, $consumer_key, $consumer_secret, $api_token, $api_token_secret);
+                        // word
+                        $word = $words[0]['word'];
+                        if(!empty($base['url'])) $word .= "\n".$base['url'];
+                        $word .= "\n\n".$baseWord;
+
+                        // img
+                        if(!empty($words[0]['img'])) $img = $words[0]['img'];
+                    }else{
+                        $int = rand(0,($count -1));
+                        $wordId = $words[$int]['id'];
+                        $useCount = $words[$int]['use_count'];
+
+                        // word
+                        $word = $words[$int]['word'];
+                        if(!empty($base['url'])) $word .= "\n".$base['url'];
+                        $word .= "\n\n".$baseWord;
+
+                        // img
+                        if(!empty($words[$int]['img'])) $img = $words[$int]['img'];
+                    }
+
+                    // 更新
+                    if(!empty($wordId)) $this->Twitter->updateCount($wordId, $useCount);
+                }
+            }
+        }
+
+        if(!empty($word) || !empty($img)) {
+            $this->Twitter->setImgPost($word, $img, $base['consumer_key'], $base['consumer_secret'], $base['api_token'], $base['api_token_secret']);
+        }
     }
 }

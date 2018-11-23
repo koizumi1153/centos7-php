@@ -18,6 +18,13 @@ class TwitterComponent extends Component
   // twitterアクセストークンシークレット
   protected $TWITTER_ACCESS_TOKEN_SECRET = "PnjLj63mP2Uaxux0v9Tr00ckNZ7dU6glrFhh9IYXSPtdI";
 
+  public function initialize(array $config)
+  {
+    $this->Base = TableRegistry::get($this->TwitterBotBase);
+    $this->Date = TableRegistry::get($this->TwitterBotDate);
+    $this->Word = TableRegistry::get($this->TwitterBotWord);
+  }
+
   /**
    * @param $str
    * @return mixed
@@ -83,5 +90,66 @@ class TwitterComponent extends Component
       return $result;
   }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
+  public function getBase($id){
+      $query = $this->Base->find();
+      $query->where(['id' => $id]);
+      $query->where(['deleted IS NULL']);
+
+      $base = $query->first();
+
+      if(!empty($base)) $base->toArray();
+      return $base;
+  }
+
+    /**
+     * @param $baseId
+     * @param $date
+     * @return mixed
+     */
+  public function getDate($baseId, $date){
+      $query = $this->Date->find();
+      $query->where(['base_id' => $baseId]);
+      $query->where(['tweet_date' => $date]);
+      $query->where(['deleted IS NULL']);
+
+      $date = $query->first();
+      if(!empty($date)) $date->toArray();
+      return $date;
+  }
+
+    /**
+     * @param $ids
+     * @return mixed
+     */
+  public function getWords($ids){
+      $query = $this->Word->find();
+      $query->where(['id IN' => [$ids]]);
+      $query->where(['deleted IS NULL']);
+      $query->order(['use_count' => 'ASC']);
+
+      $words = $query->hydrate(false);
+      if(!empty($words)) $words->toArray();
+
+      return $words;
+  }
+
+    /**
+     * @param $id
+     * @param $count
+     */
+  public function updateCount($id, $count){
+      $now = date('Y-m-d H:i:s');
+      $query = $this->Word->query();
+
+      $query->update()
+          ->set(['use_count' => $count + 1])
+          ->where(['id' => $id])
+          ->where(['deleted IS NULL'])
+          ->execute();
+  }
 
 }
