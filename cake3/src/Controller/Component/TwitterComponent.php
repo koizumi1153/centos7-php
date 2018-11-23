@@ -20,9 +20,9 @@ class TwitterComponent extends Component
 
   public function initialize(array $config)
   {
-    $this->Base = TableRegistry::get($this->TwitterBotBase);
-    $this->Date = TableRegistry::get($this->TwitterBotDate);
-    $this->Word = TableRegistry::get($this->TwitterBotWord);
+    $this->Base = TableRegistry::get('TwitterBotBase');
+    $this->Date = TableRegistry::get('TwitterBotDate');
+    $this->Word = TableRegistry::get('TwitterBotWord');
   }
 
   /**
@@ -131,8 +131,7 @@ class TwitterComponent extends Component
       $query->where(['deleted IS NULL']);
       $query->order(['use_count' => 'ASC']);
 
-      $words = $query->hydrate(false);
-      if(!empty($words)) $words->toArray();
+      $words = $query->hydrate(false)->toArray();
 
       return $words;
   }
