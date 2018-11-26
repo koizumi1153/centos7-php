@@ -92,16 +92,38 @@ class YohaneCenterShell extends Shell
     }
 
     /**
-     *
+     * 文言は要調整
+     * RT済みはエラーになるが…できれば除外したい。
      */
     public function getTweet($userName=''){
-        $result = $this->Twitter->getUserTimeline($userName);
+        $base = $this->Twitter->getBase(1);
+        $result = $this->Twitter->getUserTimeline($userName, 3, $base['consumer_key'], $base['consumer_secret'], $base['api_token'], $base['api_token_secret']);
+        if(!empty($result)) {
+            foreach ($result as $row) {
+                if (strpos($row->text, '選挙') !== false) {
+                    $this->Twitter->retweet($row->id_str, $base['consumer_key'], $base['consumer_secret'], $base['api_token'], $base['api_token_secret']);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * ツイートをRTした人をフォローする
+     */
+    public function follow(){
+        $base = $this->Twitter->getBase(1);
+        $result = $this->Twitter->getUserTimeline($base['screen_name'],3);
         foreach($result as $row){
-            print_r($row->id_str);
-            echo "\n";
-            print_r($row->text);
-            echo "\n";
-            exit;
+            $users = $this->Twitter->getRetweetUser($row->id_str, $base['consumer_key'], $base['consumer_secret'], $base['api_token'], $base['api_token_secret']);
+            if(!empty($users)){
+                $cnt = 0;
+                foreach($users as $user){
+                    $this->Twitter->setFollow($user->user_id, $base['consumer_key'], $base['consumer_secret'], $base['api_token'], $base['api_token_secret']);
+                    $cnt++;
+                    if(!($cnt % 100)) sleep(1);
+                }
+            }
         }
     }
 }

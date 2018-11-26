@@ -46,10 +46,10 @@ class TwitterComponent extends Component
    * @param $str
    * @return mixed
    */
-  public function post($str){
+  public function post($str, $img='', $consumer_key='', $consumer_secret='', $access_token='', $access_token_secret=''){
     #$connection = new TwitterOAuth($this->TWITTER_CONSUMER_KEY, $this->TWITTER_CONSUMER_SECRET, $this->TWITTER_ACCESS_TOKEN, $this->TWITTER_ACCESS_TOKEN_SECRET);
+    $connection = $this->twitterOAuth($consumer_key='', $consumer_secret='', $access_token='', $access_token_secret='');
 
-    $connection = $this->twitterOAuth();
     $result = $connection->post(
       "statuses/update",
       array("status" => "{$str}")
@@ -63,11 +63,11 @@ class TwitterComponent extends Component
    * @param int $count
    * @return mixed
    */
-  public function getUserTimeline($screen_name, $count=10){
+  public function getUserTimeline($screen_name, $count=10, $consumer_key='', $consumer_secret='', $access_token='', $access_token_secret=''){
     #$connection = new TwitterOAuth($this->TWITTER_CONSUMER_KEY, $this->TWITTER_CONSUMER_SECRET, $this->TWITTER_ACCESS_TOKEN, $this->TWITTER_ACCESS_TOKEN_SECRET);
-    $connection = $this->twitterOAuth();
+    $connection = $this->twitterOAuth($consumer_key='', $consumer_secret='', $access_token='', $access_token_secret='');
 
-    $content = $connection->get("statuses/user_timeline", array(
+      $content = $connection->get("statuses/user_timeline", array(
       "screen_name" => "{$screen_name}",
       "count" => "{$count}",
       "trim_user" => "true",
@@ -88,14 +88,8 @@ class TwitterComponent extends Component
      * @return array|object
      */
   public function setImgPost($str, $img='', $consumer_key='', $consumer_secret='', $access_token='', $access_token_secret=''){
-      if(empty($access_token)) $access_token = $this->TWITTER_ACCESS_TOKEN;
-      if(empty($access_token_secret)) $access_token_secret = $this->TWITTER_ACCESS_TOKEN_SECRET;
-      if(empty($consumer_key)) $consumer_key = $this->TWITTER_CONSUMER_KEY;
-      if(empty($consumer_secret)) $consumer_secret = $this->TWITTER_CONSUMER_SECRET;
-
 #      $connection = new TwitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
       $connection = $this->twitterOAuth($consumer_key='', $consumer_secret='', $access_token='', $access_token_secret='');
-
 
       if(!empty($img)) {
           $media = $connection->upload('media/upload', ['media' => '/var/www/cake/cake3/webroot/img/' . $img]);
@@ -184,6 +178,54 @@ class TwitterComponent extends Component
       $connection = $this->twitterOAuth($consumer_key='', $consumer_secret='', $access_token='', $access_token_secret='');
       // リツイート
       $result = $connection->post("statuses/retweet/{$id}");
+  }
+
+    /**
+     * リツイートしたユーザーを取得
+     *
+     * @param $id
+     * @param string $consumer_key
+     * @param string $consumer_secret
+     * @param string $access_token
+     * @param string $access_token_secret
+     */
+  public function getRetweetUser($id, $consumer_key='', $consumer_secret='', $access_token='', $access_token_secret=''){
+      $connection = $this->twitterOAuth($consumer_key='', $consumer_secret='', $access_token='', $access_token_secret='');
+      // リツイート
+      $result = $connection->post("statuses/{$id}/retweeted_by");
+
+  }
+
+  public function getUserInfo($userId, $consumer_key='', $consumer_secret='', $access_token='', $access_token_secret=''){
+      $connection = $this->twitterOAuth($consumer_key='', $consumer_secret='', $access_token='', $access_token_secret='');
+
+      $content = $connection->get("users/show", array(
+          "user_id" => "{$userId}",
+      ));
+
+      return $content;
+  }
+
+    /**
+     * フォロー処理
+     * @param $userInfo
+     * @param string $consumer_key
+     * @param string $consumer_secret
+     * @param string $access_token
+     * @param string $access_token_secret
+     */
+  public function setFollow($userId, $consumer_key='', $consumer_secret='', $access_token='', $access_token_secret=''){
+      $userInfo = $this->getUserInfo($userId, $consumer_key='', $consumer_secret='', $access_token='', $access_token_secret='');
+      if(!empty($userInfo) && $userInfo->following === false){
+          $connection = $this->twitterOAuth($consumer_key='', $consumer_secret='', $access_token='', $access_token_secret='');
+
+          // ツイートの内容を設定
+          $params = [
+              'user_id' => $userInfo->user_id,
+          ];
+
+          $result = $connection->post("friendships/create" ,$params);
+      }
   }
 
 }
