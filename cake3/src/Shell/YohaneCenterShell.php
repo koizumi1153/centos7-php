@@ -119,7 +119,7 @@ class YohaneCenterShell extends Shell
             if(!empty($users)){
                 $cnt = 0;
                 foreach($users as $user){
-                    $this->Twitter->setFollow($user->user_id, $base['consumer_key'], $base['consumer_secret'], $base['api_token'], $base['api_token_secret']);
+                    $this->Twitter->setFollow($user->user->id, $base['consumer_key'], $base['consumer_secret'], $base['api_token'], $base['api_token_secret']);
                     $cnt++;
                     if(!($cnt % 100)) sleep(1);
                 }

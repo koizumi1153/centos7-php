@@ -192,8 +192,8 @@ class TwitterComponent extends Component
   public function getRetweetUser($id, $consumer_key='', $consumer_secret='', $access_token='', $access_token_secret=''){
       $connection = $this->twitterOAuth($consumer_key='', $consumer_secret='', $access_token='', $access_token_secret='');
       // リツイート
-      $result = $connection->post("statuses/{$id}/retweeted_by");
-
+      $result = $connection->get("statuses/retweets/{$id}");
+      return $result;
   }
 
   public function getUserInfo($userId, $consumer_key='', $consumer_secret='', $access_token='', $access_token_secret=''){
