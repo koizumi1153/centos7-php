@@ -47,27 +47,61 @@ class YohaneCenterShell extends Shell
                         // img
                         if(!empty($words[0]['img'])) $img = $words[0]['img'];
                     }else{
-                        $int = rand(0,($count -1));
-                        $wordId = $words[$int]['id'];
-                        $useCount = $words[$int]['use_count'];
+                        //件数が少ないもので配列化
+                        $cnt=0;
+                        $minCount = 0;
+                        $wordsArr = [];
+                        foreach($words as $row){
+                            if($cnt == 0){
+                                $minCount = $row['useCount'];
+                                $wordsArr[] = $row;
+                            }elseif($minCount == $row['useCount']){
+                                $wordsArr[] = $row;
+                            }
+                            $cnt++;
+                        }
+
+
+                        $int = rand(0,($wordsArr -1));
+                        $wordId = $wordsArr[$int]['id'];
+                        $useCount = $wordsArr[$int]['use_count'];
 
                         // word
-                        $word = $words[$int]['word'];
+                        $word = $wordsArr[$int]['word'];
                         if(!empty($base['url'])) $word .= "\n".$base['url'];
                         $word .= "\n\n".$baseWord;
 
                         // img
-                        if(!empty($words[$int]['img'])) $img = $words[$int]['img'];
+                        if(!empty($wordsArr[$int]['img'])) $img = $wordsArr[$int]['img'];
                     }
 
                     // 更新
                     if(!empty($wordId)) $this->Twitter->updateCount($wordId, $useCount);
+
+                    if(!empty($word) || !empty($img)) {
+                        $result = $this->Twitter->setImgPost($word, $img, $base['consumer_key'], $base['consumer_secret'], $base['api_token'], $base['api_token_secret']);
+                        if(!empty($result->id_str)){
+                            sleep(1);
+                            // リツイート
+                            $this->Twitter->retweet($result->id_str);
+                        }
+                    }
                 }
             }
         }
+    }
 
-        if(!empty($word) || !empty($img)) {
-            $this->Twitter->setImgPost($word, $img, $base['consumer_key'], $base['consumer_secret'], $base['api_token'], $base['api_token_secret']);
+    /**
+     *
+     */
+    public function getTweet($userName=''){
+        $result = $this->Twitter->getUserTimeline($userName);
+        foreach($result as $row){
+            print_r($row->id_str);
+            echo "\n";
+            print_r($row->text);
+            echo "\n";
+            exit;
         }
     }
 }

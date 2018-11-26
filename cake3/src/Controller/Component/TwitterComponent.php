@@ -25,13 +25,31 @@ class TwitterComponent extends Component
     $this->Word = TableRegistry::get('TwitterBotWord');
   }
 
+    /**
+     * @param string $consumer_key
+     * @param string $consumer_secret
+     * @param string $access_token
+     * @param string $access_token_secret
+     * @return TwitterOAuth
+     */
+  public function twitterOAuth($consumer_key='', $consumer_secret='', $access_token='', $access_token_secret=''){
+      if(empty($access_token)) $access_token = $this->TWITTER_ACCESS_TOKEN;
+      if(empty($access_token_secret)) $access_token_secret = $this->TWITTER_ACCESS_TOKEN_SECRET;
+      if(empty($consumer_key)) $consumer_key = $this->TWITTER_CONSUMER_KEY;
+      if(empty($consumer_secret)) $consumer_secret = $this->TWITTER_CONSUMER_SECRET;
+
+      $connection = new TwitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
+      return $connection;
+  }
+
   /**
    * @param $str
    * @return mixed
    */
   public function post($str){
-    $connection = new TwitterOAuth($this->TWITTER_CONSUMER_KEY, $this->TWITTER_CONSUMER_SECRET, $this->TWITTER_ACCESS_TOKEN, $this->TWITTER_ACCESS_TOKEN_SECRET);
+    #$connection = new TwitterOAuth($this->TWITTER_CONSUMER_KEY, $this->TWITTER_CONSUMER_SECRET, $this->TWITTER_ACCESS_TOKEN, $this->TWITTER_ACCESS_TOKEN_SECRET);
 
+    $connection = $this->twitterOAuth();
     $result = $connection->post(
       "statuses/update",
       array("status" => "{$str}")
@@ -46,7 +64,8 @@ class TwitterComponent extends Component
    * @return mixed
    */
   public function getUserTimeline($screen_name, $count=10){
-    $connection = new TwitterOAuth($this->TWITTER_CONSUMER_KEY, $this->TWITTER_CONSUMER_SECRET, $this->TWITTER_ACCESS_TOKEN, $this->TWITTER_ACCESS_TOKEN_SECRET);
+    #$connection = new TwitterOAuth($this->TWITTER_CONSUMER_KEY, $this->TWITTER_CONSUMER_SECRET, $this->TWITTER_ACCESS_TOKEN, $this->TWITTER_ACCESS_TOKEN_SECRET);
+    $connection = $this->twitterOAuth();
 
     $content = $connection->get("statuses/user_timeline", array(
       "screen_name" => "{$screen_name}",
@@ -74,7 +93,9 @@ class TwitterComponent extends Component
       if(empty($consumer_key)) $consumer_key = $this->TWITTER_CONSUMER_KEY;
       if(empty($consumer_secret)) $consumer_secret = $this->TWITTER_CONSUMER_SECRET;
 
-      $connection = new TwitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
+#      $connection = new TwitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
+      $connection = $this->twitterOAuth($consumer_key='', $consumer_secret='', $access_token='', $access_token_secret='');
+
 
       if(!empty($img)) {
           $media = $connection->upload('media/upload', ['media' => '/var/www/cake/cake3/webroot/img/' . $img]);
@@ -149,6 +170,20 @@ class TwitterComponent extends Component
           ->where(['id' => $id])
           ->where(['deleted IS NULL'])
           ->execute();
+  }
+
+    /**
+     * リツイート処理
+     * @param $id
+     * @param string $consumer_key
+     * @param string $consumer_secret
+     * @param string $access_token
+     * @param string $access_token_secret
+     */
+  public function retweet($id, $consumer_key='', $consumer_secret='', $access_token='', $access_token_secret=''){
+      $connection = $this->twitterOAuth($consumer_key='', $consumer_secret='', $access_token='', $access_token_secret='');
+      // リツイート
+      $result = $connection->post("statuses/retweet/{$id}");
   }
 
 }
