@@ -214,14 +214,13 @@ class TwitterComponent extends Component
      * @param string $access_token
      * @param string $access_token_secret
      */
-  public function setFollow($userId, $consumer_key='', $consumer_secret='', $access_token='', $access_token_secret=''){
-      $userInfo = $this->getUserInfo($userId, $consumer_key='', $consumer_secret='', $access_token='', $access_token_secret='');
-      if(!empty($userInfo) && $userInfo->following === false){
+  public function setFollow($userInfo, $consumer_key='', $consumer_secret='', $access_token='', $access_token_secret=''){
+      if(!empty($userInfo) && $userInfo->following != 1){
           $connection = $this->twitterOAuth($consumer_key='', $consumer_secret='', $access_token='', $access_token_secret='');
 
           // ツイートの内容を設定
           $params = [
-              'user_id' => $userInfo->user_id,
+              'user_id' => $userInfo->id,
           ];
 
           $result = $connection->post("friendships/create" ,$params);
