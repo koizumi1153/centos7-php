@@ -161,6 +161,7 @@ class TwitterComponent extends Component
 
       $query->update()
           ->set(['use_count' => $count + 1])
+          ->set(['updated' => $now])
           ->where(['id' => $id])
           ->where(['deleted IS NULL'])
           ->execute();
@@ -227,4 +228,17 @@ class TwitterComponent extends Component
       }
   }
 
+    /**
+     * @param string $consumer_key
+     * @param string $consumer_secret
+     * @param string $access_token
+     * @param string $access_token_secret
+     * @return array|object
+     */
+    public function getFavoritesUser($consumer_key='', $consumer_secret='', $access_token='', $access_token_secret=''){
+        $connection = $this->twitterOAuth($consumer_key='', $consumer_secret='', $access_token='', $access_token_secret='');
+        // いいね一覧
+        $result = $connection->get("favorites/list");
+        return $result;
+    }
 }

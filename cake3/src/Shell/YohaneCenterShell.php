@@ -126,4 +126,10 @@ class YohaneCenterShell extends Shell
             }
         }
     }
+
+    public function favorites(){
+        $base = $this->Twitter->getBase(1);
+        $result = $this->Twitter->getFavoritesUser($base['consumer_key'], $base['consumer_secret'], $base['api_token'], $base['api_token_secret']);
+print_r($result);
+    }
 }
