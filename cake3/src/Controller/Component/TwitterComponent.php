@@ -23,6 +23,7 @@ class TwitterComponent extends Component
     $this->Base = TableRegistry::get('TwitterBotBase');
     $this->Date = TableRegistry::get('TwitterBotDate');
     $this->Word = TableRegistry::get('TwitterBotWord');
+    $this->Log = TableRegistry::get('TwitterBotRtLog');
   }
 
     /**
@@ -241,5 +242,38 @@ class TwitterComponent extends Component
         // 自分のいいね一覧
         $result = $connection->get("favorites/list");
         return $result;
+    }
+
+    /**
+     * Logがあればfalse
+     * @param $baseId
+     * @param $tweetId
+     * @return bool
+     */
+    public function checkLog($baseId, $tweetId){
+        $flg = true;
+        $query = $this->Log->find();
+        $query->where(['base_id' => $baseId]);
+        $query->where(['tweet_id' => $tweetId]);
+        $query->where(['deleted IS NULL']);
+
+        $log = $query->first();
+        if(!empty($log)) $flg = false;
+        return $flg;
+    }
+
+    /**
+     * @param $baseId
+     * @param $tweetId
+     */
+    public function insertLog($baseId, $tweetId){
+        $log = $this->Log->newEntity();
+        $log->set([
+            'base_id' => $baseId,
+            'tweet_id' => $tweetId,
+            'created' => date('Y-m-d H:i:s')
+        ]);
+
+        $log = $this->Log->save($log);
     }
 }

@@ -40,7 +40,7 @@ class TwitterBotWordTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('Bases', [
+        $this->belongsTo('TwitterBotBase', [
             'foreignKey' => 'base_id',
             'joinType' => 'INNER'
         ]);
@@ -91,7 +91,7 @@ class TwitterBotWordTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['base_id'], 'Bases'));
+        $rules->add($rules->existsIn(['base_id'], 'TwitterBotBase'));
 
         return $rules;
     }

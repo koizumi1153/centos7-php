@@ -7,21 +7,21 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * TwitterBotDate Model
+ * TwitterBotRtLog Model
  *
  * @property \App\Model\Table\BasesTable|\Cake\ORM\Association\BelongsTo $Bases
  *
- * @method \App\Model\Entity\TwitterBotDate get($primaryKey, $options = [])
- * @method \App\Model\Entity\TwitterBotDate newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\TwitterBotDate[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\TwitterBotDate|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\TwitterBotDate patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\TwitterBotDate[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\TwitterBotDate findOrCreate($search, callable $callback = null, $options = [])
+ * @method \App\Model\Entity\TwitterBotRtLog get($primaryKey, $options = [])
+ * @method \App\Model\Entity\TwitterBotRtLog newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\TwitterBotRtLog[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\TwitterBotRtLog|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\TwitterBotRtLog patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\TwitterBotRtLog[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\TwitterBotRtLog findOrCreate($search, callable $callback = null, $options = [])
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class TwitterBotDateTable extends Table
+class TwitterBotRtLogTable extends Table
 {
 
     /**
@@ -34,7 +34,7 @@ class TwitterBotDateTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('twitter_bot_date');
+        $this->setTable('twitter_bot_rt_log');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
@@ -59,14 +59,10 @@ class TwitterBotDateTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->dateTime('tweet_date')
-            ->requirePresence('tweet_date', 'create')
-            ->notEmpty('tweet_date');
-
-        $validator
-            ->scalar('word_ids')
-            ->requirePresence('word_ids', 'create')
-            ->notEmpty('word_ids');
+            ->scalar('tweet_id')
+            ->maxLength('tweet_id', 140)
+            ->requirePresence('tweet_id', 'create')
+            ->notEmpty('tweet_id');
 
         $validator
             ->dateTime('deleted')

@@ -7,6 +7,7 @@ use App\Controller\Component\TwitterComponent;
 
 class YohaneCenterShell extends Shell
 {
+    protected $BaseId = 1; //baseId
 
     public function initialize() {
         // component
@@ -21,7 +22,7 @@ class YohaneCenterShell extends Shell
         $useCount = 0;
 
         $now = date('Y-m-d H:i:00');
-        $base = $this->Twitter->getBase(1);
+        $base = $this->Twitter->getBase($this->BaseId);
         if(!empty($base)){
             //時間チェック
             $date = $this->Twitter->getDate($base['id'], $now);
@@ -96,12 +97,15 @@ class YohaneCenterShell extends Shell
      * RT済みはエラーになるが…できれば除外したい。
      */
     public function getTweet($userName=''){
-        $base = $this->Twitter->getBase(1);
+        $base = $this->Twitter->getBase($this->BaseId);
         $result = $this->Twitter->getUserTimeline($userName, 3, $base['consumer_key'], $base['consumer_secret'], $base['api_token'], $base['api_token_secret']);
         if(!empty($result)) {
             foreach ($result as $row) {
                 if (strpos($row->text, '選挙') !== false) {
-                    $this->Twitter->retweet($row->id_str, $base['consumer_key'], $base['consumer_secret'], $base['api_token'], $base['api_token_secret']);
+                    if($this->Twitter->checkLog($this->BaseId,$row->id_str)) {
+                        $this->Twitter->retweet($row->id_str, $base['consumer_key'], $base['consumer_secret'], $base['api_token'], $base['api_token_secret']);
+                        $this->Twitter->insertLog($this->BaseId,$row->id_str);
+                    }
                 }
             }
         }
@@ -112,7 +116,7 @@ class YohaneCenterShell extends Shell
      * ツイートをRTした人をフォローする
      */
     public function follow(){
-        $base = $this->Twitter->getBase(1);
+        $base = $this->Twitter->getBase($this->BaseId);
         $result = $this->Twitter->getUserTimeline($base['screen_name'],3);
         foreach($result as $row){
             $users = $this->Twitter->getRetweetUser($row->id_str, $base['consumer_key'], $base['consumer_secret'], $base['api_token'], $base['api_token_secret']);

@@ -53,11 +53,11 @@ class TwitterBotBaseTable extends Table
 
         $validator
             ->scalar('consumer_key')
-            ->allowEmpty('consumer_key');
+            ->notEmpty('consumer_key');
 
         $validator
             ->scalar('consumer_secret')
-            ->allowEmpty('consumer_secret');
+            ->notEmpty('consumer_secret');
 
         $validator
             ->scalar('api_token')
@@ -70,19 +70,25 @@ class TwitterBotBaseTable extends Table
         $validator
             ->scalar('url')
             ->requirePresence('url', 'create')
-            ->notEmpty('url');
+            ->allowEmpty('url');
 
         $validator
             ->scalar('word')
             ->maxLength('word', 140)
             ->requirePresence('word', 'create')
-            ->notEmpty('word');
+            ->allowEmpty('word');
 
         $validator
             ->scalar('img')
             ->maxLength('img', 50)
             ->requirePresence('img', 'create')
-            ->notEmpty('img');
+            ->allowEmpty('img');
+
+        $validator
+            ->scalar('screen_name')
+            ->maxLength('screen_name', 50)
+            ->requirePresence('screen_name', 'create')
+            ->allowEmpty('screen_name');
 
         $validator
             ->dateTime('deleted')
