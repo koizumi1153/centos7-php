@@ -141,8 +141,9 @@ class TwitterComponent extends Component
      * @return mixed
      */
   public function getWords($ids){
+      $ids = explode(',', $ids);
       $query = $this->Word->find();
-      $query->where(['id IN' => [$ids]]);
+      $query->where(['id IN' => $ids]);
       $query->where(['deleted IS NULL']);
       $query->order(['use_count' => 'ASC']);
 
@@ -237,7 +238,7 @@ class TwitterComponent extends Component
      */
     public function getFavoritesUser($consumer_key='', $consumer_secret='', $access_token='', $access_token_secret=''){
         $connection = $this->twitterOAuth($consumer_key='', $consumer_secret='', $access_token='', $access_token_secret='');
-        // いいね一覧
+        // 自分のいいね一覧
         $result = $connection->get("favorites/list");
         return $result;
     }

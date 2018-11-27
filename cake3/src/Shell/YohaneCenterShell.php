@@ -53,9 +53,9 @@ class YohaneCenterShell extends Shell
                         $wordsArr = [];
                         foreach($words as $row){
                             if($cnt == 0){
-                                $minCount = $row['useCount'];
+                                $minCount = $row['use_count'];
                                 $wordsArr[] = $row;
-                            }elseif($minCount == $row['useCount']){
+                            }elseif($minCount == $row['use_count']){
                                 $wordsArr[] = $row;
                             }
                             $cnt++;
@@ -127,9 +127,4 @@ class YohaneCenterShell extends Shell
         }
     }
 
-    public function favorites(){
-        $base = $this->Twitter->getBase(1);
-        $result = $this->Twitter->getFavoritesUser($base['consumer_key'], $base['consumer_secret'], $base['api_token'], $base['api_token_secret']);
-print_r($result);
-    }
 }
