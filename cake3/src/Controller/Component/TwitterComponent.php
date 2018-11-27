@@ -49,7 +49,7 @@ class TwitterComponent extends Component
    */
   public function post($str, $img='', $consumer_key='', $consumer_secret='', $access_token='', $access_token_secret=''){
     #$connection = new TwitterOAuth($this->TWITTER_CONSUMER_KEY, $this->TWITTER_CONSUMER_SECRET, $this->TWITTER_ACCESS_TOKEN, $this->TWITTER_ACCESS_TOKEN_SECRET);
-    $connection = $this->twitterOAuth($consumer_key='', $consumer_secret='', $access_token='', $access_token_secret='');
+    $connection = $this->twitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
 
     $result = $connection->post(
       "statuses/update",
@@ -66,7 +66,7 @@ class TwitterComponent extends Component
    */
   public function getUserTimeline($screen_name, $count=10, $consumer_key='', $consumer_secret='', $access_token='', $access_token_secret=''){
     #$connection = new TwitterOAuth($this->TWITTER_CONSUMER_KEY, $this->TWITTER_CONSUMER_SECRET, $this->TWITTER_ACCESS_TOKEN, $this->TWITTER_ACCESS_TOKEN_SECRET);
-    $connection = $this->twitterOAuth($consumer_key='', $consumer_secret='', $access_token='', $access_token_secret='');
+    $connection = $this->twitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
 
       $content = $connection->get("statuses/user_timeline", array(
       "screen_name" => "{$screen_name}",
@@ -90,7 +90,7 @@ class TwitterComponent extends Component
      */
   public function setImgPost($str, $img='', $consumer_key='', $consumer_secret='', $access_token='', $access_token_secret=''){
 #      $connection = new TwitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
-      $connection = $this->twitterOAuth($consumer_key='', $consumer_secret='', $access_token='', $access_token_secret='');
+      $connection = $this->twitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
 
       if(!empty($img)) {
           $media = $connection->upload('media/upload', ['media' => '/var/www/cake/cake3/webroot/img/' . $img]);
@@ -178,7 +178,7 @@ class TwitterComponent extends Component
      * @param string $access_token_secret
      */
   public function retweet($id, $consumer_key='', $consumer_secret='', $access_token='', $access_token_secret=''){
-      $connection = $this->twitterOAuth($consumer_key='', $consumer_secret='', $access_token='', $access_token_secret='');
+      $connection = $this->twitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
       // リツイート
       $result = $connection->post("statuses/retweet/{$id}");
   }
@@ -193,14 +193,14 @@ class TwitterComponent extends Component
      * @param string $access_token_secret
      */
   public function getRetweetUser($id, $consumer_key='', $consumer_secret='', $access_token='', $access_token_secret=''){
-      $connection = $this->twitterOAuth($consumer_key='', $consumer_secret='', $access_token='', $access_token_secret='');
+      $connection = $this->twitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
       // リツイート
       $result = $connection->get("statuses/retweets/{$id}");
       return $result;
   }
 
   public function getUserInfo($userId, $consumer_key='', $consumer_secret='', $access_token='', $access_token_secret=''){
-      $connection = $this->twitterOAuth($consumer_key='', $consumer_secret='', $access_token='', $access_token_secret='');
+      $connection = $this->twitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
 
       $content = $connection->get("users/show", array(
           "user_id" => "{$userId}",
@@ -219,7 +219,7 @@ class TwitterComponent extends Component
      */
   public function setFollow($userInfo, $consumer_key='', $consumer_secret='', $access_token='', $access_token_secret=''){
       if(!empty($userInfo) && $userInfo->following != 1){
-          $connection = $this->twitterOAuth($consumer_key='', $consumer_secret='', $access_token='', $access_token_secret='');
+          $connection = $this->twitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
 
           // ツイートの内容を設定
           $params = [
@@ -238,7 +238,7 @@ class TwitterComponent extends Component
      * @return array|object
      */
     public function getFavoritesUser($consumer_key='', $consumer_secret='', $access_token='', $access_token_secret=''){
-        $connection = $this->twitterOAuth($consumer_key='', $consumer_secret='', $access_token='', $access_token_secret='');
+        $connection = $this->twitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
         // 自分のいいね一覧
         $result = $connection->get("favorites/list");
         return $result;
