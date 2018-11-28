@@ -114,6 +114,7 @@ class YohaneCenterShell extends Shell
 
     /**
      * ツイートをRTした人をフォローする
+     * フォロワーをフォロバする
      */
     public function follow(){
         $base = $this->Twitter->getBase($this->BaseId);
@@ -127,6 +128,18 @@ class YohaneCenterShell extends Shell
                     $cnt++;
                     if(!($cnt % 100)) sleep(1);
                 }
+            }
+        }
+
+        sleep(1);
+
+        $list = $this->Twitter->getFollowersList($base['consumer_key'], $base['consumer_secret'], $base['api_token'], $base['api_token_secret']);
+        if(!empty($list->users)){
+            $cnt = 0;
+            foreach($list->users as $user){
+                $this->Twitter->setFollow($user, $base['consumer_key'], $base['consumer_secret'], $base['api_token'], $base['api_token_secret']);
+                $cnt++;
+                if(!($cnt % 100)) sleep(1);
             }
         }
     }

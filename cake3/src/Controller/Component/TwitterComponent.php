@@ -276,4 +276,18 @@ class TwitterComponent extends Component
 
         $log = $this->Log->save($log);
     }
+
+    /**
+     * @param string $consumer_key
+     * @param string $consumer_secret
+     * @param string $access_token
+     * @param string $access_token_secret
+     * @return array|object
+     */
+    public function getFollowersList($consumer_key='', $consumer_secret='', $access_token='', $access_token_secret=''){
+        $connection = $this->twitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
+        // 自分のフォロワー一覧
+        $result = $connection->get("followers/list");
+        return $result;
+    }
 }
