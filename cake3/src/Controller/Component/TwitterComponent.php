@@ -287,7 +287,7 @@ class TwitterComponent extends Component
     public function getFollowersList($consumer_key='', $consumer_secret='', $access_token='', $access_token_secret=''){
         $connection = $this->twitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
         // 自分のフォロワー一覧
-        $result = $connection->get("followers/list");
+        $result = $connection->get("followers/list",['count' => 200]);
         return $result;
     }
 }
