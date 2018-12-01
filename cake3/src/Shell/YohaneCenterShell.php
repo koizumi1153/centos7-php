@@ -63,7 +63,7 @@ class YohaneCenterShell extends Shell
                         }
 
 
-                        $int = rand(0,($wordsArr -1));
+                        $int = rand(0,(count($wordsArr) -1));
                         $wordId = $wordsArr[$int]['id'];
                         $useCount = $wordsArr[$int]['use_count'];
 
