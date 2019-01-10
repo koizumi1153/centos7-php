@@ -101,7 +101,7 @@ class YohaneCenterShell extends Shell
         $result = $this->Twitter->getUserTimeline($userName, 3, $base['consumer_key'], $base['consumer_secret'], $base['api_token'], $base['api_token_secret']);
         if(!empty($result)) {
             foreach ($result as $row) {
-                if (strpos($row->text, '選挙') !== false) {
+                if (strpos($row->text, '選挙') !== false || strpos($row->text, '堕天ロード') !== false) {
                     if($this->Twitter->checkLog($this->BaseId,$row->id_str)) {
                         $this->Twitter->retweet($row->id_str, $base['consumer_key'], $base['consumer_secret'], $base['api_token'], $base['api_token_secret']);
                         $this->Twitter->insertLog($this->BaseId,$row->id_str);
