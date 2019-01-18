@@ -241,9 +241,15 @@ class AqoursComponent extends Component
               if($imgKind !== false){
                 $this->setImg($list['largeImageUrl'], $jan, $imgKind);
                 //update
-                  $this->updateImg($jan, $imgKind);
+                  $this->updateImg($jan, $imgKind, $dbKind);
               }
             }
+
+            // タイトルが違えばupdate
+            if(!in_array($title, $titles)){
+                $this->updateTitle($title, $jan, $dbKind);
+            }
+
             continue;
           }
         }elseif(!empty($title)){
@@ -1572,13 +1578,29 @@ class AqoursComponent extends Component
      * 画像更新処理
      * @param $jan
      * @param $imgKind
+     * @param $kind
      */
-  public function updateImg($jan, $imgKind){
+  public function updateImg($jan, $imgKind, $kind){
       $name = $jan. $imgKind;
       $query = $this->Information->query();
       $query->update()
           ->set(['img' => $name])
           ->where(['jan' => $jan])
+          ->where(['kind' => $kind])
+          ->execute();
+  }
+
+    /**
+     * @param $title
+     * @param $jan
+     * @param $kind
+     */
+  public function updateTitle($title, $jan, $kind){
+      $query = $this->Information->query();
+      $query->update()
+          ->set(['title' => $title])
+          ->where(['jan' => $jan])
+          ->where(['kind' => $kind])
           ->execute();
   }
 }
