@@ -240,6 +240,8 @@ class AqoursComponent extends Component
               $imgKind = $this->checkImg($list['largeImageUrl']);
               if($imgKind !== false){
                 $this->setImg($list['largeImageUrl'], $jan, $imgKind);
+                //update
+                  $this->updateImg($jan, $imgKind);
               }
             }
             continue;
@@ -1564,5 +1566,19 @@ class AqoursComponent extends Component
       $data['created'] = date('Y-m-d H:i:s');
       $query->values($data);
       $query->execute();
+  }
+
+    /**
+     * 画像更新処理
+     * @param $jan
+     * @param $imgKind
+     */
+  public function updateImg($jan, $imgKind){
+      $name = $jan. $imgKind;
+      $query = $this->Information->query();
+      $query->update()
+          ->set(['img' => $name])
+          ->where(['jan' => $jan])
+          ->execute();
   }
 }
