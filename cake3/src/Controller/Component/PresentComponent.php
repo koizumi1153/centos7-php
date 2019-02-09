@@ -18,8 +18,8 @@ class PresentComponent extends Component
    */
   public function getDate($date){
     $query = $this->Present->find();
-    $query->where(['start_date >= ' => $date]);
-    $query->where(['end_date < ' => $date]);
+    $query->where(['start_date <= ' => $date]);
+    $query->where(['end_date > ' => $date]);
     $query->where(['deleted IS NULL']);
 
     $date = $query->hydrate(false)->toArray();
