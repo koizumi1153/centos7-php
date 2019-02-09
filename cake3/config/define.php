@@ -283,4 +283,7 @@ return [
     AQOURS_KIND_GOODS=> "グッズの情報",]
   ),
 
+  // プレゼント フォロー＆リツイート
+  define('PRESENT_ONCE', 1),
+  define('PRESENT_ALL',  2),
 ];//define

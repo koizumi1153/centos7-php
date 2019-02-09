@@ -199,6 +199,14 @@ class TwitterComponent extends Component
       return $result;
   }
 
+    /**
+     * @param $userId
+     * @param string $consumer_key
+     * @param string $consumer_secret
+     * @param string $access_token
+     * @param string $access_token_secret
+     * @return array|object
+     */
   public function getUserInfo($userId, $consumer_key='', $consumer_secret='', $access_token='', $access_token_secret=''){
       $connection = $this->twitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
 
@@ -289,5 +297,26 @@ class TwitterComponent extends Component
         // 自分のフォロワー一覧
         $result = $connection->get("followers/list",['count' => 200]);
         return $result;
+    }
+
+    /**
+     * フォロー処理
+     * @param $userInfo
+     * @param string $consumer_key
+     * @param string $consumer_secret
+     * @param string $access_token
+     * @param string $access_token_secret
+     */
+    public function setFollowScreenName($screenName, $consumer_key='', $consumer_secret='', $access_token='', $access_token_secret=''){
+        if(!empty($userInfo) && $userInfo->following != 1){
+            $connection = $this->twitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
+
+            // ツイートの内容を設定
+            $params = [
+                'screen_name' => $screenName,
+            ];
+
+            $result = $connection->post("friendships/create" ,$params);
+        }
     }
 }
