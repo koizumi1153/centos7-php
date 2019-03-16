@@ -94,6 +94,10 @@ EOT;
     }
 
     public function hamuriha(){
-
+        $post = $this->request->getData();
+        if(!empty($post['body'])) {
+            $len = mb_strlen($post['body']);
+            $this->set('len',$len);
+        }
     }
 }
