@@ -101,6 +101,9 @@ EOT;
             $len = mb_strlen($body);
             $this->set('len',$len);
             $this->set('body',$post['body']);
+        }else{
+            $this->set('len',0);
+            $this->set('body','');
         }
     }
 }

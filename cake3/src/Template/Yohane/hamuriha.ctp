@@ -7,11 +7,20 @@
                                               "rows" => '5',
                                               "cols" => "5",
                                               "id"=>"hamuriha",
-                                              "value" => "<?= $body; ?>"
+                                              "value" => $body,
                                               ] ); ?>
 <br />
 <br />
-
-
-<button onclick="this.form.submit();">計測</button>
+  <button type="submit" >PHP計測</button><br />
+  ※改行や空白は文字数としてカウントしない<br />
 </form>
+<br />
+  <button id="test">JS計測</button><br />
+※改行や空白も文字数としてカウントする<br />
+
+<script>
+    document.getElementById("test").onclick = function() {
+        var str = document.getElementById('hamuriha').value;
+        document.getElementById( "calc" ).value = str.length;
+    }
+</script>
