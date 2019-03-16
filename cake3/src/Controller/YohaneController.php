@@ -96,8 +96,11 @@ EOT;
     public function hamuriha(){
         $post = $this->request->getData();
         if(!empty($post['body'])) {
-            $len = mb_strlen($post['body']);
+            $body = $post['body'];
+            $body = str_replace(array("\r\n", "\r", "\n", " ", "　"), '', $body);
+            $len = mb_strlen($body);
             $this->set('len',$len);
+            $this->set('body',$post['body']);
         }
     }
 }

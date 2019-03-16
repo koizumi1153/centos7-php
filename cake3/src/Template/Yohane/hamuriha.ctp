@@ -7,17 +7,11 @@
                                               "rows" => '5',
                                               "cols" => "5",
                                               "id"=>"hamuriha",
-                                              "default" => "" ] ); ?>
+                                              "value" => "<?= $body; ?>"
+                                              ] ); ?>
 <br />
 <br />
 
-<button id="test">簡易計測</button>
-<input type="submit" value="詳細計測">
+
+<button onclick="this.form.submit();">計測</button>
 </form>
-<script>
-    document.getElementById("test").onclick = function() {
-        var str = document.getElementById('hamuriha').value;
-        str.replace(/\r?\n\s/g, '');
-        document.getElementById( "calc" ).value = str.length;
-    }
-</script>
