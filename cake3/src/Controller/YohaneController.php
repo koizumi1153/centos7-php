@@ -92,4 +92,8 @@ EOT;
 
       echo 200;
     }
+
+    public function hamuriha(){
+
+    }
 }
