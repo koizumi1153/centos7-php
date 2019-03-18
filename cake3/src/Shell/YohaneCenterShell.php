@@ -7,7 +7,7 @@ use App\Controller\Component\TwitterComponent;
 
 class YohaneCenterShell extends Shell
 {
-    protected $BaseId = 1; //baseId
+    protected $BaseId = 2; //baseId
 
     public function initialize() {
         // component
