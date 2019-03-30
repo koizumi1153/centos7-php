@@ -29,8 +29,22 @@ class AdminController extends AppController
             }
         }
 
-        $list = $this->Aqours->getInformationLists($startDate, $endDate);
+        $list = [];
+        $data = $this->Aqours->getInformationLists($startDate, $endDate);
+        foreach($data as $body)
+        {
+            $list[] = self::url2link($body);
+        }
         $this->set('list', $list);
         $this->set('month', $month);
+    }
+
+    function url2link($body)
+    {
+        $pattern = '/(?<!href=")https?:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:@&=+$,%#]+/';
+        $body = preg_replace_callback($pattern, function($matches) {
+            return "<a href=\"{$matches[0]}\">link</a>";
+        }, $body);
+        return $body;
     }
 }
