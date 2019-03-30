@@ -43,7 +43,7 @@ class AdminController extends AppController
     {
         $pattern = '/(?<!href=")https?:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:@&=+$,%#]+/';
         $body = preg_replace_callback($pattern, function($matches) {
-            return "<a href=\"{$matches[0]}\" target=”_blank”>link</a>";
+            return "<a href=\"{$matches[0]}\" target=”_new”>link</a>";
         }, $body);
         return $body;
     }
