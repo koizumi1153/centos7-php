@@ -413,6 +413,7 @@ class AqoursComponent extends Component
       $blogData = array();
       $creator = $master['title'];
       $rss = simplexml_load_file($url);
+        $cnt = 0;
       if(strpos($url, 'lineblog') !== false){
         // line
         foreach($rss as $item){
@@ -424,6 +425,8 @@ class AqoursComponent extends Component
             $item['creator'] = $creator;
             $return[] = $item;
           }
+          $cnt++;
+          if($cnt >= 3) break;
         }
       }elseif(strpos($url, '.xml') !== false){
         // xml
@@ -435,6 +438,9 @@ class AqoursComponent extends Component
             $item['creator'] = $creator;
             $return[] = $item;
           }
+
+          $cnt++;
+          if($cnt >= 3) break;
         }
       }
 
@@ -489,7 +495,7 @@ class AqoursComponent extends Component
       $query = $this->Blog->find()
                           ->where(['deleted IS NULL'])
                           ->order(['id' => 'DESC'])
-                          ->limit(10);
+                          ->limit(100);
       return $query->hydrate(false)->toArray();
     }
 
