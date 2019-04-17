@@ -488,7 +488,8 @@ class AqoursComponent extends Component
     public function getBlog(){
       $query = $this->Blog->find()
                           ->where(['deleted IS NULL'])
-                          ->limit(100);
+                          ->order(['id' => 'DESC'])
+                          ->limit(10);
       return $query->hydrate(false)->toArray();
     }
 
