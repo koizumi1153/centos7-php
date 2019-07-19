@@ -14,9 +14,9 @@ class TwitterComponent extends Component
   protected $TWITTER_CONSUMER_SECRET = "TzNdzM8GbD3DQsRlJbYEFq9kkSAMxL1WcikYLLQ38lnngdFBxX";
   // user
   // twitterアクセストークン
-  protected $TWITTER_ACCESS_TOKEN = "112372639-JNtygVHiSbTPnppCw7eiCbGkqvMmOLavSD3geIUo";
+  protected $TWITTER_ACCESS_TOKEN = "112372639-HBAW7LvZ72DE7Fxdm5SAPRGnW3TSoDH2Pwpo0HhB";
   // twitterアクセストークンシークレット
-  protected $TWITTER_ACCESS_TOKEN_SECRET = "PnjLj63mP2Uaxux0v9Tr00ckNZ7dU6glrFhh9IYXSPtdI";
+  protected $TWITTER_ACCESS_TOKEN_SECRET = "0dYZqCAV64Mj2seUe6Ip5NPCutHRUhXGGM8UfxDrrUOQK";
 
   public function initialize(array $config)
   {
