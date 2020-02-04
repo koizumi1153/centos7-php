@@ -82,6 +82,9 @@ $sell = array(AQOURS_KIND_BOOK, AQOURS_KIND_CD, AQOURS_KIND_DVD);
                   <?= h(DISP_KINDS[$info['kind']]); ?><br /><br />
                   <?= nl2br($info['discription']); ?><br /><br />
 
+                      <?php if(!empty($info['img'])){ ?>
+                        <img src="/img/aqours/<?= $info['img'] ?>" ><br /><br />
+                      <?php } ?>
                     <?php
                     $text = '';
                     if (in_array($info['kind'], $sell)) {
