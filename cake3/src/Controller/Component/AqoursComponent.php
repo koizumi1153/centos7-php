@@ -1610,4 +1610,21 @@ class AqoursComponent extends Component
           ->where(['kind' => $kind])
           ->execute();
   }
+
+    /**
+     * @param $title
+     * @param $date
+     * @return bool
+     */
+  public function isInformationFromTitleAndDate($title, $date){
+      $query = $this->Information->query()
+          ->where(['title' => $title])
+          ->where(['date' => $date]);
+      $info = $query->hydrate(false)->toArray();
+      if(!empty($info)){
+          return true;
+      }else{
+          return false;
+      }
+  }
 }

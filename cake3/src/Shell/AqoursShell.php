@@ -198,25 +198,28 @@ class AqoursShell extends Shell
       $text .= "\n\n";
       $text .= trim($dom["#channel-main"]->find("a:eq(0)")->attr('href'));
 
-/*
-      $text .= "\n\n";
-      // 説明
-      $text .= trim($dom["#channel-main"]->find(".g-contents:eq(0)")->text());
-      $text .= "\n\n";
-      // url
-      $text .= trim($dom["#channel-main"]->find("a:eq(0)")->attr('href'));
-*/
-      $data['kind'] = $category;
-      $data['title'] = $title;
-      $data['discription'] = $text;
-      $data['price'] = '';
-      $data['jan'] = '';
-      $data['img'] = '';
-      $data['date'] = $date;
-      $data['push'] = PUSH_READY;
-      $data['created'] = $now;
+      if($this->Aqours->isInformationFromTitleAndDate($title, $date) == false) {
 
-      $info[] = $data;
+          /*
+                $text .= "\n\n";
+                // 説明
+                $text .= trim($dom["#channel-main"]->find(".g-contents:eq(0)")->text());
+                $text .= "\n\n";
+                // url
+                $text .= trim($dom["#channel-main"]->find("a:eq(0)")->attr('href'));
+          */
+          $data['kind'] = $category;
+          $data['title'] = $title;
+          $data['discription'] = $text;
+          $data['price'] = '';
+          $data['jan'] = '';
+          $data['img'] = '';
+          $data['date'] = $date;
+          $data['push'] = PUSH_READY;
+          $data['created'] = $now;
+
+          $info[] = $data;
+      }
 
       // 追加する情報があれば追加
       if (!empty($title)) $this->Aqours->setInfo($info);
