@@ -219,10 +219,10 @@ class AqoursShell extends Shell
           $data['created'] = $now;
 
           $info[] = $data;
-      }
 
-      // 追加する情報があれば追加
-      if (!empty($title)) $this->Aqours->setInfo($info);
+          // 追加する情報があれば追加
+          if (!empty($title)) $this->Aqours->setInfo($info);
+      }
     }
   }
 
